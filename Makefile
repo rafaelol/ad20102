@@ -15,7 +15,7 @@ exponencial: src/exponencial.h src/exponencial.cpp
 	g++ $(GPPOPT) -c src/exponencial.cpp -o exponencial.o
 
 clean:
-	rm -f fregues.o eventos.o
+	rm -f fregues.o eventos.o exponencial.o
 	rm -f doc_codigo.pdf
 
 docs: relatorio doxygen
