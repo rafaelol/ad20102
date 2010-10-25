@@ -2,7 +2,7 @@
 GPPOPT = -Wall -Wextra
 
 
-trabalho: fregues eventos exponencial
+trabalho: fregues eventos exponencial simulador
 
 
 fregues: src/fregues.h src/fregues.cpp
@@ -14,8 +14,11 @@ eventos: src/eventos.h src/eventos.cpp
 exponencial: src/exponencial.h src/exponencial.cpp
 	g++ $(GPPOPT) -c src/exponencial.cpp -o exponencial.o
 
+simulador: src/simulador.h src/simulador.cpp
+	g++ $(GPPOPT) -c src/simulador.cpp -o simulador.o
+
 clean:
-	rm -f fregues.o eventos.o exponencial.o
+	rm -f fregues.o eventos.o exponencial.o simulador.o
 	rm -f doc_codigo.pdf
 
 docs: relatorio doxygen
