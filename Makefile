@@ -2,7 +2,7 @@
 GPPOPT = -Wall -Wextra
 
 
-trabalho: fregues eventos
+trabalho: fregues eventos exponencial
 
 
 fregues: src/fregues.h src/fregues.cpp
@@ -10,6 +10,9 @@ fregues: src/fregues.h src/fregues.cpp
 
 eventos: src/eventos.h src/eventos.cpp
 	g++ $(GPPOPT) -c src/eventos.cpp -o eventos.o
+
+exponencial: src/exponencial.h src/exponencial.cpp
+	g++ $(GPPOPT) -c src/exponencial.cpp -o exponencial.o
 
 clean:
 	rm -f fregues.o eventos.o
