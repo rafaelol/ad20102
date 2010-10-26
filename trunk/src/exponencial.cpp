@@ -1,6 +1,10 @@
 #include "exponencial.h"
 #include <cstdlib>
 #include <ctime>
+#include <cmath>
+
+using namespace std;
+
 
 namespace Simulador
 {
@@ -24,7 +28,8 @@ DistExponencial::DistExponencial(double taxa, long int semente)
 
 double inversa(double prob)
 {
-	return 0.0;
+	// Probabilidade entre 0 e 1.
+	return (-1) * (log(1 - prob) / m_taxa);
 }
 
 long int DistExponencial::semente() const
