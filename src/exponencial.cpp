@@ -15,7 +15,7 @@ DistExponencial::DistExponencial(double taxa)
 
 	m_semente = time(NULL);
 	srand48_r(m_semente, &m_estado_prng);
-	
+
 }
 
 DistExponencial::DistExponencial(double taxa, long int semente)
@@ -26,7 +26,7 @@ DistExponencial::DistExponencial(double taxa, long int semente)
 	srand48_r(m_semente, &m_estado_prng);
 }
 
-double inversa(double prob)
+double DistExponencial::inversa(double prob)
 {
 	// Probabilidade entre 0 e 1.
 	return (-1) * (log(1 - prob) / m_taxa);
@@ -34,7 +34,7 @@ double inversa(double prob)
 
 long int DistExponencial::semente() const
 {
-	return m_semente;	
+	return m_semente;
 }
 
 double DistExponencial::proxima_chegada()
