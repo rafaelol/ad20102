@@ -97,7 +97,12 @@ Simulador(TipoFila fila1, TipoFila fila2, double taxa_chegada, double taxa_servi
  * \param semente_servico Semente para alimentar o gerador dos tempos de serviço do sistema.
  *
  */
-Simulador(TipoFila fila1, TipoFila fila2, double taxa_chegada, double taxa_servico, int semente_chegada, int semente_servico);
+Simulador(TipoFila fila1, TipoFila fila2, double taxa_chegada, double taxa_servico, long int semente_chegada, long int semente_servico);
+
+/**
+ * Destrutor responsável por desalocar os recursos do simulador.
+ */
+~Simulador();
 
 /**
  * Executa o simulador até que 'quantidade' de clientes tenham sido servidos completamente, mas não armazena os dados
