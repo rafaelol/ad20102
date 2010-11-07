@@ -29,6 +29,7 @@ double m_tempo_saida_sistema; /**< Tempo em que o fregues saiu do segundo servi�
 
 int m_quantidade_fila1; /**< Quantidade de fregueses na fila 1, no momento de chegada deste fregues. */
 int m_quantidade_fila2; /**< Quantidade de fregueses na fila 2, no momento de chegada deste fregues. */
+int m_tipo_cliente_servido; /**< Se no momento da chegada, o cliente servido era da fila 1, 2 ou se não tinha nenhum cliente em atendimento pelo servidor. */
 public:
 
 /**
@@ -38,8 +39,9 @@ public:
  * \param tempo_chegada O tempo (a partir de 0.0) que o fregues chegou no sistema.
  * \param quantidade_fila1 Quantidade e pessoas na fila de espera 1 no momento que o fregues chega ao sistema.
  * \param quantidade_fila2 Quantidade e pessoas na fila de espera 2 no momento que o fregues chega ao sistema.
+ * \param tipo_cliente_servido Se no momento da chegada, o cliente servido era da fila 1, 2 ou se não tinha nenhum cliente em atendimento pelo servidor. 
  */
-Fregues(int id, double tempo_chegada, int quantidade_fila1, int quantidade_fila2);
+Fregues(int id, double tempo_chegada, int quantidade_fila1, int quantidade_fila2, int tipo_cliente_servido);
 
 /**
  * Registra o tempo em que o fregues saiu da fila de espera 1 para o seu primeiro serviço.
@@ -98,6 +100,11 @@ int quantidade_elementos_fila1();
  * A quantidade de pessoas na fila 2 no momento da chegada deste fregues ao sistema.
  */
 int quantidade_elementos_fila2();
+
+/**
+ * Se no momento da chegada, o cliente servido era da fila 1, 2 ou se não tinha nenhum cliente em atendimento pelo servidor.
+ */
+int tipo_cliente_servido();
 
 };
 
