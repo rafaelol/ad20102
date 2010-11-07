@@ -5,6 +5,7 @@ namespace Simulador {
 Fregues::Fregues(int id, double tempo_chegada, int quantidade_fila1, int quantidade_fila2, int tipo_cliente_servido)
 {
 	m_id = id;
+	m_fila = 1;
 
 	m_tempo_chegada_fila1 = tempo_chegada;
 	m_tempo_saida_fila1 = 0.0;
@@ -26,6 +27,7 @@ void Fregues::saiu_fila1(double tempo)
 void Fregues::terminou_servico1(double tempo)
 {
 	m_tempo_chegada_fila2 = tempo;
+	m_fila = 2;
 }
 
 void Fregues::saiu_fila2(double tempo)
@@ -71,6 +73,11 @@ int Fregues::quantidade_elementos_fila2()
 int Fregues::tipo_cliente_servido()
 {
 	return m_tipo_cliente_servido;
+}
+
+int Fregues::fila_pertencente()
+{
+	return m_fila;
 }
 
 }
