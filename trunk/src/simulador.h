@@ -70,6 +70,8 @@ DistExponencial* m_chegada; /**< Gerador de tempos exponencialmente distribuidos
 DistExponencial* m_servico; /**< Gerador de tempos exponencialmente distribuidos para os tempos de servico. */
 
 double m_tempo_atual; /**< Tempo de simulação. */
+int m_prox_id; /**< Id do próximo cliente. */
+Fregues *m_fregues_em_servico; /**< Fregues atualmente em serviço. */
 
 ResultadosConsolidados m_resultados; /**< Armazena os dados coletados por esta instância do simulador. */
 public:
