@@ -21,6 +21,8 @@ class Fregues
 private:
 int m_id; /**< Identificador único do fregues no sistema */
 
+int m_fila; /**< Em qual fila o fregues está */
+
 double m_tempo_chegada_fila1; /**< Tempo em que o fregues chegou no sistema e entrou na fila 1. */
 double m_tempo_saida_fila1; /**< Tempo em que o fregues saiu da fila 1 para seu primeiro serviço. */
 double m_tempo_chegada_fila2; /**< Tempo em que o fregues saiu do primeiro serviço e foi para a fila 2. */
@@ -105,6 +107,11 @@ int quantidade_elementos_fila2();
  * Se no momento da chegada, o cliente servido era da fila 1, 2 ou se não tinha nenhum cliente em atendimento pelo servidor.
  */
 int tipo_cliente_servido();
+
+/**
+ * Se o cliente no momento esta no processo da fila 1 ou fila 2.
+ */
+int fila_pertencente();
 
 };
 
