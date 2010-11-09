@@ -1,6 +1,6 @@
 #include "simulador.h"
 
-namespace Simulador
+namespace TrabalhoAD
 {
 
 

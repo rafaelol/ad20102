@@ -3,7 +3,7 @@
 
 #include <cstdlib>
 
-namespace Simulador
+namespace TrabalhoAD
 {
 
 /**

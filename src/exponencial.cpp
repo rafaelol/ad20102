@@ -6,7 +6,7 @@
 using namespace std;
 
 
-namespace Simulador
+namespace TrabalhoAD
 {
 
 DistExponencial::DistExponencial(double taxa)
