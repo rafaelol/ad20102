@@ -2,6 +2,23 @@
 
 namespace Simulador {
 
+Fregues::Fregues()
+{
+	m_id = 0;
+	m_fila = 0;
+
+	m_tempo_chegada_fila1 = 0.0;
+	m_tempo_saida_fila1 = 0.0;
+	m_tempo_chegada_fila2 = 0.0;
+	m_tempo_saida_fila2 = 0.0;
+	m_tempo_saida_sistema = 0.0;
+
+	m_quantidade_fila1 = 0;
+	m_quantidade_fila2 = 0;
+
+	m_tipo_cliente_servido = 0;
+}
+
 Fregues::Fregues(int id, double tempo_chegada, int quantidade_fila1, int quantidade_fila2, int tipo_cliente_servido)
 {
 	m_id = id;
