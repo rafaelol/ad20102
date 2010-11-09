@@ -126,12 +126,11 @@ int main(int argc, char *argv[])
             printf("********************************\n\n");
             break;
         case 'm':
-            puts(optarg);
-            if ((strcmp("Batch", optarg) == 0) || (strcmp("batch", optarg) == 0))
+            if (strcasecmp("Batch", optarg) == 0)
             {
                 modo = 1;
             }
-            if ((strcmp("Replicativo", optarg) == 0) || (strcmp("replicativo", optarg) == 0))
+            if (strcasecmp("Replicativo", optarg) == 0)
             {
                 modo = 2;
             }
@@ -328,6 +327,7 @@ void modobatch(void)
 
     sim->executa(t_transiente, false);
 
+    //Executando as rodadas
     for (int i = 0; i < n_rodadas; i++)
     {
         result = sim->executa(t_rodada, true);
@@ -337,12 +337,35 @@ void modobatch(void)
 
 
     delete sim;
-
 }
 
 void modoreplicativo(void)
 {
+    Simulador *sim;
+    ResultadosConsolidados result;
 
+    for (int i = 0; i < n_rodadas; i++)
+    {
+        if (seed_gerador_chegadas == -1 || seed_gerador_tempo_servico == -1)
+        {
+            sim = new Simulador(fila1, fila2, tx_lambda, tx_mi);
+        }
+        else
+        {
+            printf("nao deveria passar aqui. Ops!\n");
+            sim = new Simulador(fila1, fila2, tx_lambda, tx_mi, seed_gerador_chegadas, seed_gerador_tempo_servico);
+        }
+
+        //Executando fase transiente
+
+        sim->executa(t_transiente, false);
+
+        //Executando a rodada
+        result = sim->executa(t_rodada, true);
+        imprimeresultado_rodada(result, i);
+
+        delete sim;
+    }
 }
 
 void imprimeresultado_rodada(ResultadosConsolidados result, int rodada)
