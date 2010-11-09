@@ -223,7 +223,7 @@ ResultadosConsolidados Simulador::executa(int quantidade, bool coleta)
 				m_fregues_em_servico = m_fila2.front();
 				m_fila2.pop_front();
 
-				m_fregues_em_servico.saiu_fila1(m_tempo_atual);
+				m_fregues_em_servico.saiu_fila2(m_tempo_atual);
 				m_servidor_ocupado = true;
 
 				//Agenda o evento de conclusão do servico
