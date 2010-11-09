@@ -1,7 +1,4 @@
 #include "exponencial.h"
-#include <cstdlib>
-#include <ctime>
-#include <cmath>
 
 using namespace std;
 
@@ -11,9 +8,13 @@ namespace TrabalhoAD
 
 DistExponencial::DistExponencial(double taxa)
 {
+	struct timeval tempo;
+
 	m_taxa = taxa;
 
-	m_semente = time(NULL);
+	gettimeofday(&tempo, NULL);
+
+	m_semente = tempo.tv_usec;
 	srand48_r(m_semente, &m_estado_prng);
 
 }
