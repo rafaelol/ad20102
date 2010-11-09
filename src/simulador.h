@@ -3,6 +3,7 @@
 
 #include<vector>
 #include<queue>
+#include<deque>
 
 #include "fregues.h"
 #include "exponencial.h"
@@ -60,8 +61,8 @@ class Simulador
 private:
 priority_queue<Evento, vector<Evento>, greater<Evento> > m_eventos; /**< Heap com os eventos a serem processador. */
 
-queue<Fregues> m_fila1; /**< Fila de espera 1. */
-queue<Fregues> m_fila2; /**< Fila de espera 2. */
+deque<Fregues> m_fila1; /**< Fila de espera 1. */
+deque<Fregues> m_fila2; /**< Fila de espera 2. */
 
 TipoFila m_tipo_fila1; /**< Forma de serviço da fila de espera 1. */
 TipoFila m_tipo_fila2; /**< Forma de serviço da fila de espera 2. */
@@ -71,11 +72,19 @@ DistExponencial* m_servico; /**< Gerador de tempos exponencialmente distribuidos
 
 double m_tempo_atual; /**< Tempo de simulação. */
 int m_prox_id; /**< Id do próximo cliente. */
-Fregues *m_fregues_em_servico; /**< Fregues atualmente em serviço. */
+
+static Fregues m_fregues_em_servico; /**< Fregues atualmente em serviço. */
+bool m_servidor_ocupado; /**< Indica se existe alguem em processamento no servidor. */
 
 ResultadosConsolidados m_resultados; /**< Armazena os dados coletados por esta instância do simulador. */
-public:
+bool m_verbose; /**< Indica se o Simulador deve imprimir informações sobre sua execução. O padrão é falso. */
 
+/**
+ * Função interna para inicializar as variáveis internas do simulador.
+ */
+void setup();
+
+public:
 /**
  * Construtor da classe Simulador.
  *
@@ -107,17 +116,23 @@ Simulador(TipoFila fila1, TipoFila fila2, double taxa_chegada, double taxa_servi
 ~Simulador();
 
 /**
- * Executa o simulador até que 'quantidade' de clientes tenham sido servidos completamente, mas não armazena os dados
- * estatísticos. Utilize para proceder com a fase transiente.
+ * Executa o simulador até que 'quantidade' de clientes tenham sido servidos completamente.
+ * Os dados estatísticos dos clientes atendidos podem ser coletados e armazenados ou não (como por exemplo para a frase transiente).
+ *
+ * \param quantidade Número de clientes que devem ser servidos completamente.
+ * \param coleta Realiza a coleta de dados estatísticos ou não.
  */ 
-void executa_sem_coleta(int quantidade);
+ResultadosConsolidados executa(int quantidade, bool coleta);
 
 /**
- * Executa o simulador até que 'quantidade' de clientes tenham sido servidos completamente, armazena e retorna os dados
- * estatísticos. Utilize para proceder com a fase normal de simulação.
- */ 
-ResultadosConsolidados executa_com_coleta(int quantidade);
+ * Zera todos os dados estatísticos coletados até o momento.
+ */
+void limpa_dados_coletados();
 
+/**
+ * Ativa ou desativa o modo verbose (verborrágico) do Simulador.
+ */
+void define_verbose(bool ativado);
 };
 
 

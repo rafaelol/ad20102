@@ -11,38 +11,7 @@ Simulador::Simulador(TipoFila fila1, TipoFila fila2, double taxa_chegada, double
 	m_chegada = new DistExponencial(taxa_chegada);
 	m_servico = new DistExponencial(taxa_servico);
 
-	m_tempo_atual = 0.0;
-
-	//Evento inicial do simulador.
-	m_eventos.push(Evento(proxima_chegada_no_sistema, m_chegada->proxima_chegada() ) );
-	
-	m_prox_id = 0;
-
-	m_fregues_em_servico = NULL;
-
-	m_resultados.quantidade = 0;
-	m_resultados.fila1.X = 0.0;
-	m_resultados.fila1.X_quad = 0.0;
-	m_resultados.fila1.W = 0.0;	
-	m_resultados.fila1.W_quad = 0.0;
-	m_resultados.fila1.T = 0.0;
-	m_resultados.fila1.T_quad = 0.0;
-	m_resultados.fila1.Nq = 0;
-	m_resultados.fila1.Nq_quad = 0;
-	m_resultados.fila1.N = 0;
-	m_resultados.fila1.N_quad = 0;
-
-	m_resultados.quantidade = 0;
-	m_resultados.fila2.X = 0.0;
-	m_resultados.fila2.X_quad = 0.0;
-	m_resultados.fila2.W = 0.0;	
-	m_resultados.fila2.W_quad = 0.0;
-	m_resultados.fila2.T = 0.0;
-	m_resultados.fila2.T_quad = 0.0;
-	m_resultados.fila2.Nq = 0;
-	m_resultados.fila2.Nq_quad = 0;
-	m_resultados.fila2.N = 0;
-	m_resultados.fila2.N_quad = 0;
+	setup();
 }
 
 
@@ -54,7 +23,18 @@ Simulador::Simulador(TipoFila fila1, TipoFila fila2, double taxa_chegada, double
 	m_chegada = new DistExponencial(taxa_chegada, semente_chegada);
 	m_servico = new DistExponencial(taxa_servico, semente_servico);
 
+	setup();
+}
 
+Simulador::~Simulador()
+{
+	delete m_chegada;
+	delete m_servico;
+}
+
+
+void Simulador::setup()
+{	
 	m_tempo_atual = 0.0;
 
 	//Evento inicial do simulador.
@@ -62,9 +42,17 @@ Simulador::Simulador(TipoFila fila1, TipoFila fila2, double taxa_chegada, double
 
 	m_prox_id = 0;
 
-	m_fregues_em_servico = NULL;
+	m_servidor_ocupado = false;
 
+	m_verbose = false;
+	
+	limpa_dados_coletados();
+}
+
+void Simulador::limpa_dados_coletados()
+{
 	m_resultados.quantidade = 0;
+
 	m_resultados.fila1.X = 0.0;
 	m_resultados.fila1.X_quad = 0.0;
 	m_resultados.fila1.W = 0.0;	
@@ -76,7 +64,6 @@ Simulador::Simulador(TipoFila fila1, TipoFila fila2, double taxa_chegada, double
 	m_resultados.fila1.N = 0;
 	m_resultados.fila1.N_quad = 0;
 
-	m_resultados.quantidade = 0;
 	m_resultados.fila2.X = 0.0;
 	m_resultados.fila2.X_quad = 0.0;
 	m_resultados.fila2.W = 0.0;	
@@ -89,17 +76,9 @@ Simulador::Simulador(TipoFila fila1, TipoFila fila2, double taxa_chegada, double
 	m_resultados.fila2.N_quad = 0;
 }
 
-Simulador::~Simulador()
-{
-	delete m_chegada;
-	delete m_servico;
-}
-
-
-ResultadosConsolidados Simulador::executa_com_coleta(int quantidade)
+ResultadosConsolidados Simulador::executa(int quantidade, bool coleta)
 {
 	int clientes_servidos = 0;
-	Fregues *f;
 
 	//Loop principal do simulador...
 	while(clientes_servidos < quantidade)
@@ -113,40 +92,113 @@ ResultadosConsolidados Simulador::executa_com_coleta(int quantidade)
 
 		if(ev.tipo() == proxima_chegada_no_sistema) //Chegou um novo cliente ao sistema.
 		{
-			//Cria um novo fregues referente a chegada.
-			f = new Fregues(m_prox_id++, m_tempo_atual, m_fila1.size(), m_fila2.size(),
-					(m_fregues_em_servico == NULL) ? 0 : m_fregues_em_servico->fila_pertencente());
+			//Cria um novo Fregues e adiciona na fila 1
+			Fregues novoFregues = Fregues(m_prox_id++, m_tempo_atual, m_fila1.size(), m_fila2.size(),
+						     (m_servidor_ocupado == false) ? 0 : m_fregues_em_servico.fila_pertencente());
 
-			//Adiciona o fregues na fila 1
+			if(m_tipo_fila1 == FIFO)
+			{
+				m_fila1.push_back(novoFregues);
+			}
+			else if(m_tipo_fila1 == LIFO)
+			{
+				m_fila1.push_front(novoFregues);
+			}
 
 			//Programa a próxima chegada
 			m_eventos.push(Evento(proxima_chegada_no_sistema, m_tempo_atual + m_chegada->proxima_chegada() ) );
 		}
 		else if(ev.tipo() == termino_servico) //O cliente em serviço terminou.
 		{
-			f = m_fregues_em_servico;
+			if(m_fregues_em_servico.fila_pertencente() == 1) //Se o fregues veio da Fila1, envia ele para a fila 2.
+			{
+				m_fregues_em_servico.terminou_servico1(m_tempo_atual);
 
-			//Se o fregues veio da Fila1, envia ele para a fila 2.
+				if(m_tipo_fila2 == FIFO)
+				{
+					m_fila2.push_back(m_fregues_em_servico);
+				}
+				else if(m_tipo_fila2 == LIFO)
+				{
+					m_fila2.push_front(m_fregues_em_servico);
+				}
 
-			//Se o fregues veio da Fila2, coleta todos os dados e remove do sistema.
+			}
+			else if(m_fregues_em_servico.fila_pertencente() == 2) //Se o fregues veio da Fila2, coleta todos os dados e remove do sistema.
+			{
+				m_fregues_em_servico.terminou_servico2(m_tempo_atual);
 
-			m_fregues_em_servico = f = NULL;
+				if(coleta) //Devemos coletar os dados do cliente antes de remove-lo do sistema.
+				{
+					clientes_servidos++;
+					m_resultados.quantidade++;
+
+					//Dados da fila 1
+					m_resultados.fila1.X += m_fregues_em_servico.tempo_servico1();
+					m_resultados.fila1.X_quad += m_fregues_em_servico.tempo_servico1() * m_fregues_em_servico.tempo_servico1();
+
+					m_resultados.fila1.W += m_fregues_em_servico.tempo_espera1();
+					m_resultados.fila1.W_quad += m_fregues_em_servico.tempo_espera1() * m_fregues_em_servico.tempo_espera1();
+
+					m_resultados.fila1.T += m_fregues_em_servico.tempo_total1();
+					m_resultados.fila1.T_quad += m_fregues_em_servico.tempo_total1() * m_fregues_em_servico.tempo_total1();
+
+					m_resultados.fila1.Nq += m_fregues_em_servico.quantidade_elementos_fila1();
+					m_resultados.fila1.Nq_quad += m_fregues_em_servico.quantidade_elementos_fila1() * 
+									m_fregues_em_servico.quantidade_elementos_fila1();
+
+					m_resultados.fila1.N += (m_fregues_em_servico.quantidade_elementos_fila1() + 1);
+					m_resultados.fila1.N_quad += (m_fregues_em_servico.quantidade_elementos_fila1() + 1) *
+									(m_fregues_em_servico.quantidade_elementos_fila1() + 1);
+
+
+					//Dados da fila 2
+					m_resultados.fila2.X += m_fregues_em_servico.tempo_servico2();
+					m_resultados.fila2.X_quad += m_fregues_em_servico.tempo_servico2() * m_fregues_em_servico.tempo_servico2();
+
+					m_resultados.fila2.W += m_fregues_em_servico.tempo_espera2();
+					m_resultados.fila2.W_quad += m_fregues_em_servico.tempo_espera2() * m_fregues_em_servico.tempo_espera2();
+
+					m_resultados.fila2.T += m_fregues_em_servico.tempo_total2();
+					m_resultados.fila2.T_quad += m_fregues_em_servico.tempo_total2() * m_fregues_em_servico.tempo_total2();
+
+					m_resultados.fila2.Nq += m_fregues_em_servico.quantidade_elementos_fila2();
+					m_resultados.fila2.Nq_quad += m_fregues_em_servico.quantidade_elementos_fila2() * 
+									m_fregues_em_servico.quantidade_elementos_fila2();
+
+					m_resultados.fila2.N += (m_fregues_em_servico.quantidade_elementos_fila2() + 1);
+					m_resultados.fila2.N_quad += (m_fregues_em_servico.quantidade_elementos_fila2() + 1) *
+									(m_fregues_em_servico.quantidade_elementos_fila2() + 1);
+				}
+			}
+
+			m_servidor_ocupado = false;
 		}
 
 		//Se o servidor estiver vazio, verifica se tem algum cliente para ser atendido.
-		if(m_fregues_em_servico == NULL)
+		if(m_servidor_ocupado == false)
 		{
 			if(!m_fila1.empty()) //Se tiver alguem na fila 1, de maior prioridade para ser atendido.
 			{
 				//Move da fila 1 para o servidor.
+				m_fregues_em_servico = m_fila1.front();
+				m_fila1.pop_front();
+
+				m_fregues_em_servico.saiu_fila1(m_tempo_atual);
+				m_servidor_ocupado = true;
 
 				//Agenda o evento de conclusão do servico
 				m_eventos.push(Evento(termino_servico, m_tempo_atual + m_servico->proxima_chegada() ) );
 			}
 			else if(!m_fila2.empty()) //Se a fila 1 estiver vazia, verificamos a fila 2...
 			{
-				//Move da fila 2 para o servidor.
-				
+				//Move da fila 2 para o servidor.	
+				m_fregues_em_servico = m_fila2.front();
+				m_fila2.pop_front();
+
+				m_fregues_em_servico.saiu_fila1(m_tempo_atual);
+				m_servidor_ocupado = true;
+
 				//Agenda o evento de conclusão do servico
 				m_eventos.push(Evento(termino_servico, m_tempo_atual + m_servico->proxima_chegada() ) );
 			}
@@ -155,14 +207,13 @@ ResultadosConsolidados Simulador::executa_com_coleta(int quantidade)
 
 	}
 
-
-
-
 	return m_resultados;
-
 }
 
-
+void Simulador::define_verbose(bool ativado)
+{
+	m_verbose = ativado;
+}
 
 
 
