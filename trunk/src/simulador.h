@@ -18,7 +18,7 @@ namespace Simulador
 /**
  * TipoFila indica qual o tipo da fila, FIFO/FCFS ou LIFO/LCFS
  */
-enum TipoFila {FIFO, LIFO};
+enum TipoFila {NAODEFINIDA, FIFO, LIFO};
 
 /**
  * A struct AmostragemFila unifica os dados de uma determinada fila.
