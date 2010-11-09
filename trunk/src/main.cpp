@@ -13,22 +13,25 @@ int t_rodada = -1;
 int t_transiente = -1;
 TipoFila fila1 = NAODEFINIDA;
 TipoFila fila2 = NAODEFINIDA;
-int tx_lambda = -1;
-int tx_mi = -1;
+double tx_lambda = -1;
+double tx_mi = -1;
 long int seed_gerador_chegadas = -1;
 long int seed_gerador_tempo_servico = -1;
 
 /**
  * A funcao modobatch inicia o simulador através do modo batch.
  */
-
 void modobatch(void);
 
 /**
  * A funcao modobatch inicia o simulador através do modo replicativo.
  */
-
 void modoreplicativo(void);
+
+/**
+ * Imprime os dados estatisticos coletados em uma rodada de uma simulação.
+ */
+void imprimeresultado_rodada(ResultadosConsolidados result, int rodada);
 
 /**
  * A classe main define a forma que o simulador será executado. Existem duas formas de determinar como será executado.
@@ -110,7 +113,7 @@ int main(int argc, char *argv[])
             printf("Ao ser executado, o programa verifica os parâmetros usados, e perguntara iterativamente os parametros obrigatorios que faltam.\n");
             printf("Os seeds geradores somente sao passados atraves de parametros. Eles nao serao perguntados, pois sao opcionais.\n");
             printf("********************************\n\n");
-            break;
+            exit(0);
         case 's':
             printf("********************************\n");
             printf("Sobre o Cmulator:\n");
@@ -163,10 +166,10 @@ int main(int argc, char *argv[])
             }
             break;
         case 'l':
-            tx_lambda = atoi(optarg);
+            tx_lambda = atof(optarg);
             break;
         case 'u':
-            tx_mi = atoi(optarg);
+            tx_mi = atof(optarg);
             break;
         case 'c':
             seed_gerador_chegadas = atoi(optarg);
@@ -272,24 +275,24 @@ int main(int argc, char *argv[])
         else printf("LCFS\n");
     }
 
-    if (tx_lambda <= -1)
+    if (tx_lambda < 0.0)
     {
         printf("Escolha o valor da taxa lambda: ");
-        scanf("%d",&tx_lambda);
+        scanf("%lf",&tx_lambda);
     }
     else
     {
-        printf("Você ja escolheu o valor da taxa lambda: %d\n", tx_lambda);
+        printf("Você ja escolheu o valor da taxa lambda: %f\n", tx_lambda);
     }
 
-    if (tx_mi <= -1)
+    if (tx_mi < 0.0)
     {
         printf("Escolha o valor da taxa mi: ");
-        scanf("%d",&tx_mi);
+        scanf("%lf",&tx_mi);
     }
     else
     {
-        printf("Você ja escolheu o valor da taxa mi: %d\n", tx_mi);
+        printf("Você ja escolheu o valor da taxa mi: %f\n", tx_mi);
     }
 
     if (modo == 1)
@@ -310,6 +313,8 @@ int main(int argc, char *argv[])
 void modobatch(void)
 {
     Simulador *sim;
+    ResultadosConsolidados result;
+
     if (seed_gerador_chegadas == -1 || seed_gerador_tempo_servico == -1)
     {
         sim = new Simulador(fila1, fila2, tx_lambda, tx_mi);
@@ -319,6 +324,18 @@ void modobatch(void)
         sim = new Simulador(fila1, fila2, tx_lambda, tx_mi, seed_gerador_chegadas, seed_gerador_tempo_servico);
     }
 
+    //Executando fase transiente
+
+    sim->executa(t_transiente, false);
+
+    for (int i = 0; i < n_rodadas; i++)
+    {
+        result = sim->executa(t_rodada, true);
+        imprimeresultado_rodada(result, i);
+        sim->limpa_dados_coletados();
+    }
+
+
     delete sim;
 
 }
@@ -326,4 +343,19 @@ void modobatch(void)
 void modoreplicativo(void)
 {
 
+}
+
+void imprimeresultado_rodada(ResultadosConsolidados result, int rodada)
+{
+    printf("Imprimindo resultado da rodada %d\n", rodada);
+    printf("Fila1 -> X: %lf | X^2: %lf\n",result.fila1.X, result.fila1.X_quad);
+    printf("Fila1 -> W: %lf | W^2: %lf\n",result.fila1.W, result.fila1.W_quad);
+    printf("Fila1 -> T: %lf | T^2: %lf\n",result.fila1.T, result.fila1.T_quad);
+    printf("Fila1 -> Nq: %d | Nq^2: %d\n",result.fila1.Nq, result.fila1.Nq_quad);
+    printf("Fila1 -> N: %d | N^2: %d\n\n",result.fila1.N, result.fila1.N_quad);
+    printf("Fila2 -> X: %lf | X^2: %lf\n",result.fila2.X, result.fila2.X_quad);
+    printf("Fila2 -> W: %lf | W^2: %lf\n",result.fila2.W, result.fila2.W_quad);
+    printf("Fila2 -> T: %lf | T^2: %lf\n",result.fila2.T, result.fila2.T_quad);
+    printf("Fila2 -> Nq: %d | Nq^2: %d\n",result.fila2.Nq, result.fila2.Nq_quad);
+    printf("Fila2 -> N: %d | N^2: %d\n\n",result.fila2.N, result.fila2.N_quad);
 }
