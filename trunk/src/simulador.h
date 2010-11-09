@@ -73,7 +73,7 @@ DistExponencial* m_servico; /**< Gerador de tempos exponencialmente distribuidos
 double m_tempo_atual; /**< Tempo de simulação. */
 int m_prox_id; /**< Id do próximo cliente. */
 
-static Fregues m_fregues_em_servico; /**< Fregues atualmente em serviço. */
+Fregues m_fregues_em_servico; /**< Fregues atualmente em serviço. */
 bool m_servidor_ocupado; /**< Indica se existe alguem em processamento no servidor. */
 
 ResultadosConsolidados m_resultados; /**< Armazena os dados coletados por esta instância do simulador. */
@@ -134,12 +134,6 @@ void limpa_dados_coletados();
  */
 void define_verbose(bool ativado);
 };
-
-
-
-
-
-
 
 
 
