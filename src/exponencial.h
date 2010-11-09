@@ -2,6 +2,8 @@
 #define EXPONENCIAL_H_
 
 #include <cstdlib>
+#include <cmath>
+#include <sys/time.h>
 
 namespace TrabalhoAD
 {
@@ -43,7 +45,7 @@ double inversa(double prob);
 public:
 /**
  * Construtor da classe DistExponencial.
- * Este construtor irá inicializar o gerador de números pseudo-aleatórios com time(NULL).
+ * Este construtor irá inicializar o gerador de números pseudo-aleatórios com o valor de gettimeofday().
  *
  * \param taxa Taxa lambda da distribuição exponencial.
  */
