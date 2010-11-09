@@ -156,7 +156,6 @@ ResultadosConsolidados Simulador::executa(int quantidade, bool coleta)
 
 				if(coleta) //Devemos coletar os dados do cliente antes de remove-lo do sistema.
 				{
-					clientes_servidos++;
 					m_resultados.quantidade++;
 
 					//Dados da fila 1
@@ -196,6 +195,8 @@ ResultadosConsolidados Simulador::executa(int quantidade, bool coleta)
 					m_resultados.fila2.N_quad += (m_fregues_em_servico.quantidade_elementos_fila2() + 1) *
 									(m_fregues_em_servico.quantidade_elementos_fila2() + 1);
 				}
+				
+				clientes_servidos++;
 			}
 
 			m_servidor_ocupado = false;
