@@ -172,9 +172,9 @@ ResultadosConsolidados Simulador::executa(int quantidade, bool coleta)
 					m_resultados.fila1.Nq_quad += m_fregues_em_servico.quantidade_elementos_fila1() * 
 									m_fregues_em_servico.quantidade_elementos_fila1();
 
-					m_resultados.fila1.N += (m_fregues_em_servico.quantidade_elementos_fila1() + 1);
-					m_resultados.fila1.N_quad += (m_fregues_em_servico.quantidade_elementos_fila1() + 1) *
-									(m_fregues_em_servico.quantidade_elementos_fila1() + 1);
+					m_resultados.fila1.N += m_fregues_em_servico.quantidade_elementos_sistema1();
+					m_resultados.fila1.N_quad += m_fregues_em_servico.quantidade_elementos_sistema1() *
+									m_fregues_em_servico.quantidade_elementos_sistema1();
 
 
 					//Dados da fila 2
@@ -191,9 +191,9 @@ ResultadosConsolidados Simulador::executa(int quantidade, bool coleta)
 					m_resultados.fila2.Nq_quad += m_fregues_em_servico.quantidade_elementos_fila2() * 
 									m_fregues_em_servico.quantidade_elementos_fila2();
 
-					m_resultados.fila2.N += (m_fregues_em_servico.quantidade_elementos_fila2() + 1);
-					m_resultados.fila2.N_quad += (m_fregues_em_servico.quantidade_elementos_fila2() + 1) *
-									(m_fregues_em_servico.quantidade_elementos_fila2() + 1);
+					m_resultados.fila2.N += m_fregues_em_servico.quantidade_elementos_sistema2();
+					m_resultados.fila2.N_quad += m_fregues_em_servico.quantidade_elementos_sistema2() *
+									m_fregues_em_servico.quantidade_elementos_sistema2();
 				}
 				
 				clientes_servidos++;
