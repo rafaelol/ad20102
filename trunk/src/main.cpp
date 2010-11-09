@@ -5,7 +5,7 @@
 #include "simulador.h"
 
 using namespace std;
-using namespace Simulador;
+using namespace TrabalhoAD;
 
 int modo = -1;
 int n_rodadas = -1;
@@ -309,14 +309,14 @@ int main(int argc, char *argv[])
 
 void modobatch(void)
 {
-    Simulador::Simulador *sim;
+    Simulador *sim;
     if (seed_gerador_chegadas == -1 || seed_gerador_tempo_servico == -1)
     {
-        sim = new Simulador::Simulador(fila1, fila2, tx_lambda, tx_mi);
+        sim = new Simulador(fila1, fila2, tx_lambda, tx_mi);
     }
     else
     {
-        sim = new Simulador::Simulador(fila1, fila2, tx_lambda, tx_mi, seed_gerador_chegadas, seed_gerador_tempo_servico);
+        sim = new Simulador(fila1, fila2, tx_lambda, tx_mi, seed_gerador_chegadas, seed_gerador_tempo_servico);
     }
 
     delete sim;

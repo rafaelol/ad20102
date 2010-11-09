@@ -1,7 +1,7 @@
 #ifndef EVENTOS_H_
 #define EVENTOS_H_
 
-namespace Simulador {
+namespace TrabalhoAD {
 
 /**
  * ETipo define os tipos de eventos que podem ocorrer no sistema.

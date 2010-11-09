@@ -1,6 +1,6 @@
 #include "eventos.h"
 
-namespace Simulador {
+namespace TrabalhoAD {
 
 Evento::Evento(ETipo tipo, double tempo)
 {

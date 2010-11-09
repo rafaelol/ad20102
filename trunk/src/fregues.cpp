@@ -1,6 +1,6 @@
 #include "fregues.h"
 
-namespace Simulador {
+namespace TrabalhoAD {
 
 Fregues::Fregues()
 {

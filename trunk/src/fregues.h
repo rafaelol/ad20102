@@ -1,7 +1,7 @@
 #ifndef FREGUES_H_
 #define FREGUES_H_
 
-namespace Simulador
+namespace TrabalhoAD
 {
 
 /** \brief A classe Fregues representa um fregues que chegou durante a simulação. 
