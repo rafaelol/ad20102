@@ -1,10 +1,34 @@
 #include <cstdio>
 #include <cstring>
 #include <cstdlib>
-#include <unistd.h>
 #include <getopt.h>
+#include "simulador.h"
 
 using namespace std;
+using namespace Simulador;
+
+int modo = -1;
+int n_rodadas = -1;
+int t_rodada = -1;
+int t_transiente = -1;
+TipoFila fila1 = NAODEFINIDA;
+TipoFila fila2 = NAODEFINIDA;
+int tx_lambda = -1;
+int tx_mi = -1;
+long int seed_gerador_chegadas = -1;
+long int seed_gerador_tempo_servico = -1;
+
+/**
+ * A funcao modobatch inicia o simulador através do modo batch.
+ */
+
+void modobatch(void);
+
+/**
+ * A funcao modobatch inicia o simulador através do modo replicativo.
+ */
+
+void modoreplicativo(void);
 
 /**
  * A classe main define a forma que o simulador será executado. Existem duas formas de determinar como será executado.
@@ -28,17 +52,6 @@ int main(int argc, char *argv[])
 {
     bool verbose = false;
     int opcao;
-
-    int modo = -1;
-    int n_rodadas = -1;
-    int t_rodada = -1;
-    int t_transiente = -1;
-    int fila1 = -1;
-    int fila2 = -1;
-    int tx_lambda = -1;
-    int tx_mi = -1;
-    long int seed_gerador_chegadas = -1;
-    long int seed_gerador_tempo_servico = -1;
 
     printf("Bem Vindo ao Cmulador, um simulador de filas.\n");
     printf("Para informacoes sobre como funciona a fila a ser simulada, leia nossa documentacao.\n");
@@ -77,7 +90,6 @@ int main(int argc, char *argv[])
         {
         case 'v':
             verbose = true;
-            printf("HA! SOU VERBORRAGICO! YE YE! \\o/\n");
             break;
         case 'a':
             printf("********************************\n");
@@ -131,23 +143,23 @@ int main(int argc, char *argv[])
             t_transiente = atoi(optarg);
             break;
         case '1':
-            if ((strcmp("FCFS", optarg) == 0) || (strcmp("fcfs", optarg) == 0))
+            if ((strcasecmp("FCFS", optarg) == 0) || (strcasecmp("FIFO", optarg) == 0))
             {
-                fila1 = 1;
+                fila1 = FIFO;
             }
-            if ((strcmp("LCFS", optarg) == 0) || (strcmp("lcfs", optarg) == 0))
+            if ((strcasecmp("LCFS", optarg) == 0) || (strcasecmp("LIFO", optarg) == 0))
             {
-                fila1 = 2;
+                fila1 = LIFO;
             }
             break;
         case '2':
-            if ((strcmp("FCFS", optarg) == 0) || (strcmp("fcfs", optarg) == 0))
+            if ((strcasecmp("FCFS", optarg) == 0) || (strcasecmp("FIFO", optarg) == 0))
             {
-                fila2 = 1;
+                fila2 = FIFO;
             }
-            if ((strcmp("LCFS", optarg) == 0) || (strcmp("lcfs", optarg) == 0))
+            if ((strcasecmp("LCFS", optarg) == 0) || (strcasecmp("LIFO", optarg) == 0))
             {
-                fila2 = 2;
+                fila2 = LIFO;
             }
             break;
         case 'l':
@@ -165,9 +177,9 @@ int main(int argc, char *argv[])
         }
     }
 
-    printf("DEBUG: \nmodo = %d \nn_rodada = %d \nt_rodada = %d \nt_transiente = %d\n", modo, n_rodadas, t_rodada, t_transiente);
-    printf("fila1 = %d\nfila2 = %d\ntx_lambda = %d\ntx_mi = %d\n", fila1, fila2, tx_lambda, tx_mi);
-    printf("seed__gerador_chegadas = %ld\nseed_gerador_tempo_servico = %ld\n", seed_gerador_chegadas, seed_gerador_tempo_servico);
+    //printf("DEBUG: \nmodo = %d \nn_rodada = %d \nt_rodada = %d \nt_transiente = %d\n", modo, n_rodadas, t_rodada, t_transiente);
+    //printf("fila1 = %d\nfila2 = %d\ntx_lambda = %d\ntx_mi = %d\n", fila1, fila2, tx_lambda, tx_mi);
+    //printf("seed__gerador_chegadas = %ld\nseed_gerador_tempo_servico = %ld\n", seed_gerador_chegadas, seed_gerador_tempo_servico);
 
     if ((modo != 1) && (modo != 2))
     {
@@ -214,33 +226,49 @@ int main(int argc, char *argv[])
         printf("Você ja escolheu o tamanho da fase transiente: %d\n", t_transiente);
     }
 
-    if ((fila1 != 1) && (fila1 != 2))
+    if (fila1 == NAODEFINIDA)
     {
-        printf("Escolha o tipo de serviço para a fila 1:\n");
-        printf("1 - FCFS\n");
-        printf("2 - LCFS\n");
-        printf("Escolha o numero:");
-        scanf("%d",&modo);
+        int op;
+
+        do
+        {
+            printf("Escolha o tipo de serviço para a fila 1:\n");
+            printf("1 - FCFS\n");
+            printf("2 - LCFS\n");
+            printf("Escolha o numero:");
+            scanf("%d",&op);
+            if (op == 1) fila1 = FIFO;
+            else if (op == 2) fila1 = LIFO;
+            else printf("Opcao invalida.\n");
+        } while(fila1 == NAODEFINIDA);
     }
     else
     {
         printf("Você ja escolheu o tipo da fila 1: ");
-        if (fila1 == 1) printf("FCFS\n");
+        if (fila1 == FIFO) printf("FCFS\n");
         else printf("LCFS\n");
     }
 
-    if ((fila2 != 1) && (fila2 != 2))
+    if (fila2 == NAODEFINIDA)
     {
-        printf("Escolha o tipo de serviço para a fila 2:\n");
-        printf("1 - FCFS\n");
-        printf("2 - LCFS\n");
-        printf("Escolha o numero:");
-        scanf("%d",&modo);
+        int op;
+
+        do
+        {
+            printf("Escolha o tipo de serviço para a fila 2:\n");
+            printf("1 - FCFS\n");
+            printf("2 - LCFS\n");
+            printf("Escolha o numero:");
+            scanf("%d",&op);
+            if (op == 1) fila2 = FIFO;
+            else if (op == 2) fila2 = LIFO;
+            else printf("Opcao invalida.\n");
+        } while(fila2 == NAODEFINIDA);
     }
     else
     {
         printf("Você ja escolheu o tipo da fila 2: ");
-        if (fila1 == 1) printf("FCFS\n");
+        if (fila1 == FIFO) printf("FCFS\n");
         else printf("LCFS\n");
     }
 
@@ -264,8 +292,38 @@ int main(int argc, char *argv[])
         printf("Você ja escolheu o valor da taxa mi: %d\n", tx_mi);
     }
 
-
+    if (modo == 1)
+    {
+        //Modo Batch
+        modobatch();
+    }
+    if (modo == 2)
+    {
+        // Modo Replicativo
+        modoreplicativo();
+    }
     //começar a simulação
 
     return 0;
+}
+
+void modobatch(void)
+{
+    Simulador::Simulador *sim;
+    if (seed_gerador_chegadas == -1 || seed_gerador_tempo_servico == -1)
+    {
+        sim = new Simulador::Simulador(fila1, fila2, tx_lambda, tx_mi);
+    }
+    else
+    {
+        sim = new Simulador::Simulador(fila1, fila2, tx_lambda, tx_mi, seed_gerador_chegadas, seed_gerador_tempo_servico);
+    }
+
+    delete sim;
+
+}
+
+void modoreplicativo(void)
+{
+
 }
