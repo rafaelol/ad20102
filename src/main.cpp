@@ -37,8 +37,8 @@ int main(int argc, char *argv[])
     int fila2 = -1;
     int tx_lambda = -1;
     int tx_mi = -1;
-    int seed_gerador_chegadas = -1;
-    int seed_gerador_tempo_servico = -1;
+    long int seed_gerador_chegadas = -1;
+    long int seed_gerador_tempo_servico = -1;
 
     printf("Bem Vindo ao Cmulador, um simulador de filas.\n");
     printf("Para informacoes sobre como funciona a fila a ser simulada, leia nossa documentacao.\n");
@@ -67,7 +67,7 @@ int main(int argc, char *argv[])
 
         int option_index = 0;
 
-        opcao = getopt_long (argc, argv, "v::a::s::m:n:r:t:1:2:l:u:c::x::", long_options, &option_index);
+        opcao = getopt_long (argc, argv, "v::a::s::m:n:r:t:1:2:l:u:c:x:", long_options, &option_index);
 
         //printf("OPCAO = %c -- %d\n", opcao, opcao);
 
@@ -167,7 +167,7 @@ int main(int argc, char *argv[])
 
     printf("DEBUG: \nmodo = %d \nn_rodada = %d \nt_rodada = %d \nt_transiente = %d\n", modo, n_rodadas, t_rodada, t_transiente);
     printf("fila1 = %d\nfila2 = %d\ntx_lambda = %d\ntx_mi = %d\n", fila1, fila2, tx_lambda, tx_mi);
-    printf("seed__gerador_chegadas = %d\nseed_gerador_tempo_servico = %d\n", seed_gerador_chegadas, seed_gerador_tempo_servico);
+    printf("seed__gerador_chegadas = %ld\nseed_gerador_tempo_servico = %ld\n", seed_gerador_chegadas, seed_gerador_tempo_servico);
 
     if ((modo != 1) && (modo != 2))
     {
