@@ -1,5 +1,5 @@
 #Opcoes para o g++:
-GPPOPT = -Wall -Wextra
+GPPOPT = -Wall -Wextra -g
 
 
 trabalho: fregues eventos exponencial simulador
