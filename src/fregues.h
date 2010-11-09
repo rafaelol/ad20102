@@ -1,6 +1,8 @@
 #ifndef FREGUES_H_
 #define FREGUES_H_
 
+#include <cstdio>
+
 namespace TrabalhoAD
 {
 
@@ -119,6 +121,16 @@ int quantidade_elementos_fila1();
 int quantidade_elementos_fila2();
 
 /**
+ * A quantidade de pessoas no sistema 2 (fila + servidor) no momento da chegada deste fregues ao sistema.
+ */
+int quantidade_elementos_sistema1();
+
+/**
+ * A quantidade de pessoas no sistema 2 (fila + servidor) no momento da chegada deste fregues ao sistema.
+ */
+int quantidade_elementos_sistema2();
+
+/**
  * Se no momento da chegada, o cliente servido era da fila 1, 2 ou se não tinha nenhum cliente em atendimento pelo servidor.
  */
 int tipo_cliente_servido();
@@ -127,6 +139,11 @@ int tipo_cliente_servido();
  * Se o cliente no momento esta no processo da fila 1 ou fila 2.
  */
 int fila_pertencente();
+
+/**
+ * Imprime as informações do fregues.
+ */
+void print();
 
 };
 
