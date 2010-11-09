@@ -60,6 +60,16 @@ double Fregues::tempo_servico2()
 	return m_tempo_saida_sistema - m_tempo_saida_fila2;
 }
 
+double Fregues::tempo_total1()
+{
+	return tempo_espera1() + tempo_servico1();
+}
+
+double Fregues::tempo_total2()
+{
+	return tempo_espera2() + tempo_servico2();
+}
+
 int Fregues::quantidade_elementos_fila1()
 {
 	return m_quantidade_fila1;

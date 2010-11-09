@@ -94,6 +94,16 @@ double tempo_servico1();
 double tempo_servico2();
 
 /**
+ * A quantidade total de tempo na primeira fila (espera + serviço).
+ */
+double tempo_total1();
+
+/**
+ * A quantidade total de tempo na segunda fila (espera + serviço).
+ */
+double tempo_total2();
+
+/**
  * A quantidade de pessoas na fila 1 no momento da chegada deste fregues ao sistema.
  */
 int quantidade_elementos_fila1();
