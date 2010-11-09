@@ -35,6 +35,11 @@ int m_tipo_cliente_servido; /**< Se no momento da chegada, o cliente servido era
 public:
 
 /**
+ * Construtor padrão para a classe Fregues, iniciliza tudo com 0.
+ */
+Fregues();
+
+/**
  * Construtor da classe Fregues.
  *
  * \param id Um identificador único do fregues no sistema.
