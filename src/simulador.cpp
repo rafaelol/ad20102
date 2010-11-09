@@ -3,6 +3,32 @@
 namespace Simulador
 {
 
+
+//Operadores necessários para a comparação dos eventos
+/**
+ * Implementa o operador > para comparação entre dois eventos.
+ * Um evento ev1 é maior que outro evento ev2 se o tempo em que
+ * ev1 ocorrerá for maior do que o tempo em que ev2 ocorrerá.
+ */
+bool operator > (const Evento& ev1, const Evento& ev2)
+{
+        if(ev1.tempo() > ev2.tempo()) return true;
+        else return false;
+}
+
+/**
+ * Implementa o operador >= para comparação entre dois eventos.
+ * Um evento ev1 é maior ou igual que outro evento ev2 se o tempo em que
+ * ev1 ocorrerá for maior ou igual do que o tempo em que ev2 ocorrerá.
+ */
+bool operator >= (const Evento& ev1, const Evento& ev2)
+{
+        if(ev1.tempo() >= ev2.tempo()) return true;
+        else return false;
+}
+  
+  
+  
 Simulador::Simulador(TipoFila fila1, TipoFila fila2, double taxa_chegada, double taxa_servico)
 {
 	m_tipo_fila1 = fila1;
