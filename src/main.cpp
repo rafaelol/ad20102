@@ -80,9 +80,10 @@ int main(int argc, char *argv[])
             printf("HA! SOU VERBORRAGICO! YE YE! \\o/\n");
             break;
         case 'a':
-            printf("Bem vindo a ajuda do Cmulator");
+            printf("********************************\n");
+            printf("Bem vindo a ajuda do Cmulator\n");
             printf("Instrucoes para execucao do programa:\n");
-            printf("Os parâmetros da simulacao sao passados no prompt, ao executar o programa. Os parâmetros sao:\n");
+            printf("Os parametros da simulacao sao passados no prompt, ao executar o programa. Os parametros sao:\n");
             printf("\"--modo\"(-m): Escolha do modo de execucao das simulacoes. Opcoes: \"Batch\" ou  \"Replicativo\".\n");
             printf("\"--n_rodadas\"(-n): Escolha da quantidade de rodadas que serao executadas.\n");
             printf("\"--t_rodada\"(-r): Escolha do tamanho da rodada.\n");
@@ -94,10 +95,12 @@ int main(int argc, char *argv[])
             printf("\"--seed_gerador_chegadas\"(-c): Semente utilizada para inicializar o gerador de chegadas.\n");
             printf("\"--seed_gerador_tempo_servico\"(-x): Semente utilizada para inicializar o tempo de servico.\n");
             printf("\"--sobre\"(-s): Sobre o projeto.\n");
-            printf("Ao ser executado, o programa verifica os parâmetros usados, e perguntara iterativamente os parametros obrigatorios que faltam.\n ");
+            printf("Ao ser executado, o programa verifica os parâmetros usados, e perguntara iterativamente os parametros obrigatorios que faltam.\n");
             printf("Os seeds geradores somente sao passados atraves de parametros. Eles nao serao perguntados, pois sao opcionais.\n");
+            printf("********************************\n\n");
             break;
         case 's':
+            printf("********************************\n");
             printf("Sobre o Cmulator:\n");
             printf("Equipe de Desenvolvimento:\n");
             printf("-- Bruno Buss\n");
@@ -105,6 +108,7 @@ int main(int argc, char *argv[])
             printf("-- Rafael Lopes\n");
             printf("-- Yanko Gitahy\n");
             printf("Pagina do projeto: http://code.google.com/p/ad20102/\n");
+            printf("********************************\n\n");
             break;
         case 'm':
             puts(optarg);
@@ -180,7 +184,7 @@ int main(int argc, char *argv[])
         else printf("Replicativo\n");
     }
 
-    if (n_rodadas == -1)
+    if (n_rodadas <= -1)
     {
         printf("Escolha a quantidade de rodadas:");
         scanf("%d",&n_rodadas);
@@ -190,7 +194,7 @@ int main(int argc, char *argv[])
         printf("Você ja escolheu a quantidade de rodadas: %d\n", n_rodadas);
     }
 
-    if (t_rodada == -1)
+    if (t_rodada <= -1)
     {
         printf("Escolha o tamanho de cada rodada: ");
         scanf("%d",&t_rodada);
@@ -200,7 +204,7 @@ int main(int argc, char *argv[])
         printf("Você ja escolheu o tamanho de cada rodada: %d\n", t_rodada);
     }
 
-    if (t_transiente == -1)
+    if (t_transiente <= -1)
     {
         printf("Escolha o tamanho da fase transiente: ");
         scanf("%d",&t_transiente);
@@ -210,7 +214,7 @@ int main(int argc, char *argv[])
         printf("Você ja escolheu o tamanho da fase transiente: %d\n", t_transiente);
     }
 
-    if (fila1 == -1)
+    if ((fila1 != 1) && (fila1 != 2))
     {
         printf("Escolha o tipo de serviço para a fila 1:\n");
         printf("1 - FCFS\n");
@@ -221,11 +225,11 @@ int main(int argc, char *argv[])
     else
     {
         printf("Você ja escolheu o tipo da fila 1: ");
-        if (fila1 == 1) printf("FCFC\n");
+        if (fila1 == 1) printf("FCFS\n");
         else printf("LCFS\n");
     }
 
-    if (fila2 == -1)
+    if ((fila2 != 1) && (fila2 != 2))
     {
         printf("Escolha o tipo de serviço para a fila 2:\n");
         printf("1 - FCFS\n");
@@ -236,11 +240,11 @@ int main(int argc, char *argv[])
     else
     {
         printf("Você ja escolheu o tipo da fila 2: ");
-        if (fila1 == 1) printf("FCFC\n");
+        if (fila1 == 1) printf("FCFS\n");
         else printf("LCFS\n");
     }
 
-    if (tx_lambda == -1)
+    if (tx_lambda <= -1)
     {
         printf("Escolha o valor da taxa lambda: ");
         scanf("%d",&tx_lambda);
@@ -250,7 +254,7 @@ int main(int argc, char *argv[])
         printf("Você ja escolheu o valor da taxa lambda: %d\n", tx_lambda);
     }
 
-    if (tx_mi == -1)
+    if (tx_mi <= -1)
     {
         printf("Escolha o valor da taxa mi: ");
         scanf("%d",&tx_mi);
