@@ -2,6 +2,7 @@
 #include <cstring>
 #include <cstdlib>
 #include <getopt.h>
+#include <vector>
 #include "simulador.h"
 
 using namespace std;
@@ -311,6 +312,7 @@ int main(int argc, char *argv[])
 
 void modobatch(void)
 {
+    vector<ResultadosConsolidados> vet_result; // vetor com os resultados consolidados de todas as rodadas
     Simulador *sim;
     ResultadosConsolidados result;
 
@@ -331,16 +333,21 @@ void modobatch(void)
     for (int i = 0; i < n_rodadas; i++)
     {
         result = sim->executa(t_rodada, true);
-        imprimeresultado_rodada(result, i);
+        vet_result.push_back(result);
         sim->limpa_dados_coletados();
     }
 
+    for(unsigned int i = 0; i < vet_result.size(); i++)
+    {
+        imprimeresultado_rodada(vet_result[i], i);
+    }
 
     delete sim;
 }
 
 void modoreplicativo(void)
 {
+    vector<ResultadosConsolidados> vet_result; // vetor com os resultados consolidados de todas as rodadas
     Simulador *sim;
     ResultadosConsolidados result;
 
@@ -352,7 +359,6 @@ void modoreplicativo(void)
         }
         else
         {
-            printf("nao deveria passar aqui. Ops!\n");
             sim = new Simulador(fila1, fila2, tx_lambda, tx_mi, seed_gerador_chegadas, seed_gerador_tempo_servico);
         }
 
@@ -362,9 +368,14 @@ void modoreplicativo(void)
 
         //Executando a rodada
         result = sim->executa(t_rodada, true);
-        imprimeresultado_rodada(result, i);
+        vet_result.push_back(result);
 
         delete sim;
+    }
+
+    for(unsigned int i = 0; i < vet_result.size(); i++)
+    {
+        imprimeresultado_rodada(vet_result[i], i);
     }
 }
 
