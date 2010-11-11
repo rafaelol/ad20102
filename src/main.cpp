@@ -58,6 +58,9 @@ void intervalos_confianca(vector<ResultadosConsolidados> &dados);
  * Forma 2:
  * Ao executar o simulador, a primeira coisa que é feita é verificar se os parâmetros foram passados. Se algum não foi passado, ele pedirá que se passe antes de começar a simulação.
  *
+ * Também temos a opção de escolher como parâmetro do programa os parâmetros --ajuda, ou --sobre.
+ * O parâmetro ajuda dá uma explicação resumida sobre os parâmetros que podem ser escolhidos.
+ * O parâmetro sobre passa informações básicas sobre o grupo, integrantes e página do grupo.
  */
 int main(int argc, char *argv[])
 {
@@ -130,9 +133,11 @@ int main(int argc, char *argv[])
             printf("-- Felipe Pedrosa\n");
             printf("-- Rafael Lopes\n");
             printf("-- Yanko Gitahy\n");
+            printf("Objetivo do desenvolvimento:\n");
+            printf("Trabalho final da disciplina Avaliacao e Desempenho, do curso de Ciencia da Computacao da UFRJ.\nDisciplina cursada em 2010.2\n");
             printf("Pagina do projeto: http://code.google.com/p/ad20102/\n");
             printf("********************************\n\n");
-            break;
+            exit(0);
         case 'm':
             if (strcasecmp("Batch", optarg) == 0)
             {
@@ -208,6 +213,12 @@ int main(int argc, char *argv[])
 
     if (n_rodadas <= -1)
     {
+        printf("Escolha a quantidade de rodadas:");
+        scanf("%d",&n_rodadas);
+    }
+    else if (n_rodadas < 10)
+    {
+        printf("Voce determinou um valor menor que 10 para quantidade de rodadas, valor onde t-student nao e assintotico.\n");
         printf("Escolha a quantidade de rodadas:");
         scanf("%d",&n_rodadas);
     }
@@ -426,7 +437,7 @@ void intervalos_confianca(vector<ResultadosConsolidados> &dados)
     {
 	estimador_var += ((double)dados[i].fila1.X_quad / dados[i].quantidade)
 			-(2.0 * ( ((double)dados[i].fila1.X / dados[i].quantidade) * estimador_media))
-			+(estimador_media * estimador_media); 
+			+(estimador_media * estimador_media);
     }
     estimador_var /= (double)(dados.size() - 1);
 
@@ -448,7 +459,7 @@ void intervalos_confianca(vector<ResultadosConsolidados> &dados)
     {
 	estimador_var += ((double)dados[i].fila1.W_quad / dados[i].quantidade)
 			-(2.0 * ( ((double)dados[i].fila1.W / dados[i].quantidade) * estimador_media))
-			+(estimador_media * estimador_media); 
+			+(estimador_media * estimador_media);
     }
     estimador_var /= (double)(dados.size() - 1);
 
@@ -470,7 +481,7 @@ void intervalos_confianca(vector<ResultadosConsolidados> &dados)
     {
 	estimador_var += ((double)dados[i].fila1.T_quad / dados[i].quantidade)
 			-(2.0 * ( ((double)dados[i].fila1.T / dados[i].quantidade) * estimador_media))
-			+(estimador_media * estimador_media); 
+			+(estimador_media * estimador_media);
     }
     estimador_var /= (double)(dados.size() - 1);
 
@@ -492,7 +503,7 @@ void intervalos_confianca(vector<ResultadosConsolidados> &dados)
     {
 	estimador_var += ((double)dados[i].fila1.Nq_quad / dados[i].quantidade)
 			-(2.0 * ( ((double)dados[i].fila1.Nq / dados[i].quantidade) * estimador_media))
-			+(estimador_media * estimador_media); 
+			+(estimador_media * estimador_media);
     }
     estimador_var /= (double)(dados.size() - 1);
 
@@ -514,7 +525,7 @@ void intervalos_confianca(vector<ResultadosConsolidados> &dados)
     {
 	estimador_var += ((double)dados[i].fila1.N_quad / dados[i].quantidade)
 			-(2.0 * ( ((double)dados[i].fila1.N / dados[i].quantidade) * estimador_media))
-			+(estimador_media * estimador_media); 
+			+(estimador_media * estimador_media);
     }
     estimador_var /= (double)(dados.size() - 1);
 
@@ -538,7 +549,7 @@ void intervalos_confianca(vector<ResultadosConsolidados> &dados)
     {
 	estimador_var += ((double)dados[i].fila2.X_quad / dados[i].quantidade)
 			-(2.0 * ( ((double)dados[i].fila2.X / dados[i].quantidade) * estimador_media))
-			+(estimador_media * estimador_media); 
+			+(estimador_media * estimador_media);
     }
     estimador_var /= (double)(dados.size() - 1);
 
@@ -560,7 +571,7 @@ void intervalos_confianca(vector<ResultadosConsolidados> &dados)
     {
 	estimador_var += ((double)dados[i].fila2.W_quad / dados[i].quantidade)
 			-(2.0 * ( ((double)dados[i].fila2.W / dados[i].quantidade) * estimador_media))
-			+(estimador_media * estimador_media); 
+			+(estimador_media * estimador_media);
     }
     estimador_var /= (double)(dados.size() - 1);
 
@@ -582,7 +593,7 @@ void intervalos_confianca(vector<ResultadosConsolidados> &dados)
     {
 	estimador_var += ((double)dados[i].fila2.T_quad / dados[i].quantidade)
 			-(2.0 * ( ((double)dados[i].fila2.T / dados[i].quantidade) * estimador_media))
-			+(estimador_media * estimador_media); 
+			+(estimador_media * estimador_media);
     }
     estimador_var /= (double)(dados.size() - 1);
 
@@ -604,7 +615,7 @@ void intervalos_confianca(vector<ResultadosConsolidados> &dados)
     {
 	estimador_var += ((double)dados[i].fila2.Nq_quad / dados[i].quantidade)
 			-(2.0 * ( ((double)dados[i].fila2.Nq / dados[i].quantidade) * estimador_media))
-			+(estimador_media * estimador_media); 
+			+(estimador_media * estimador_media);
     }
     estimador_var /= (double)(dados.size() - 1);
 
@@ -626,7 +637,7 @@ void intervalos_confianca(vector<ResultadosConsolidados> &dados)
     {
 	estimador_var += ((double)dados[i].fila2.N_quad / dados[i].quantidade)
 			-(2.0 * ( ((double)dados[i].fila2.N / dados[i].quantidade) * estimador_media))
-			+(estimador_media * estimador_media); 
+			+(estimador_media * estimador_media);
     }
     estimador_var /= (double)(dados.size() - 1);
 
