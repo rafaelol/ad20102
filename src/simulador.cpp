@@ -37,6 +37,8 @@ Simulador::Simulador(TipoFila fila1, TipoFila fila2, double taxa_chegada, double
 	m_chegada = new DistExponencial(taxa_chegada);
 	m_servico = new DistExponencial(taxa_servico);
 
+	m_verbose = false;
+
 	setup();
 }
 
@@ -48,6 +50,8 @@ Simulador::Simulador(TipoFila fila1, TipoFila fila2, double taxa_chegada, double
 
 	m_chegada = new DistExponencial(taxa_chegada, semente_chegada);
 	m_servico = new DistExponencial(taxa_servico, semente_servico);
+
+	m_verbose = false;
 
 	setup();
 }
@@ -61,6 +65,12 @@ Simulador::~Simulador()
 
 void Simulador::setup()
 {	
+
+	while(!m_eventos.empty()) m_eventos.pop();
+
+	m_fila1.clear();
+	m_fila2.clear();
+
 	m_tempo_atual = 0.0;
 
 	//Evento inicial do simulador.
@@ -70,8 +80,6 @@ void Simulador::setup()
 
 	m_servidor_ocupado = false;
 
-	m_verbose = false;
-	
 	limpa_dados_coletados();
 }
 
@@ -100,6 +108,11 @@ void Simulador::limpa_dados_coletados()
 	m_resultados.fila2.Nq_quad = 0;
 	m_resultados.fila2.N = 0;
 	m_resultados.fila2.N_quad = 0;
+}
+
+void Simulador::reinicia_simulador()
+{
+	setup();	
 }
 
 ResultadosConsolidados Simulador::executa(int quantidade, bool coleta)
