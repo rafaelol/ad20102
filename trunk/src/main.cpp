@@ -8,6 +8,8 @@
 using namespace std;
 using namespace TrabalhoAD;
 
+#define INTCONF095  1.96
+
 int modo = -1;
 int n_rodadas = -1;
 int t_rodada = -1;
@@ -33,6 +35,36 @@ void modoreplicativo(void);
  * Imprime os dados estatisticos coletados em uma rodada de uma simulação.
  */
 void imprimeresultado_rodada(ResultadosConsolidados result, int rodada);
+
+/**
+  * Calcula o intervalo de confiança, de 95%
+  */
+double calcula_ic(double soma_amostras, double soma_variancias);
+
+/**
+  * Faz a chamada para todos os cálculos de intervalo de confiança.
+  */
+void intervalos_confianca(ResultadosConsolidados somas, ResultadosConsolidados variancias);
+
+/**
+  * Passa o valor zero para todas as variáveis de uma struct do tipo ResultadosConsolidados. Muito útil para variáveis acumuladoras.
+  */
+void zera_variavel(ResultadosConsolidados *azerar);
+
+/**
+  * Soma médias das variáveis aleatórias.
+  */
+ResultadosConsolidados soma_variaveis(ResultadosConsolidados var1, ResultadosConsolidados var2);
+
+/**
+  * Faz o cálculo da variância para todos os parâmetros da rodada
+  */
+ResultadosConsolidados calculavarianciarodada(ResultadosConsolidados var);
+
+/**
+  * Soma todas as variâncias das variáveis aleatórias
+  */
+ResultadosConsolidados soma_de_variancias(ResultadosConsolidados soma, ResultadosConsolidados var2);
 
 /**
  * A classe main define a forma que o simulador será executado. Existem duas formas de determinar como será executado.
@@ -305,7 +337,6 @@ int main(int argc, char *argv[])
         // Modo Replicativo
         modoreplicativo();
     }
-    //começar a simulação
 
     return 0;
 }
@@ -315,6 +346,11 @@ void modobatch(void)
     vector<ResultadosConsolidados> vet_result; // vetor com os resultados consolidados de todas as rodadas
     Simulador *sim;
     ResultadosConsolidados result;
+    ResultadosConsolidados soma;
+    ResultadosConsolidados variancia_rodada;
+    ResultadosConsolidados soma_variancias;
+
+    zera_variavel(&soma);
 
     if (seed_gerador_chegadas == -1 || seed_gerador_tempo_servico == -1)
     {
@@ -333,7 +369,15 @@ void modobatch(void)
     for (int i = 0; i < n_rodadas; i++)
     {
         result = sim->executa(t_rodada, true);
+        // Armazena em um vetor os resultados
         vet_result.push_back(result);
+        // Coloco os resultados no somatório
+        soma = soma_variaveis(soma, result);
+        // Calculo a variância
+        variancia_rodada = calculavarianciarodada(result);
+        // Somo as variancias
+        soma_variancias =  soma_de_variancias(soma_variancias, variancia_rodada);
+
         sim->limpa_dados_coletados();
     }
 
@@ -341,6 +385,8 @@ void modobatch(void)
     {
         imprimeresultado_rodada(vet_result[i], i);
     }
+
+    intervalos_confianca(soma, soma_variancias);
 
     delete sim;
 }
@@ -350,6 +396,11 @@ void modoreplicativo(void)
     vector<ResultadosConsolidados> vet_result; // vetor com os resultados consolidados de todas as rodadas
     Simulador *sim;
     ResultadosConsolidados result;
+    ResultadosConsolidados soma;
+    ResultadosConsolidados variancia_rodada;
+    ResultadosConsolidados soma_variancias;
+
+    zera_variavel(&soma);
 
     for (int i = 0; i < n_rodadas; i++)
     {
@@ -368,7 +419,14 @@ void modoreplicativo(void)
 
         //Executando a rodada
         result = sim->executa(t_rodada, true);
+        // Armazena em um vetor os resultados
         vet_result.push_back(result);
+        // Coloco os resultados no somatório
+        soma = soma_variaveis(soma, result);
+        // Calculo a variância
+        variancia_rodada = calculavarianciarodada(result);
+        // Somo as variancias
+        soma_variancias =  soma_de_variancias(soma_variancias, variancia_rodada);
 
         delete sim;
     }
@@ -377,6 +435,8 @@ void modoreplicativo(void)
     {
         imprimeresultado_rodada(vet_result[i], i);
     }
+
+    intervalos_confianca(soma, soma_variancias);
 }
 
 void imprimeresultado_rodada(ResultadosConsolidados result, int rodada)
@@ -392,4 +452,156 @@ void imprimeresultado_rodada(ResultadosConsolidados result, int rodada)
     printf("Fila2 -> T: %lf | T^2: %lf\n",result.fila2.T, result.fila2.T_quad);
     printf("Fila2 -> Nq: %d | Nq^2: %d\n",result.fila2.Nq, result.fila2.Nq_quad);
     printf("Fila2 -> N: %d | N^2: %d\n\n",result.fila2.N, result.fila2.N_quad);
+}
+
+double calcula_ic(double soma_amostras, double soma_variancias)
+{
+    double desvio_padrao;
+    double raiz_n;
+    double media_amostras;
+
+    double maior;
+    double menor;
+
+    media_amostras = soma_amostras / n_rodadas;
+    raiz_n = sqrt(n_rodadas);
+    desvio_padrao = sqrt(soma_variancias / n_rodadas);
+
+    printf("\nDEBUG!\n");
+    printf("soma_amostras = %lf\n", soma_amostras);
+    printf("soma_variancias = %lf\n", soma_variancias);
+    printf("media_amostras = %lf\n", media_amostras);
+    printf("raiz_n = %lf\n", raiz_n);
+    printf("desvio_padrao = %lf\n\n", desvio_padrao);
+
+    maior = media_amostras + INTCONF095 * desvio_padrao / raiz_n;
+    menor = media_amostras - INTCONF095 * desvio_padrao / raiz_n;
+
+    return (maior - menor);
+}
+
+void intervalos_confianca(ResultadosConsolidados somas, ResultadosConsolidados variancias)
+{
+    double valor;
+    printf("***********************************\n");
+    printf("Imprimindo Intervalos de Confiança:\n");
+    printf("***********************************\n\n");
+    printf("***Fila 1***\n");
+    valor = calcula_ic(somas.fila1.X, variancias.fila1.X);
+    printf("X = %lf\n", valor);
+    valor = calcula_ic(somas.fila1.W, variancias.fila1.W);
+    printf("W = %lf\n", valor);
+    valor = calcula_ic(somas.fila1.T, variancias.fila1.T);
+    printf("T = %lf\n", valor);
+    valor = calcula_ic(somas.fila1.Nq, variancias.fila1.Nq);
+    printf("Nq = %lf\n", valor);
+    valor = calcula_ic(somas.fila1.N, variancias.fila1.N);
+    printf("N = %lf\n\n", valor);
+    printf("***Fila 2***\n");
+    valor = calcula_ic(somas.fila2.X, variancias.fila2.X);
+    printf("X = %lf\n", valor);
+    valor = calcula_ic(somas.fila2.W, variancias.fila2.W);
+    printf("W = %lf\n", valor);
+    valor = calcula_ic(somas.fila2.T, variancias.fila2.T);
+    printf("T = %lf\n", valor);
+    valor = calcula_ic(somas.fila2.Nq, variancias.fila2.Nq);
+    printf("Nq = %lf\n", valor);
+    valor = calcula_ic(somas.fila2.N, variancias.fila2.N);
+    printf("N = %lf\n\n", valor);
+}
+
+void zera_variavel(ResultadosConsolidados *azerar)
+{
+    azerar->quantidade = 0;
+
+	azerar->fila1.X = 0.0;
+	azerar->fila1.X_quad = 0.0;
+	azerar->fila1.W = 0.0;
+	azerar->fila1.W_quad = 0.0;
+	azerar->fila1.T = 0.0;
+	azerar->fila1.T_quad = 0.0;
+	azerar->fila1.Nq = 0;
+	azerar->fila1.Nq_quad = 0;
+	azerar->fila1.N = 0;
+	azerar->fila1.N_quad = 0;
+
+	azerar->fila2.X = 0.0;
+	azerar->fila2.X_quad = 0.0;
+	azerar->fila2.W = 0.0;
+	azerar->fila2.W_quad = 0.0;
+	azerar->fila2.T = 0.0;
+	azerar->fila2.T_quad = 0.0;
+	azerar->fila2.Nq = 0;
+	azerar->fila2.Nq_quad = 0;
+	azerar->fila2.N = 0;
+	azerar->fila2.N_quad = 0;
+}
+
+ResultadosConsolidados soma_variaveis(ResultadosConsolidados soma, ResultadosConsolidados var2)
+{
+    soma.quantidade += var2.quantidade;
+
+	soma.fila1.X += var2.fila1.X / t_rodada;
+	soma.fila1.X_quad += var2.fila1.X_quad / t_rodada;
+	soma.fila1.W += var2.fila1.W / t_rodada;
+	soma.fila1.W_quad += var2.fila1.W_quad / t_rodada;
+	soma.fila1.T += var2.fila1.T / t_rodada;
+	soma.fila1.T_quad += var2.fila1.T_quad / t_rodada;
+	soma.fila1.Nq += var2.fila1.Nq / t_rodada;
+	soma.fila1.Nq_quad += var2.fila1.Nq_quad / t_rodada;
+	soma.fila1.N += var2.fila1.N / t_rodada;
+	soma.fila1.N_quad += var2.fila1.N_quad / t_rodada;
+
+	soma.fila2.X += var2.fila2.X / t_rodada;
+	soma.fila2.X_quad += var2.fila2.X_quad / t_rodada;
+	soma.fila2.W += var2.fila2.W / t_rodada;
+	soma.fila2.W_quad += var2.fila2.W_quad / t_rodada;
+	soma.fila2.T += var2.fila2.T / t_rodada;
+	soma.fila2.T_quad += var2.fila2.T_quad / t_rodada;
+	soma.fila2.Nq += var2.fila2.Nq / t_rodada;
+	soma.fila2.Nq_quad += var2.fila2.Nq_quad / t_rodada;
+	soma.fila2.N += var2.fila2.N / t_rodada;
+	soma.fila2.N_quad += var2.fila2.N_quad / t_rodada;
+
+	return soma;
+}
+
+ResultadosConsolidados calculavarianciarodada(ResultadosConsolidados var)
+{
+    ResultadosConsolidados apoio;
+
+    zera_variavel(&apoio);
+
+	apoio.fila1.X = (var.fila1.X_quad / t_rodada) - (var.fila1.X / t_rodada);
+	apoio.fila1.W = (var.fila1.W_quad / t_rodada) - (var.fila1.W / t_rodada);
+	apoio.fila1.T = (var.fila1.T_quad / t_rodada) - (var.fila1.T / t_rodada);
+	apoio.fila1.Nq = (var.fila1.Nq_quad / t_rodada) - (var.fila1.Nq / t_rodada);
+	apoio.fila1.N = (var.fila1.N_quad / t_rodada) - (var.fila1.N / t_rodada);
+
+	apoio.fila2.X = (var.fila2.X_quad / t_rodada) - (var.fila2.X / t_rodada);
+	apoio.fila2.W = (var.fila2.W_quad / t_rodada) - (var.fila2.W / t_rodada);
+	apoio.fila2.T = (var.fila2.T_quad / t_rodada) - (var.fila2.T / t_rodada);
+	apoio.fila2.Nq = (var.fila2.Nq_quad / t_rodada) - (var.fila2.Nq / t_rodada);
+	apoio.fila2.N = (var.fila2.N_quad / t_rodada) - (var.fila2.N / t_rodada);
+
+	return apoio;
+}
+
+ResultadosConsolidados soma_de_variancias(ResultadosConsolidados soma, ResultadosConsolidados var2)
+{
+    soma.quantidade += var2.quantidade;
+
+	soma.fila1.X += var2.fila1.X;
+	soma.fila1.W += var2.fila1.W;
+	soma.fila1.T += var2.fila1.T;
+	soma.fila1.Nq += var2.fila1.Nq;
+	soma.fila1.N += var2.fila1.N;
+
+	soma.fila2.X += var2.fila2.X;
+	soma.fila2.W += var2.fila2.W;
+	soma.fila2.T += var2.fila2.T;
+	soma.fila2.Nq += var2.fila2.Nq;
+	soma.fila2.N += var2.fila2.N;
+
+	return soma;
 }
