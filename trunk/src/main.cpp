@@ -446,7 +446,6 @@ void intervalos_confianca(vector<ResultadosConsolidados> &dados)
     printf("E[X] = %lf %lf [%lf] [%lf%%]\n", (estimador_media - intervalo < 0) ? 0 : estimador_media - intervalo, estimador_media + intervalo, 2.0 * intervalo, (200.0 * intervalo) / estimador_media);
 
 
-
     estimador_media = 0.0;
     for(unsigned int i = 0; i < dados.size(); i++)
     {
@@ -465,6 +464,30 @@ void intervalos_confianca(vector<ResultadosConsolidados> &dados)
     intervalo = INTCONF095 * (sqrt(estimador_var) / sqrt(dados.size()));
 
     printf("E[W] = %lf %lf [%lf] [%lf%%]\n", (estimador_media - intervalo < 0) ? 0 : estimador_media - intervalo, estimador_media + intervalo, 2.0 * intervalo, (200.0 * intervalo) / estimador_media);
+
+
+
+    estimador_media = 0.0;
+    for(unsigned int i = 0; i < dados.size(); i++)
+    {
+	estimador_media += ((double)dados[i].fila1.W_quad / dados[i].quantidade) -
+			   (((double)dados[i].fila1.W / dados[i].quantidade) * ((double)dados[i].fila1.W / dados[i].quantidade));
+    }
+    estimador_media /= (double)dados.size();
+
+    estimador_var = 0.0;
+    for(unsigned int i = 0; i < dados.size(); i++)
+    {
+	double temp = ((double)dados[i].fila1.W_quad / dados[i].quantidade) -
+		      (((double)dados[i].fila1.W / dados[i].quantidade) * ((double)dados[i].fila1.W / dados[i].quantidade));
+	estimador_var += (temp - estimador_media) * 
+			 (temp - estimador_media);
+    }
+    estimador_var /= (double)(dados.size() - 1);
+
+    intervalo = INTCONF095 * (sqrt(estimador_var) / sqrt(dados.size()));
+
+    printf("V(W) = %lf %lf [%lf] [%lf%%]\n", (estimador_media - intervalo < 0) ? 0 : estimador_media - intervalo, estimador_media + intervalo, 2.0 * intervalo, (200.0 * intervalo) / estimador_media);
 
 
 
@@ -573,6 +596,28 @@ void intervalos_confianca(vector<ResultadosConsolidados> &dados)
 
     printf("E[W] = %lf %lf [%lf] [%lf%%]\n", (estimador_media - intervalo < 0) ? 0 : estimador_media - intervalo, estimador_media + intervalo, 2.0 * intervalo, (200.0 * intervalo) / estimador_media);
 
+
+    estimador_media = 0.0;
+    for(unsigned int i = 0; i < dados.size(); i++)
+    {
+	estimador_media += ((double)dados[i].fila2.W_quad / dados[i].quantidade) -
+			   (((double)dados[i].fila2.W / dados[i].quantidade) * ((double)dados[i].fila2.W / dados[i].quantidade));
+    }
+    estimador_media /= (double)dados.size();
+
+    estimador_var = 0.0;
+    for(unsigned int i = 0; i < dados.size(); i++)
+    {
+	double temp = ((double)dados[i].fila2.W_quad / dados[i].quantidade) -
+		      (((double)dados[i].fila2.W / dados[i].quantidade) * ((double)dados[i].fila2.W / dados[i].quantidade));
+	estimador_var += (temp - estimador_media) * 
+			 (temp - estimador_media);
+    }
+    estimador_var /= (double)(dados.size() - 1);
+
+    intervalo = INTCONF095 * (sqrt(estimador_var) / sqrt(dados.size()));
+
+    printf("V(W) = %lf %lf [%lf] [%lf%%]\n", (estimador_media - intervalo < 0) ? 0 : estimador_media - intervalo, estimador_media + intervalo, 2.0 * intervalo, (200.0 * intervalo) / estimador_media);
 
 
     estimador_media = 0.0;
