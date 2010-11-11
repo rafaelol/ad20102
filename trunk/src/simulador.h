@@ -31,10 +31,10 @@ typedef struct
 	double W_quad; /**< Soma dos quadrados dos tempos de serviço na fila. */
 	double T; /**< Soma dos tempos totais na fila + servidor. */
 	double T_quad; /**< Soma dos quadrados dos tempos totais na fila + servidor */
-	int Nq; /**< Soma da quantidade de pessoas na fila. */
-	int Nq_quad; /**< Soma dos quadrados da quantidade de pessoas na fila. */
-	int N; /**< Soma da quantidade de pessoas na fila + servidor. */
-	int N_quad; /** Soma dos quadrados da quantidade de pessoas na fila + servidor. */
+	long long int Nq; /**< Soma da quantidade de pessoas na fila. */
+	long long int Nq_quad; /**< Soma dos quadrados da quantidade de pessoas na fila. */
+	long long int N; /**< Soma da quantidade de pessoas na fila + servidor. */
+	long long int N_quad; /** Soma dos quadrados da quantidade de pessoas na fila + servidor. */
 
 } AmostragemFila;
 
@@ -130,9 +130,17 @@ ResultadosConsolidados executa(int quantidade, bool coleta);
 void limpa_dados_coletados();
 
 /**
+ * Volta o simulador para seu estado inicial, removendo todos os clientes e os dados coletados.
+ * Mas mantem o estado dos PRNGs.
+ */
+void reinicia_simulador();
+
+
+/**
  * Ativa ou desativa o modo verbose (verborrágico) do Simulador.
  */
 void define_verbose(bool ativado);
+
 };
 
 
