@@ -432,7 +432,7 @@ void intervalos_confianca(vector<ResultadosConsolidados> &dados)
 
     intervalo = INTCONF095 * (sqrt(estimador_var) / sqrt(dados.size()));
 
-    printf("E[X] = %lf %lf\n", estimador_media - intervalo, estimador_media + intervalo);
+    printf("E[X] = %lf %lf [%lf]\n", (estimador_media - intervalo < 0) ? 0 : estimador_media - intervalo, estimador_media + intervalo, 2.0 * intervalo);
 
 
 
@@ -454,7 +454,7 @@ void intervalos_confianca(vector<ResultadosConsolidados> &dados)
 
     intervalo = INTCONF095 * (sqrt(estimador_var) / sqrt(dados.size()));
 
-    printf("E[W] = %lf %lf\n", estimador_media - intervalo, estimador_media + intervalo);
+    printf("E[W] = %lf %lf [%lf]\n", (estimador_media - intervalo < 0) ? 0 : estimador_media - intervalo, estimador_media + intervalo, 2.0 * intervalo);
 
 
 
@@ -476,7 +476,7 @@ void intervalos_confianca(vector<ResultadosConsolidados> &dados)
 
     intervalo = INTCONF095 * (sqrt(estimador_var) / sqrt(dados.size()));
 
-    printf("E[T] = %lf %lf\n", estimador_media - intervalo, estimador_media + intervalo);
+    printf("E[T] = %lf %lf [%lf]\n", (estimador_media - intervalo < 0) ? 0 : estimador_media - intervalo, estimador_media + intervalo, 2.0 * intervalo);
 
 
 
@@ -498,7 +498,7 @@ void intervalos_confianca(vector<ResultadosConsolidados> &dados)
 
     intervalo = INTCONF095 * (sqrt(estimador_var) / sqrt(dados.size()));
 
-    printf("E[Nq] = %lf %lf\n", estimador_media - intervalo, estimador_media + intervalo);
+    printf("E[Nq] = %lf %lf [%lf]\n", (estimador_media - intervalo < 0) ? 0 : estimador_media - intervalo, estimador_media + intervalo, 2.0 * intervalo);
 
 
 
@@ -520,7 +520,7 @@ void intervalos_confianca(vector<ResultadosConsolidados> &dados)
 
     intervalo = INTCONF095 * (sqrt(estimador_var) / sqrt(dados.size()));
 
-    printf("E[N] = %lf %lf\n\n", estimador_media - intervalo, estimador_media + intervalo);
+    printf("E[N] = %lf %lf [%lf]\n\n", (estimador_media - intervalo < 0) ? 0 : estimador_media - intervalo, estimador_media + intervalo, 2.0 * intervalo);
 
 
 
@@ -544,7 +544,7 @@ void intervalos_confianca(vector<ResultadosConsolidados> &dados)
 
     intervalo = INTCONF095 * (sqrt(estimador_var) / sqrt(dados.size()));
 
-    printf("E[X] = %lf %lf\n", estimador_media - intervalo, estimador_media + intervalo);
+    printf("E[X] = %lf %lf [%lf]\n", (estimador_media - intervalo < 0) ? 0 : estimador_media - intervalo, estimador_media + intervalo, 2.0 * intervalo);
 
 
 
@@ -566,7 +566,7 @@ void intervalos_confianca(vector<ResultadosConsolidados> &dados)
 
     intervalo = INTCONF095 * (sqrt(estimador_var) / sqrt(dados.size()));
 
-    printf("E[W] = %lf %lf\n", estimador_media - intervalo, estimador_media + intervalo);
+    printf("E[W] = %lf %lf [%lf]\n", (estimador_media - intervalo < 0) ? 0 : estimador_media - intervalo, estimador_media + intervalo, 2.0 * intervalo);
 
 
 
@@ -588,7 +588,7 @@ void intervalos_confianca(vector<ResultadosConsolidados> &dados)
 
     intervalo = INTCONF095 * (sqrt(estimador_var) / sqrt(dados.size()));
 
-    printf("E[T] = %lf %lf\n", estimador_media - intervalo, estimador_media + intervalo);
+    printf("E[T] = %lf %lf [%lf]\n", (estimador_media - intervalo < 0) ? 0 : estimador_media - intervalo, estimador_media + intervalo, 2.0 * intervalo);
 
 
 
@@ -610,7 +610,7 @@ void intervalos_confianca(vector<ResultadosConsolidados> &dados)
 
     intervalo = INTCONF095 * (sqrt(estimador_var) / sqrt(dados.size()));
 
-    printf("E[Nq] = %lf %lf\n", estimador_media - intervalo, estimador_media + intervalo);
+    printf("E[Nq] = %lf %lf [%lf]\n", (estimador_media - intervalo < 0) ? 0 : estimador_media - intervalo, estimador_media + intervalo, 2.0 * intervalo);
 
 
 
@@ -632,7 +632,7 @@ void intervalos_confianca(vector<ResultadosConsolidados> &dados)
 
     intervalo = INTCONF095 * (sqrt(estimador_var) / sqrt(dados.size()));
 
-    printf("E[N] = %lf %lf\n\n", estimador_media - intervalo, estimador_media + intervalo);
+    printf("E[N] = %lf %lf [%lf]\n\n", (estimador_media - intervalo < 0) ? 0 : estimador_media - intervalo, estimador_media + intervalo, 2.0 * intervalo);
 
 }
 
