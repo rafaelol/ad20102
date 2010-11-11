@@ -37,8 +37,6 @@ double m_taxa; /**< Taxa lambda */
  * Reversa da função exponencial.
  *
  * \param prob Probabilidade [0.0, 1.0)
- *
- * \todo Implementar a função :)
  */
 double inversa(double prob);
 
