@@ -407,7 +407,7 @@ void imprimeresultado_rodada(ResultadosConsolidados result, int rodada)
     printf("Fila1 -> E[W]: %lf | E[W^2]: %lf\n",result.fila1.W / n, result.fila1.W_quad / n);
     printf("Fila1 -> E[T]: %lf | E[T^2]: %lf\n",result.fila1.T / n, result.fila1.T_quad / n);
     printf("Fila1 -> E[Nq]: %lf | E[Nq^2]: %lf\n",result.fila1.Nq / n, result.fila1.Nq_quad / n);
-    printf("Fila1 -> E[N]: %lf | E[N^2]: %lfn\n",result.fila1.N / n, result.fila1.N_quad / n);
+    printf("Fila1 -> E[N]: %lf | E[N^2]: %lf\n",result.fila1.N / n, result.fila1.N_quad / n);
     printf("Fila2 -> E[X]: %lf | E[X^2]: %lf\n",result.fila2.X / n, result.fila2.X_quad / n);
     printf("Fila2 -> E[W]: %lf | E[W^2]: %lf\n",result.fila2.W / n, result.fila2.W_quad / n);
     printf("Fila2 -> E[T]: %lf | E[T^2]: %lf\n",result.fila2.T / n, result.fila2.T_quad / n);
@@ -421,6 +421,7 @@ void intervalos_confianca(vector<ResultadosConsolidados> &dados)
 
     printf("***********************************\n");
     printf("Intervalos de Confiança:\n");
+    printf("Inicio - Fim [Tamanho] [Em relacao a media]\n");
     printf("***********************************\n\n");
 
     printf("***Fila 1***\n");
@@ -443,7 +444,7 @@ void intervalos_confianca(vector<ResultadosConsolidados> &dados)
 
     intervalo = INTCONF095 * (sqrt(estimador_var) / sqrt(dados.size()));
 
-    printf("E[X] = %lf %lf [%lf]\n", (estimador_media - intervalo < 0) ? 0 : estimador_media - intervalo, estimador_media + intervalo, 2.0 * intervalo);
+    printf("E[X] = %lf %lf [%lf] [%lf%%]\n", (estimador_media - intervalo < 0) ? 0 : estimador_media - intervalo, estimador_media + intervalo, 2.0 * intervalo, (200.0 * intervalo) / estimador_media);
 
 
 
@@ -465,7 +466,7 @@ void intervalos_confianca(vector<ResultadosConsolidados> &dados)
 
     intervalo = INTCONF095 * (sqrt(estimador_var) / sqrt(dados.size()));
 
-    printf("E[W] = %lf %lf [%lf]\n", (estimador_media - intervalo < 0) ? 0 : estimador_media - intervalo, estimador_media + intervalo, 2.0 * intervalo);
+    printf("E[W] = %lf %lf [%lf] [%lf%%]\n", (estimador_media - intervalo < 0) ? 0 : estimador_media - intervalo, estimador_media + intervalo, 2.0 * intervalo, (200.0 * intervalo) / estimador_media);
 
 
 
@@ -487,7 +488,7 @@ void intervalos_confianca(vector<ResultadosConsolidados> &dados)
 
     intervalo = INTCONF095 * (sqrt(estimador_var) / sqrt(dados.size()));
 
-    printf("E[T] = %lf %lf [%lf]\n", (estimador_media - intervalo < 0) ? 0 : estimador_media - intervalo, estimador_media + intervalo, 2.0 * intervalo);
+    printf("E[T] = %lf %lf [%lf] [%lf%%]\n", (estimador_media - intervalo < 0) ? 0 : estimador_media - intervalo, estimador_media + intervalo, 2.0 * intervalo, (200.0 * intervalo) / estimador_media);
 
 
 
@@ -509,7 +510,7 @@ void intervalos_confianca(vector<ResultadosConsolidados> &dados)
 
     intervalo = INTCONF095 * (sqrt(estimador_var) / sqrt(dados.size()));
 
-    printf("E[Nq] = %lf %lf [%lf]\n", (estimador_media - intervalo < 0) ? 0 : estimador_media - intervalo, estimador_media + intervalo, 2.0 * intervalo);
+    printf("E[Nq] = %lf %lf [%lf] [%lf%%]\n", (estimador_media - intervalo < 0) ? 0 : estimador_media - intervalo, estimador_media + intervalo, 2.0 * intervalo, (200.0 * intervalo) / estimador_media);
 
 
 
@@ -531,7 +532,7 @@ void intervalos_confianca(vector<ResultadosConsolidados> &dados)
 
     intervalo = INTCONF095 * (sqrt(estimador_var) / sqrt(dados.size()));
 
-    printf("E[N] = %lf %lf [%lf]\n\n", (estimador_media - intervalo < 0) ? 0 : estimador_media - intervalo, estimador_media + intervalo, 2.0 * intervalo);
+    printf("E[N] = %lf %lf [%lf] [%lf%%]\n\n", (estimador_media - intervalo < 0) ? 0 : estimador_media - intervalo, estimador_media + intervalo, 2.0 * intervalo, (200.0 * intervalo) / estimador_media);
 
 
 
@@ -555,7 +556,7 @@ void intervalos_confianca(vector<ResultadosConsolidados> &dados)
 
     intervalo = INTCONF095 * (sqrt(estimador_var) / sqrt(dados.size()));
 
-    printf("E[X] = %lf %lf [%lf]\n", (estimador_media - intervalo < 0) ? 0 : estimador_media - intervalo, estimador_media + intervalo, 2.0 * intervalo);
+    printf("E[X] = %lf %lf [%lf] [%lf%%]\n", (estimador_media - intervalo < 0) ? 0 : estimador_media - intervalo, estimador_media + intervalo, 2.0 * intervalo, (200.0 * intervalo) / estimador_media);
 
 
 
@@ -577,7 +578,7 @@ void intervalos_confianca(vector<ResultadosConsolidados> &dados)
 
     intervalo = INTCONF095 * (sqrt(estimador_var) / sqrt(dados.size()));
 
-    printf("E[W] = %lf %lf [%lf]\n", (estimador_media - intervalo < 0) ? 0 : estimador_media - intervalo, estimador_media + intervalo, 2.0 * intervalo);
+    printf("E[W] = %lf %lf [%lf] [%lf%%]\n", (estimador_media - intervalo < 0) ? 0 : estimador_media - intervalo, estimador_media + intervalo, 2.0 * intervalo, (200.0 * intervalo) / estimador_media);
 
 
 
@@ -599,7 +600,7 @@ void intervalos_confianca(vector<ResultadosConsolidados> &dados)
 
     intervalo = INTCONF095 * (sqrt(estimador_var) / sqrt(dados.size()));
 
-    printf("E[T] = %lf %lf [%lf]\n", (estimador_media - intervalo < 0) ? 0 : estimador_media - intervalo, estimador_media + intervalo, 2.0 * intervalo);
+    printf("E[T] = %lf %lf [%lf] [%lf%%]\n", (estimador_media - intervalo < 0) ? 0 : estimador_media - intervalo, estimador_media + intervalo, 2.0 * intervalo, (200.0 * intervalo) / estimador_media);
 
 
 
@@ -621,7 +622,7 @@ void intervalos_confianca(vector<ResultadosConsolidados> &dados)
 
     intervalo = INTCONF095 * (sqrt(estimador_var) / sqrt(dados.size()));
 
-    printf("E[Nq] = %lf %lf [%lf]\n", (estimador_media - intervalo < 0) ? 0 : estimador_media - intervalo, estimador_media + intervalo, 2.0 * intervalo);
+    printf("E[Nq] = %lf %lf [%lf] [%lf%%]\n", (estimador_media - intervalo < 0) ? 0 : estimador_media - intervalo, estimador_media + intervalo, 2.0 * intervalo, (200.0 * intervalo) / estimador_media);
 
 
 
@@ -643,7 +644,7 @@ void intervalos_confianca(vector<ResultadosConsolidados> &dados)
 
     intervalo = INTCONF095 * (sqrt(estimador_var) / sqrt(dados.size()));
 
-    printf("E[N] = %lf %lf [%lf]\n\n", (estimador_media - intervalo < 0) ? 0 : estimador_media - intervalo, estimador_media + intervalo, 2.0 * intervalo);
+    printf("E[N] = %lf %lf [%lf] [%lf%%]\n\n", (estimador_media - intervalo < 0) ? 0 : estimador_media - intervalo, estimador_media + intervalo, 2.0 * intervalo, (200.0 * intervalo) / estimador_media);
 
 }
 
