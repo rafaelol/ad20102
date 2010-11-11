@@ -436,9 +436,8 @@ void intervalos_confianca(vector<ResultadosConsolidados> &dados)
     estimador_var = 0.0;
     for(unsigned int i = 0; i < dados.size(); i++)
     {
-	estimador_var += ((double)dados[i].fila1.X_quad / dados[i].quantidade)
-			-(2.0 * ( ((double)dados[i].fila1.X / dados[i].quantidade) * estimador_media))
-			+(estimador_media * estimador_media);
+	estimador_var += (((double)dados[i].fila1.X / dados[i].quantidade) - estimador_media) * 
+			 (((double)dados[i].fila1.X / dados[i].quantidade) - estimador_media);
     }
     estimador_var /= (double)(dados.size() - 1);
 
@@ -458,9 +457,8 @@ void intervalos_confianca(vector<ResultadosConsolidados> &dados)
     estimador_var = 0.0;
     for(unsigned int i = 0; i < dados.size(); i++)
     {
-	estimador_var += ((double)dados[i].fila1.W_quad / dados[i].quantidade)
-			-(2.0 * ( ((double)dados[i].fila1.W / dados[i].quantidade) * estimador_media))
-			+(estimador_media * estimador_media);
+	estimador_var += (((double)dados[i].fila1.W / dados[i].quantidade) - estimador_media) * 
+			 (((double)dados[i].fila1.W / dados[i].quantidade) - estimador_media);
     }
     estimador_var /= (double)(dados.size() - 1);
 
@@ -480,9 +478,8 @@ void intervalos_confianca(vector<ResultadosConsolidados> &dados)
     estimador_var = 0.0;
     for(unsigned int i = 0; i < dados.size(); i++)
     {
-	estimador_var += ((double)dados[i].fila1.T_quad / dados[i].quantidade)
-			-(2.0 * ( ((double)dados[i].fila1.T / dados[i].quantidade) * estimador_media))
-			+(estimador_media * estimador_media);
+	estimador_var += (((double)dados[i].fila1.T / dados[i].quantidade) - estimador_media) * 
+			 (((double)dados[i].fila1.T / dados[i].quantidade) - estimador_media);
     }
     estimador_var /= (double)(dados.size() - 1);
 
@@ -502,9 +499,8 @@ void intervalos_confianca(vector<ResultadosConsolidados> &dados)
     estimador_var = 0.0;
     for(unsigned int i = 0; i < dados.size(); i++)
     {
-	estimador_var += ((double)dados[i].fila1.Nq_quad / dados[i].quantidade)
-			-(2.0 * ( ((double)dados[i].fila1.Nq / dados[i].quantidade) * estimador_media))
-			+(estimador_media * estimador_media);
+	estimador_var += (((double)dados[i].fila1.Nq / dados[i].quantidade) - estimador_media) * 
+			 (((double)dados[i].fila1.Nq / dados[i].quantidade) - estimador_media);
     }
     estimador_var /= (double)(dados.size() - 1);
 
@@ -524,9 +520,8 @@ void intervalos_confianca(vector<ResultadosConsolidados> &dados)
     estimador_var = 0.0;
     for(unsigned int i = 0; i < dados.size(); i++)
     {
-	estimador_var += ((double)dados[i].fila1.N_quad / dados[i].quantidade)
-			-(2.0 * ( ((double)dados[i].fila1.N / dados[i].quantidade) * estimador_media))
-			+(estimador_media * estimador_media);
+	estimador_var += (((double)dados[i].fila1.N / dados[i].quantidade) - estimador_media) * 
+			 (((double)dados[i].fila1.N / dados[i].quantidade) - estimador_media);
     }
     estimador_var /= (double)(dados.size() - 1);
 
@@ -548,9 +543,8 @@ void intervalos_confianca(vector<ResultadosConsolidados> &dados)
     estimador_var = 0.0;
     for(unsigned int i = 0; i < dados.size(); i++)
     {
-	estimador_var += ((double)dados[i].fila2.X_quad / dados[i].quantidade)
-			-(2.0 * ( ((double)dados[i].fila2.X / dados[i].quantidade) * estimador_media))
-			+(estimador_media * estimador_media);
+	estimador_var += (((double)dados[i].fila2.X / dados[i].quantidade) - estimador_media) * 
+			 (((double)dados[i].fila2.X / dados[i].quantidade) - estimador_media);
     }
     estimador_var /= (double)(dados.size() - 1);
 
@@ -570,9 +564,8 @@ void intervalos_confianca(vector<ResultadosConsolidados> &dados)
     estimador_var = 0.0;
     for(unsigned int i = 0; i < dados.size(); i++)
     {
-	estimador_var += ((double)dados[i].fila2.W_quad / dados[i].quantidade)
-			-(2.0 * ( ((double)dados[i].fila2.W / dados[i].quantidade) * estimador_media))
-			+(estimador_media * estimador_media);
+	estimador_var += (((double)dados[i].fila2.W / dados[i].quantidade) - estimador_media) * 
+			 (((double)dados[i].fila2.W / dados[i].quantidade) - estimador_media);
     }
     estimador_var /= (double)(dados.size() - 1);
 
@@ -592,9 +585,8 @@ void intervalos_confianca(vector<ResultadosConsolidados> &dados)
     estimador_var = 0.0;
     for(unsigned int i = 0; i < dados.size(); i++)
     {
-	estimador_var += ((double)dados[i].fila2.T_quad / dados[i].quantidade)
-			-(2.0 * ( ((double)dados[i].fila2.T / dados[i].quantidade) * estimador_media))
-			+(estimador_media * estimador_media);
+	estimador_var += (((double)dados[i].fila2.T / dados[i].quantidade) - estimador_media) * 
+			 (((double)dados[i].fila2.T / dados[i].quantidade) - estimador_media);
     }
     estimador_var /= (double)(dados.size() - 1);
 
@@ -614,9 +606,8 @@ void intervalos_confianca(vector<ResultadosConsolidados> &dados)
     estimador_var = 0.0;
     for(unsigned int i = 0; i < dados.size(); i++)
     {
-	estimador_var += ((double)dados[i].fila2.Nq_quad / dados[i].quantidade)
-			-(2.0 * ( ((double)dados[i].fila2.Nq / dados[i].quantidade) * estimador_media))
-			+(estimador_media * estimador_media);
+	estimador_var += (((double)dados[i].fila2.Nq / dados[i].quantidade) - estimador_media) * 
+			 (((double)dados[i].fila2.Nq / dados[i].quantidade) - estimador_media);
     }
     estimador_var /= (double)(dados.size() - 1);
 
@@ -636,9 +627,8 @@ void intervalos_confianca(vector<ResultadosConsolidados> &dados)
     estimador_var = 0.0;
     for(unsigned int i = 0; i < dados.size(); i++)
     {
-	estimador_var += ((double)dados[i].fila2.N_quad / dados[i].quantidade)
-			-(2.0 * ( ((double)dados[i].fila2.N / dados[i].quantidade) * estimador_media))
-			+(estimador_media * estimador_media);
+	estimador_var += (((double)dados[i].fila2.N / dados[i].quantidade) - estimador_media) * 
+			 (((double)dados[i].fila2.N / dados[i].quantidade) - estimador_media);
     }
     estimador_var /= (double)(dados.size() - 1);
 
