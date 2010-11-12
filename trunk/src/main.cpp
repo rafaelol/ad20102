@@ -315,25 +315,36 @@ int main(int argc, char *argv[])
         else printf("LCFS\n");
     }
 
-    if (tx_lambda < 0.0)
+    do
     {
-        printf("Escolha o valor da taxa lambda: ");
-        scanf("%lf",&tx_lambda);
-    }
-    else
-    {
-        printf("Você ja escolheu o valor da taxa lambda: %f\n", tx_lambda);
-    }
+        if (tx_lambda < 0.0)
+        {
+            printf("Escolha o valor da taxa lambda: ");
+            scanf("%lf",&tx_lambda);
+        }
+        else
+        {
+            printf("Você ja escolheu o valor da taxa lambda: %f\n", tx_lambda);
+        }
 
-    if (tx_mi < 0.0)
-    {
-        printf("Escolha o valor da taxa mi: ");
-        scanf("%lf",&tx_mi);
-    }
-    else
-    {
-        printf("Você ja escolheu o valor da taxa mi: %f\n", tx_mi);
-    }
+        if (tx_mi < 0.0)
+        {
+            printf("Escolha o valor da taxa mi: ");
+            scanf("%lf",&tx_mi);
+        }
+        else
+        {
+            printf("Você ja escolheu o valor da taxa mi: %f\n", tx_mi);
+        }
+
+        if (tx_lambda / tx_mi > 1.0)
+        {
+            printf("As taxas escolhidas implicam em um ro maior que um. Isso faz as filas crescerem infinitamente.\n");
+            printf("Escolha novos valores para tx_lambda e tx_mi.\n");
+            tx_lambda = -1;
+            tx_mi = -1;
+        }
+    } while(tx_lambda / tx_mi > 1.0);
 
     if (modo == 1)
     {
