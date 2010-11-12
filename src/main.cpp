@@ -372,12 +372,22 @@ void modobatch(void)
 
     //Executando fase transiente
 
+    if (verb == 2) printf("[INICIO] Executando fase transiente\n");
+
     sim->executa(t_transiente, false);
+
+    if (verb == 2) printf("[FIM] Termino fase transiente\n");
 
     //Executando as rodadas
     for (int i = 0; i < n_rodadas; i++)
     {
+        if (verb == 2) printf("[INICIO] Executando rodada %d\n", i);
+
+        //Executando a rodada i
         result = sim->executa(t_rodada, true);
+
+        if (verb == 2) printf("[FIM] Termino da rodada %d\n\n", i);
+
         // Armazena em um vetor os resultados
         dados.push_back(result);
         if (verb > 0)
@@ -419,10 +429,19 @@ void modoreplicativo(void)
     {
 
         //Executando fase transiente
+
+        if (verb == 2) printf("[INICIO] Executando fase transiente\n");
+
         sim->executa(t_transiente, false);
+
+        if (verb == 2) printf("[FIM] Termino fase transiente\n");
+
+        if (verb == 2) printf("[INICIO] Executando rodada %d\n", i);
 
         //Executando a rodada
         result = sim->executa(t_rodada, true);
+
+        if (verb == 2) printf("[FIM] Termino da rodada %d\n\n", i);
 
         // Armazena em um vetor os resultados
         dados.push_back(result);
