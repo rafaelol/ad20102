@@ -148,7 +148,7 @@ namespace TrabalhoAD
                     printf("-- Tempo evento: %lf\n", m_tempo_atual);
                     printf("-- tamanho fila 1: %d\n", m_fila1.size());
                     printf("-- tamanho fila 2: %d\n", m_fila2.size());
-                    if (m_servidor_ocupado == false) printf("-- servidor vazio\n");
+                    if (m_servidor_ocupado == false) printf("-- servidor vazio\n\n");
                     else printf("-- fregues no servidor pertence a fila %d\n\n", m_fregues_em_servico.fila_pertencente());
                 }
 
@@ -170,6 +170,15 @@ namespace TrabalhoAD
                         m_fila2.push_front(m_fregues_em_servico);
                     }
 
+                    if (m_verbose)
+                    {
+                        printf("[Evento] Fregues tipico da fila1 terminou o servico no servidor.\n");
+                        printf("-- Tempo evento: %lf\n", m_tempo_atual);
+                        printf("-- tamanho fila 1: %d\n", m_fila1.size());
+                        printf("-- tamanho fila 2: %d\n", m_fila2.size());
+                        if (m_servidor_ocupado == false) printf("-- servidor vazio\n\n");
+                        else printf("-- fregues no servidor pertence a fila %d\n\n", m_fregues_em_servico.fila_pertencente());
+                    }
                 }
                 else if(m_fregues_em_servico.fila_pertencente() == 2) //Se o fregues veio da Fila2, coleta todos os dados e remove do sistema.
                 {
@@ -217,6 +226,16 @@ namespace TrabalhoAD
                                         m_fregues_em_servico.quantidade_elementos_sistema2();
                     }
 
+                    if (m_verbose)
+                    {
+                        printf("[Evento] Fregues tipico da fila2 terminou o servico no servidor.\n");
+                        printf("-- Tempo evento: %lf\n", m_tempo_atual);
+                        printf("-- tamanho fila 1: %d\n", m_fila1.size());
+                        printf("-- tamanho fila 2: %d\n", m_fila2.size());
+                        if (m_servidor_ocupado == false) printf("-- servidor vazio\n\n");
+                        else printf("-- fregues no servidor pertence a fila %d\n\n", m_fregues_em_servico.fila_pertencente());
+                    }
+
                     clientes_servidos++;
                 }
 
@@ -237,6 +256,16 @@ namespace TrabalhoAD
 
                     //Agenda o evento de conclusão do servico
                     m_eventos.push(Evento(termino_servico, m_tempo_atual + m_servico->proxima_chegada() ) );
+
+                    if (m_verbose)
+                    {
+                        printf("[Evento] Fregues tipico da fila 1 entra no servidor.\n");
+                        printf("-- Tempo evento: %lf\n", m_tempo_atual);
+                        printf("-- tamanho fila 1: %d\n", m_fila1.size());
+                        printf("-- tamanho fila 2: %d\n", m_fila2.size());
+                        if (m_servidor_ocupado == false) printf("-- servidor vazio\n\n");
+                        else printf("-- fregues no servidor pertence a fila %d\n\n", m_fregues_em_servico.fila_pertencente());
+                    }
                 }
                 else if(!m_fila2.empty()) //Se a fila 1 estiver vazia, verificamos a fila 2...
                 {
@@ -249,6 +278,17 @@ namespace TrabalhoAD
 
                     //Agenda o evento de conclusão do servico
                     m_eventos.push(Evento(termino_servico, m_tempo_atual + m_servico->proxima_chegada() ) );
+
+                    if (m_verbose)
+                    {
+                        printf("[Evento] Fregues tipico da fila 2 entra no servidor.\n");
+                        printf("-- Tempo evento: %lf\n", m_tempo_atual);
+                        printf("-- tamanho fila 1: %d\n", m_fila1.size());
+                        printf("-- tamanho fila 2: %d\n", m_fila2.size());
+                        if (m_servidor_ocupado == false) printf("-- servidor vazio\n\n");
+                        else printf("-- fregues no servidor pertence a fila %d\n\n", m_fregues_em_servico.fila_pertencente());
+                    }
+
                 }
             }
 
