@@ -49,6 +49,11 @@ void imprimeresultado_rodada(ResultadosConsolidados result, int rodada);
 void intervalos_confianca(vector<ResultadosConsolidados> &dados);
 
 /**
+  * Executa o benchmark para fazer a otimização da fase transiente.
+  */
+void roda_benchmark(void);
+
+/**
  * A classe main define a forma que o simulador será executado. Existem duas formas de determinar como será executado.
  * Forma 1:
  * O dado é passado através de parâmetros ao executar o programa. Os parâmetros são:
@@ -82,6 +87,7 @@ int main(int argc, char *argv[])
 
         static struct option long_options[] =
         {
+        {"benchmark",                   no_argument,            0, 'b'},
         {"ajuda",                       no_argument,            0, 'a'},
         {"sobre",                       no_argument,            0, 's'},
         {"verbose",                     required_argument,      0, 'v'},
@@ -100,7 +106,7 @@ int main(int argc, char *argv[])
 
         int option_index = 0;
 
-        opcao = getopt_long (argc, argv, "v:a::s::m:n:r:t:1:2:l:u:c:x:", long_options, &option_index);
+        opcao = getopt_long (argc, argv, "b::v:a::s::m:n:r:t:1:2:l:u:c:x:", long_options, &option_index);
 
         //printf("OPCAO = %c -- %d\n", opcao, opcao);
 
@@ -156,6 +162,9 @@ int main(int argc, char *argv[])
             printf("Trabalho final da disciplina Avaliacao e Desempenho, do curso de Ciencia da Computacao da UFRJ.\nDisciplina cursada em 2010.2\n");
             printf("Pagina do projeto: http://code.google.com/p/ad20102/\n");
             printf("********************************\n\n");
+            exit(0);
+        case 'b':
+            roda_benchmark();
             exit(0);
         case 'm':
             if (strcasecmp("Batch", optarg) == 0)
@@ -787,5 +796,66 @@ void intervalos_confianca(vector<ResultadosConsolidados> &dados)
     intervalo = INTCONF095 * (sqrt(estimador_var) / sqrt(dados.size()));
 
     printf("E[N] = %lf %lf [%lf] [%lf%%]\n\n", (estimador_media - intervalo < 0) ? 0 : estimador_media - intervalo, estimador_media + intervalo, 2.0 * intervalo, (200.0 * intervalo) / estimador_media);
+
+}
+
+void roda_benchmark(void)
+{
+    vector<ResultadosConsolidados> dados; // vetor com os resultados consolidados de todas as rodadas
+    Simulador *sim;
+    ResultadosConsolidados result;
+
+    modo = -1;
+    n_rodadas = -1;
+    t_rodada = -1;
+    t_transiente = 0;
+
+    if (seed_gerador_chegadas == -1 || seed_gerador_tempo_servico == -1)
+    {
+        sim = new Simulador(fila1, fila2, tx_lambda, tx_mi);
+
+        //sementes sendo passadas para a variável para poder retornar a chamada do programa.
+        seed_gerador_tempo_servico = sim->semente_gerador_tempo_servico();
+        seed_gerador_chegadas = sim->semente_gerador_chegadas();
+    }
+    else
+    {
+        sim = new Simulador(fila1, fila2, tx_lambda, tx_mi, seed_gerador_chegadas, seed_gerador_tempo_servico);
+    }
+
+    sim->define_verbose(verbose);
+
+    if (verb == 2) printf("[INICIO] Executando fase transiente\n");
+
+    sim->executa(0, false);
+
+    if (verb == 2) printf("[FIM] Termino fase transiente\n");
+
+    for (n_rodadas = 1; n_rodadas <= 1000; n_rodadas++)
+    {
+        for (t_rodada = 1; t_rodada <= 1000; t_rodada++)
+        {
+            if (verb == 2) printf("[INICIO] Executando rodada %d com t_rodada %d\n", n_rodadas, t_rodada);
+
+            //Executando a rodada i
+            result = sim->executa(t_rodada, true);
+
+            if (verb == 2) printf("[FIM] Termino da rodada %d com t_rodada %d\n\n", n_rodadas, t_rodada);
+
+            // Armazena em um vetor os resultados
+            dados.push_back(result);
+
+            sim->limpa_dados_coletados();
+
+            intervalos_confianca(dados);
+
+            imprime_parametros_execucao();
+        }
+
+
+    }
+
+    delete sim;
+
 
 }
