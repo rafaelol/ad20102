@@ -1,21 +1,21 @@
 #include "eventos.h"
 
-namespace TrabalhoAD {
-
-Evento::Evento(ETipo tipo, double tempo)
+namespace TrabalhoAD
 {
-	m_tipo = tipo;
-	m_tempo = tempo;
-}
+    Evento::Evento(ETipo tipo, double tempo)
+    {
+        m_tipo = tipo;
+        m_tempo = tempo;
+    }
 
-ETipo Evento::tipo() const
-{
-	return m_tipo;
-}
+    ETipo Evento::tipo() const
+    {
+        return m_tipo;
+    }
 
-double Evento::tempo() const
-{
-	return m_tempo;
-}
+    double Evento::tempo() const
+    {
+        return m_tempo;
+    }
 
 }
