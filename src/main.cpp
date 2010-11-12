@@ -106,7 +106,7 @@ int main(int argc, char *argv[])
 
         int option_index = 0;
 
-        opcao = getopt_long (argc, argv, "b::v:a::s::m:n:r:t:1:2:l:u:c:x:", long_options, &option_index);
+        opcao = getopt_long (argc, argv, "v:m:n:r:t:1:2:l:u:c:x:", long_options, &option_index);
 
         //printf("OPCAO = %c -- %d\n", opcao, opcao);
 
