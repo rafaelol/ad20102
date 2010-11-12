@@ -237,9 +237,12 @@ int main(int argc, char *argv[])
     }
     else if (n_rodadas < 10)
     {
-        printf("Voce determinou um valor menor que 10 para quantidade de rodadas, valor onde t-student nao e assintotico.\n");
-        printf("Escolha a quantidade de rodadas:");
-        scanf("%d",&n_rodadas);
+        do
+        {
+            printf("Voce determinou um valor menor que 10 para quantidade de rodadas, valor onde t-student nao e assintotico.\n");
+            printf("Escolha a quantidade de rodadas:");
+            scanf("%d",&n_rodadas);
+        } while (n_rodadas < 10);
     }
     else
     {
@@ -354,7 +357,7 @@ void modobatch(void)
 
     if (seed_gerador_chegadas == -1 || seed_gerador_tempo_servico == -1)
     {
-        sim = new Simulador(fila1, fila2, tx_lambda, tx_mi, verbose);
+        sim = new Simulador(fila1, fila2, tx_lambda, tx_mi);
 
         //sementes sendo passadas para a variável para poder retornar a chamada do programa.
         seed_gerador_tempo_servico = sim->semente_gerador_tempo_servico();
@@ -362,8 +365,10 @@ void modobatch(void)
     }
     else
     {
-        sim = new Simulador(fila1, fila2, tx_lambda, tx_mi, verbose, seed_gerador_chegadas, seed_gerador_tempo_servico);
+        sim = new Simulador(fila1, fila2, tx_lambda, tx_mi, seed_gerador_chegadas, seed_gerador_tempo_servico);
     }
+
+    sim->define_verbose(verbose);
 
     //Executando fase transiente
 
@@ -397,7 +402,7 @@ void modoreplicativo(void)
 
     if (seed_gerador_chegadas == -1 || seed_gerador_tempo_servico == -1)
     {
-        sim = new Simulador(fila1, fila2, tx_lambda, tx_mi, verbose);
+        sim = new Simulador(fila1, fila2, tx_lambda, tx_mi);
 
         //sementes sendo passadas para a variável para poder retornar a chamada do programa.
         seed_gerador_tempo_servico = sim->semente_gerador_tempo_servico();
@@ -405,8 +410,10 @@ void modoreplicativo(void)
     }
     else
     {
-        sim = new Simulador(fila1, fila2, tx_lambda, tx_mi, verbose, seed_gerador_chegadas, seed_gerador_tempo_servico);
+        sim = new Simulador(fila1, fila2, tx_lambda, tx_mi, seed_gerador_chegadas, seed_gerador_tempo_servico);
     }
+
+    sim->define_verbose(verbose);
 
     for (int i = 0; i < n_rodadas; i++)
     {
