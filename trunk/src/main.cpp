@@ -10,6 +10,8 @@ using namespace TrabalhoAD;
 
 #define INTCONF095  1.96
 
+bool verbose = false;
+int verb;
 int modo = -1;
 int n_rodadas = -1;
 int t_rodada = -1;
@@ -30,6 +32,11 @@ void modobatch(void);
  * A funcao modobatch inicia o simulador através do modo replicativo.
  */
 void modoreplicativo(void);
+
+/**
+  * No final da execução do simulador, retorna os parâmetros que foram usados para a simulação, para o caso de fazer a mesma simulação futuramente.
+  */
+void imprime_parametros_execucao(void);
 
 /**
  * Imprime os dados estatisticos coletados em uma rodada de uma simulação.
@@ -64,7 +71,6 @@ void intervalos_confianca(vector<ResultadosConsolidados> &dados);
  */
 int main(int argc, char *argv[])
 {
-    bool verbose = false;
     int opcao;
 
     printf("Bem Vindo ao Cmulador, um simulador de filas.\n");
@@ -78,7 +84,7 @@ int main(int argc, char *argv[])
         {
         {"ajuda",                       no_argument,            0, 'a'},
         {"sobre",                       no_argument,            0, 's'},
-        {"verbose",                     no_argument,            0, 'v'},
+        {"verbose",                     required_argument,      0, 'v'},
         {"modo",                        required_argument,      0, 'm'},
         {"n_rodadas",                   required_argument,      0, 'n'},
         {"t_rodada",                    required_argument,      0, 'r'},
@@ -94,7 +100,7 @@ int main(int argc, char *argv[])
 
         int option_index = 0;
 
-        opcao = getopt_long (argc, argv, "v::a::s::m:n:r:t:1:2:l:u:c:x:", long_options, &option_index);
+        opcao = getopt_long (argc, argv, "v:a::s::m:n:r:t:1:2:l:u:c:x:", long_options, &option_index);
 
         //printf("OPCAO = %c -- %d\n", opcao, opcao);
 
@@ -103,7 +109,19 @@ int main(int argc, char *argv[])
         switch(opcao)
         {
         case 'v':
-            verbose = true;
+            verb = atoi(optarg);
+            if (verb == 0)
+            {
+                verbose = false;
+            }
+            else if(verb == 1)
+            {
+                verbose = false;
+            }
+            else if(verb == 2)
+            {
+                verbose = true;
+            }
             break;
         case 'a':
             printf("********************************\n");
@@ -121,6 +139,7 @@ int main(int argc, char *argv[])
             printf("\"--seed_gerador_chegadas\"(-c): Semente utilizada para inicializar o gerador de chegadas.\n");
             printf("\"--seed_gerador_tempo_servico\"(-x): Semente utilizada para inicializar o tempo de servico.\n");
             printf("\"--sobre\"(-s): Sobre o projeto.\n");
+            printf("\"--verbose\"(-v): Execucao do programa em modo verborragico.\n");
             printf("Ao ser executado, o programa verifica os parâmetros usados, e perguntara iterativamente os parametros obrigatorios que faltam.\n");
             printf("Os seeds geradores somente sao passados atraves de parametros. Eles nao serao perguntados, pois sao opcionais.\n");
             printf("********************************\n\n");
@@ -335,11 +354,15 @@ void modobatch(void)
 
     if (seed_gerador_chegadas == -1 || seed_gerador_tempo_servico == -1)
     {
-        sim = new Simulador(fila1, fila2, tx_lambda, tx_mi);
+        sim = new Simulador(fila1, fila2, tx_lambda, tx_mi, verbose);
+
+        //sementes sendo passadas para a variável para poder retornar a chamada do programa.
+        seed_gerador_tempo_servico = sim->semente_gerador_tempo_servico();
+        seed_gerador_chegadas = sim->semente_gerador_chegadas();
     }
     else
     {
-        sim = new Simulador(fila1, fila2, tx_lambda, tx_mi, seed_gerador_chegadas, seed_gerador_tempo_servico);
+        sim = new Simulador(fila1, fila2, tx_lambda, tx_mi, verbose, seed_gerador_chegadas, seed_gerador_tempo_servico);
     }
 
     //Executando fase transiente
@@ -352,13 +375,16 @@ void modobatch(void)
         result = sim->executa(t_rodada, true);
         // Armazena em um vetor os resultados
         dados.push_back(result);
-
-        imprimeresultado_rodada(result, i);
+        if (verb > 0)
+        {
+            imprimeresultado_rodada(result, i);
+        }
         sim->limpa_dados_coletados();
     }
 
-
     intervalos_confianca(dados);
+
+    imprime_parametros_execucao();
 
     delete sim;
 }
@@ -371,11 +397,15 @@ void modoreplicativo(void)
 
     if (seed_gerador_chegadas == -1 || seed_gerador_tempo_servico == -1)
     {
-        sim = new Simulador(fila1, fila2, tx_lambda, tx_mi);
+        sim = new Simulador(fila1, fila2, tx_lambda, tx_mi, verbose);
+
+        //sementes sendo passadas para a variável para poder retornar a chamada do programa.
+        seed_gerador_tempo_servico = sim->semente_gerador_tempo_servico();
+        seed_gerador_chegadas = sim->semente_gerador_chegadas();
     }
     else
     {
-        sim = new Simulador(fila1, fila2, tx_lambda, tx_mi, seed_gerador_chegadas, seed_gerador_tempo_servico);
+        sim = new Simulador(fila1, fila2, tx_lambda, tx_mi, verbose, seed_gerador_chegadas, seed_gerador_tempo_servico);
     }
 
     for (int i = 0; i < n_rodadas; i++)
@@ -390,12 +420,52 @@ void modoreplicativo(void)
         // Armazena em um vetor os resultados
         dados.push_back(result);
 
-    	imprimeresultado_rodada(result, i);
-	sim->reinicia_simulador();
+        if (verb > 0)
+        {
+            imprimeresultado_rodada(result, i);
+        }
+
+        sim->reinicia_simulador();
     }
 
-
     intervalos_confianca(dados);
+
+    imprime_parametros_execucao();
+
+    delete sim;
+}
+
+void imprime_parametros_execucao(void)
+{
+    printf("Voce pode executar novamente esta simulacao com os seguintes parametros:\n");
+    printf("-m ");
+    if (modo == 1)
+    {
+        printf("batch ");
+    }
+    else
+    {
+        printf("replicativo ");
+    }
+    printf("-n %d -r %d -t %d -1 ", n_rodadas, t_rodada, t_transiente);
+    if (fila1 == FIFO)
+    {
+        printf("FCFS ");
+    }
+    else
+    {
+        printf("LCFS ");
+    }
+    printf("-2 ");
+    if (fila2 == FIFO)
+    {
+        printf("FCFS ");
+    }
+    else
+    {
+        printf("LCFS ");
+    }
+    printf("-l %lf -u %lf -c %ld -x %ld\n", tx_lambda, tx_mi, seed_gerador_chegadas, seed_gerador_tempo_servico);
 }
 
 void imprimeresultado_rodada(ResultadosConsolidados result, int rodada)
@@ -429,15 +499,15 @@ void intervalos_confianca(vector<ResultadosConsolidados> &dados)
     estimador_media = 0.0;
     for(unsigned int i = 0; i < dados.size(); i++)
     {
-	estimador_media += (double)dados[i].fila1.X / dados[i].quantidade;
+        estimador_media += (double)dados[i].fila1.X / dados[i].quantidade;
     }
     estimador_media /= (double)dados.size();
 
     estimador_var = 0.0;
     for(unsigned int i = 0; i < dados.size(); i++)
     {
-	estimador_var += (((double)dados[i].fila1.X / dados[i].quantidade) - estimador_media) * 
-			 (((double)dados[i].fila1.X / dados[i].quantidade) - estimador_media);
+        estimador_var += (((double)dados[i].fila1.X / dados[i].quantidade) - estimador_media) *
+                         (((double)dados[i].fila1.X / dados[i].quantidade) - estimador_media);
     }
     estimador_var /= (double)(dados.size() - 1);
 
@@ -449,15 +519,15 @@ void intervalos_confianca(vector<ResultadosConsolidados> &dados)
     estimador_media = 0.0;
     for(unsigned int i = 0; i < dados.size(); i++)
     {
-	estimador_media += (double)dados[i].fila1.W / dados[i].quantidade;
+        estimador_media += (double)dados[i].fila1.W / dados[i].quantidade;
     }
     estimador_media /= (double)dados.size();
 
     estimador_var = 0.0;
     for(unsigned int i = 0; i < dados.size(); i++)
     {
-	estimador_var += (((double)dados[i].fila1.W / dados[i].quantidade) - estimador_media) * 
-			 (((double)dados[i].fila1.W / dados[i].quantidade) - estimador_media);
+        estimador_var += (((double)dados[i].fila1.W / dados[i].quantidade) - estimador_media) *
+                         (((double)dados[i].fila1.W / dados[i].quantidade) - estimador_media);
     }
     estimador_var /= (double)(dados.size() - 1);
 
@@ -470,17 +540,17 @@ void intervalos_confianca(vector<ResultadosConsolidados> &dados)
     estimador_media = 0.0;
     for(unsigned int i = 0; i < dados.size(); i++)
     {
-	estimador_media += ((double)dados[i].fila1.W_quad / dados[i].quantidade) -
-			   (((double)dados[i].fila1.W / dados[i].quantidade) * ((double)dados[i].fila1.W / dados[i].quantidade));
+        estimador_media += ((double)dados[i].fila1.W_quad / dados[i].quantidade) -
+                           (((double)dados[i].fila1.W / dados[i].quantidade) * ((double)dados[i].fila1.W / dados[i].quantidade));
     }
     estimador_media /= (double)dados.size();
 
     estimador_var = 0.0;
     for(unsigned int i = 0; i < dados.size(); i++)
     {
-	double temp = ((double)dados[i].fila1.W_quad / dados[i].quantidade) -
-		      (((double)dados[i].fila1.W / dados[i].quantidade) * ((double)dados[i].fila1.W / dados[i].quantidade));
-	estimador_var += (temp - estimador_media) * 
+        double temp = ((double)dados[i].fila1.W_quad / dados[i].quantidade) -
+                      (((double)dados[i].fila1.W / dados[i].quantidade) * ((double)dados[i].fila1.W / dados[i].quantidade));
+	estimador_var += (temp - estimador_media) *
 			 (temp - estimador_media);
     }
     estimador_var /= (double)(dados.size() - 1);
@@ -494,15 +564,15 @@ void intervalos_confianca(vector<ResultadosConsolidados> &dados)
     estimador_media = 0.0;
     for(unsigned int i = 0; i < dados.size(); i++)
     {
-	estimador_media += (double)dados[i].fila1.T / dados[i].quantidade;
+        estimador_media += (double)dados[i].fila1.T / dados[i].quantidade;
     }
     estimador_media /= (double)dados.size();
 
     estimador_var = 0.0;
     for(unsigned int i = 0; i < dados.size(); i++)
     {
-	estimador_var += (((double)dados[i].fila1.T / dados[i].quantidade) - estimador_media) * 
-			 (((double)dados[i].fila1.T / dados[i].quantidade) - estimador_media);
+        estimador_var += (((double)dados[i].fila1.T / dados[i].quantidade) - estimador_media) *
+                         (((double)dados[i].fila1.T / dados[i].quantidade) - estimador_media);
     }
     estimador_var /= (double)(dados.size() - 1);
 
@@ -515,15 +585,15 @@ void intervalos_confianca(vector<ResultadosConsolidados> &dados)
     estimador_media = 0.0;
     for(unsigned int i = 0; i < dados.size(); i++)
     {
-	estimador_media += (double)dados[i].fila1.Nq / dados[i].quantidade;
+        estimador_media += (double)dados[i].fila1.Nq / dados[i].quantidade;
     }
     estimador_media /= (double)dados.size();
 
     estimador_var = 0.0;
     for(unsigned int i = 0; i < dados.size(); i++)
     {
-	estimador_var += (((double)dados[i].fila1.Nq / dados[i].quantidade) - estimador_media) * 
-			 (((double)dados[i].fila1.Nq / dados[i].quantidade) - estimador_media);
+        estimador_var += (((double)dados[i].fila1.Nq / dados[i].quantidade) - estimador_media) *
+                         (((double)dados[i].fila1.Nq / dados[i].quantidade) - estimador_media);
     }
     estimador_var /= (double)(dados.size() - 1);
 
@@ -536,15 +606,15 @@ void intervalos_confianca(vector<ResultadosConsolidados> &dados)
     estimador_media = 0.0;
     for(unsigned int i = 0; i < dados.size(); i++)
     {
-	estimador_media += (double)dados[i].fila1.N / dados[i].quantidade;
+        estimador_media += (double)dados[i].fila1.N / dados[i].quantidade;
     }
     estimador_media /= (double)dados.size();
 
     estimador_var = 0.0;
     for(unsigned int i = 0; i < dados.size(); i++)
     {
-	estimador_var += (((double)dados[i].fila1.N / dados[i].quantidade) - estimador_media) * 
-			 (((double)dados[i].fila1.N / dados[i].quantidade) - estimador_media);
+        estimador_var += (((double)dados[i].fila1.N / dados[i].quantidade) - estimador_media) *
+                         (((double)dados[i].fila1.N / dados[i].quantidade) - estimador_media);
     }
     estimador_var /= (double)(dados.size() - 1);
 
@@ -559,15 +629,15 @@ void intervalos_confianca(vector<ResultadosConsolidados> &dados)
     estimador_media = 0.0;
     for(unsigned int i = 0; i < dados.size(); i++)
     {
-	estimador_media += (double)dados[i].fila2.X / dados[i].quantidade;
+        estimador_media += (double)dados[i].fila2.X / dados[i].quantidade;
     }
     estimador_media /= (double)dados.size();
 
     estimador_var = 0.0;
     for(unsigned int i = 0; i < dados.size(); i++)
     {
-	estimador_var += (((double)dados[i].fila2.X / dados[i].quantidade) - estimador_media) * 
-			 (((double)dados[i].fila2.X / dados[i].quantidade) - estimador_media);
+        estimador_var += (((double)dados[i].fila2.X / dados[i].quantidade) - estimador_media) *
+                         (((double)dados[i].fila2.X / dados[i].quantidade) - estimador_media);
     }
     estimador_var /= (double)(dados.size() - 1);
 
@@ -580,15 +650,15 @@ void intervalos_confianca(vector<ResultadosConsolidados> &dados)
     estimador_media = 0.0;
     for(unsigned int i = 0; i < dados.size(); i++)
     {
-	estimador_media += (double)dados[i].fila2.W / dados[i].quantidade;
+        estimador_media += (double)dados[i].fila2.W / dados[i].quantidade;
     }
     estimador_media /= (double)dados.size();
 
     estimador_var = 0.0;
     for(unsigned int i = 0; i < dados.size(); i++)
     {
-	estimador_var += (((double)dados[i].fila2.W / dados[i].quantidade) - estimador_media) * 
-			 (((double)dados[i].fila2.W / dados[i].quantidade) - estimador_media);
+        estimador_var += (((double)dados[i].fila2.W / dados[i].quantidade) - estimador_media) *
+                         (((double)dados[i].fila2.W / dados[i].quantidade) - estimador_media);
     }
     estimador_var /= (double)(dados.size() - 1);
 
@@ -600,17 +670,17 @@ void intervalos_confianca(vector<ResultadosConsolidados> &dados)
     estimador_media = 0.0;
     for(unsigned int i = 0; i < dados.size(); i++)
     {
-	estimador_media += ((double)dados[i].fila2.W_quad / dados[i].quantidade) -
-			   (((double)dados[i].fila2.W / dados[i].quantidade) * ((double)dados[i].fila2.W / dados[i].quantidade));
+        estimador_media += ((double)dados[i].fila2.W_quad / dados[i].quantidade) -
+                           (((double)dados[i].fila2.W / dados[i].quantidade) * ((double)dados[i].fila2.W / dados[i].quantidade));
     }
     estimador_media /= (double)dados.size();
 
     estimador_var = 0.0;
     for(unsigned int i = 0; i < dados.size(); i++)
     {
-	double temp = ((double)dados[i].fila2.W_quad / dados[i].quantidade) -
-		      (((double)dados[i].fila2.W / dados[i].quantidade) * ((double)dados[i].fila2.W / dados[i].quantidade));
-	estimador_var += (temp - estimador_media) * 
+        double temp = ((double)dados[i].fila2.W_quad / dados[i].quantidade) -
+                      (((double)dados[i].fila2.W / dados[i].quantidade) * ((double)dados[i].fila2.W / dados[i].quantidade));
+	estimador_var += (temp - estimador_media) *
 			 (temp - estimador_media);
     }
     estimador_var /= (double)(dados.size() - 1);
@@ -623,15 +693,15 @@ void intervalos_confianca(vector<ResultadosConsolidados> &dados)
     estimador_media = 0.0;
     for(unsigned int i = 0; i < dados.size(); i++)
     {
-	estimador_media += (double)dados[i].fila2.T / dados[i].quantidade;
+        estimador_media += (double)dados[i].fila2.T / dados[i].quantidade;
     }
     estimador_media /= (double)dados.size();
 
     estimador_var = 0.0;
     for(unsigned int i = 0; i < dados.size(); i++)
     {
-	estimador_var += (((double)dados[i].fila2.T / dados[i].quantidade) - estimador_media) * 
-			 (((double)dados[i].fila2.T / dados[i].quantidade) - estimador_media);
+        estimador_var += (((double)dados[i].fila2.T / dados[i].quantidade) - estimador_media) *
+                         (((double)dados[i].fila2.T / dados[i].quantidade) - estimador_media);
     }
     estimador_var /= (double)(dados.size() - 1);
 
@@ -644,15 +714,15 @@ void intervalos_confianca(vector<ResultadosConsolidados> &dados)
     estimador_media = 0.0;
     for(unsigned int i = 0; i < dados.size(); i++)
     {
-	estimador_media += (double)dados[i].fila2.Nq / dados[i].quantidade;
+        estimador_media += (double)dados[i].fila2.Nq / dados[i].quantidade;
     }
     estimador_media /= (double)dados.size();
 
     estimador_var = 0.0;
     for(unsigned int i = 0; i < dados.size(); i++)
     {
-	estimador_var += (((double)dados[i].fila2.Nq / dados[i].quantidade) - estimador_media) * 
-			 (((double)dados[i].fila2.Nq / dados[i].quantidade) - estimador_media);
+        estimador_var += (((double)dados[i].fila2.Nq / dados[i].quantidade) - estimador_media) *
+                         (((double)dados[i].fila2.Nq / dados[i].quantidade) - estimador_media);
     }
     estimador_var /= (double)(dados.size() - 1);
 
@@ -665,15 +735,15 @@ void intervalos_confianca(vector<ResultadosConsolidados> &dados)
     estimador_media = 0.0;
     for(unsigned int i = 0; i < dados.size(); i++)
     {
-	estimador_media += (double)dados[i].fila2.N / dados[i].quantidade;
+        estimador_media += (double)dados[i].fila2.N / dados[i].quantidade;
     }
     estimador_media /= (double)dados.size();
 
     estimador_var = 0.0;
     for(unsigned int i = 0; i < dados.size(); i++)
     {
-	estimador_var += (((double)dados[i].fila2.N / dados[i].quantidade) - estimador_media) * 
-			 (((double)dados[i].fila2.N / dados[i].quantidade) - estimador_media);
+        estimador_var += (((double)dados[i].fila2.N / dados[i].quantidade) - estimador_media) *
+                         (((double)dados[i].fila2.N / dados[i].quantidade) - estimador_media);
     }
     estimador_var /= (double)(dados.size() - 1);
 
@@ -682,4 +752,3 @@ void intervalos_confianca(vector<ResultadosConsolidados> &dados)
     printf("E[N] = %lf %lf [%lf] [%lf%%]\n\n", (estimador_media - intervalo < 0) ? 0 : estimador_media - intervalo, estimador_media + intervalo, 2.0 * intervalo, (200.0 * intervalo) / estimador_media);
 
 }
-
