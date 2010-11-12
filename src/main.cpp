@@ -337,14 +337,14 @@ int main(int argc, char *argv[])
             printf("Você ja escolheu o valor da taxa mi: %f\n", tx_mi);
         }
 
-        if (tx_lambda / tx_mi > 1.0)
+        if (tx_lambda / tx_mi >= 1.0)
         {
             printf("As taxas escolhidas implicam em um ro maior que um. Isso faz as filas crescerem infinitamente.\n");
             printf("Escolha novos valores para tx_lambda e tx_mi.\n");
             tx_lambda = -1;
             tx_mi = -1;
         }
-    } while(tx_lambda / tx_mi > 1.0);
+    } while(tx_lambda / tx_mi >= 1.0);
 
     if (modo == 1)
     {
