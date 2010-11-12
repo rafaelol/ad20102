@@ -27,7 +27,7 @@ namespace TrabalhoAD
 
 
 
-    Simulador::Simulador(TipoFila fila1, TipoFila fila2, double taxa_chegada, double taxa_servico, bool verbose)
+    Simulador::Simulador(TipoFila fila1, TipoFila fila2, double taxa_chegada, double taxa_servico)
     {
         m_tipo_fila1 = fila1;
         m_tipo_fila2 = fila2;
@@ -35,13 +35,13 @@ namespace TrabalhoAD
         m_chegada = new DistExponencial(taxa_chegada);
         m_servico = new DistExponencial(taxa_servico);
 
-        m_verbose = verbose;
+        m_verbose = false;
 
         setup();
     }
 
 
-    Simulador::Simulador(TipoFila fila1, TipoFila fila2, double taxa_chegada, double taxa_servico, bool verbose, long int semente_chegada, long int semente_servico)
+    Simulador::Simulador(TipoFila fila1, TipoFila fila2, double taxa_chegada, double taxa_servico, long int semente_chegada, long int semente_servico)
     {
         m_tipo_fila1 = fila1;
         m_tipo_fila2 = fila2;
@@ -49,7 +49,7 @@ namespace TrabalhoAD
         m_chegada = new DistExponencial(taxa_chegada, semente_chegada);
         m_servico = new DistExponencial(taxa_servico, semente_servico);
 
-        m_verbose = verbose;
+        m_verbose = false;
 
         setup();
     }

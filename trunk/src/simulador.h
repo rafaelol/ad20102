@@ -92,10 +92,9 @@ namespace TrabalhoAD
      * \param fila2 Modo de serviço da Fila 2, FCFS ou LCFS.
      * \param taxa_chegada Taxa lambda de chegada de clientes ao sistema.
      * \param taxa_servico Taxa mi do tempo de serviço.
-     * \param verbose Define se a execução do simulador será verborrágica.
      *
      */
-    Simulador(TipoFila fila1, TipoFila fila2, double taxa_chegada, double taxa_servico, bool verbose);
+    Simulador(TipoFila fila1, TipoFila fila2, double taxa_chegada, double taxa_servico);
 
 
     /**
@@ -107,10 +106,9 @@ namespace TrabalhoAD
      * \param taxa_servico Taxa mi do tempo de serviço.
      * \param semente_chegada Semente para alimentar o gerador das chegadas do sistema.
      * \param semente_servico Semente para alimentar o gerador dos tempos de serviço do sistema.
-     * \param verbose Define se a execução do simulador será verborrágica.
      *
      */
-    Simulador(TipoFila fila1, TipoFila fila2, double taxa_chegada, double taxa_servico, bool verbose, long int semente_chegada, long int semente_servico);
+    Simulador(TipoFila fila1, TipoFila fila2, double taxa_chegada, double taxa_servico, long int semente_chegada, long int semente_servico);
 
     /**
      * Destrutor responsável por desalocar os recursos do simulador.
