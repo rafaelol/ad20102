@@ -141,6 +141,17 @@ namespace TrabalhoAD
                     m_fila1.push_front(novoFregues);
                 }
 
+                // Impressoes do modo verborragico
+                if (m_verbose)
+                {
+                    printf("[Evento] Fregues tipico chega no sistema.\n");
+                    printf("-- Tempo evento: %lf\n", m_tempo_atual);
+                    printf("-- tamanho fila 1: %d\n", m_fila1.size());
+                    printf("-- tamanho fila 2: %d\n", m_fila2.size());
+                    if (m_servidor_ocupado == false) printf("-- servidor vazio\n");
+                    else printf("-- fregues no servidor pertence a fila %d\n\n", m_fregues_em_servico.fila_pertencente());
+                }
+
                 //Programa a próxima chegada
                 m_eventos.push(Evento(proxima_chegada_no_sistema, m_tempo_atual + m_chegada->proxima_chegada() ) );
             }
