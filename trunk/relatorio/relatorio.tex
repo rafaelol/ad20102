@@ -37,7 +37,7 @@ Trabalho de Simulaçao: Implementação e análise de um simulador.
 \large
 
 \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\\
-Bruno C. Buss\\(Implementação e documentação)\\
+Bruno C. Buss\\(Implementação e documentação do código)\\
 
 \vspace{0.5cm}
 
@@ -47,7 +47,7 @@ Felipe P. Martinez\\()\\
 \vspace{0.5cm}
 
 \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\\
-Rafael O. Lopes\\(Implementação e documentação)\\
+Rafael O. Lopes\\(Implementação, documentação do código e relatório final)\\
 
 \vspace{0.5cm}
 
@@ -81,11 +81,52 @@ Professor: Paulo Henrique de Aguiar Rodrigues\\
 
 \section{Introdução}
 \subsection{Funcionamento Geral do Simulador}
+    O simulador funciona de maneira simples. Ao executar o programa, parâmetros são passados para que se inicie a simulação. Tais parâmetros são:
+
+\begin {itemize}
+\item Modo: O usuário escolhe qual o parâmetro de execução da simulação, se será replicativo ou batch.
+
+\item Quantidade de rodadas: O usuário decide a quantidade de rodadas. A quantidade de rodadas deve ser superior a 10, pois apenas com quantidades de rodadas
+superiores a 10 temos um valor assintótico na tabela t-student para o cálculo do intervalo de confiança.
+
+\item Tamanho da rodada: Determina a quantidade de fregueses típicos em cada rodada.
+
+\item Tamanho da fase transiente: Determina a quantidade de fregueses típicos existirão na fase transiente, de forma a termos um sistema em equilíbrio nas rodadas.
+
+\item Tipo da fila 1: O tipo da fila pode ser FCFS(fila), ou LCFS(pilha).
+
+\item Tipo da fila 2: Assim como a fila 1, a fila 2 pode ser FCFS ou LCFS.
+
+\item Taxa lambda: Determina a taxa de chegada de chegada de fregueses no sistema.
+
+\item Taxa mi: Determina a taxa de serviço de fregueses no sistema.
+\end {itemize}
+
+    Além desses parâmetros, existem outros dois parâmetros opcionais para o simulador, que determinam a semente geradora de chegadas e semente geradora
+de tempo de serviço.
+
+    Após a passagem de parâmetros, o simulador se inicia. A cada rodada, o simulador fica em loop aguardando eventos acontecerem. O loop se encerra quando for servido pelo
+servidor a quantidade determinada pelo parâmetro como tamanho da rodada. Os eventos que acontecem são:
+
+\begin {itemize}
+\item Chegada de um freguês na fila 1: Um freguês chega e é inserido na fila1, de acordo com a disciplina de atendimento da fila. Se for FCFS, é inserido no final da fila
+se for LCFS, adicionado no início da fila.
+
+\item Término do serviço do freguês no servidor: No momento que um freguês termina seu atendimento no servidor, é verificado qual a fila original dele. Se for a fila 1,
+ele é adicionado na fila 2, de acordo com a disciplina de atendimento. Se o freguês era da fila 2, dados estatísticos são coletados e é retirado do sistema.
+\end {itemize}
+
+    Após a verificação de qual evento ocorreu, verifica-se se o servidor está vazio. Caso esteja vazio, é inserido no servidor um freguês, de acordo com as regras
+determinadas: sempre que houver um freguês na fila 1, ele é atendido, e os fregueses da fila 2 só serão atendidos no momento em que não houver ninguém na fila 1.
+
+    Após a execução de todas as rodadas, dados estatísticos são coletados. No final da execução de todas as rodadas, é calculado o intervalo de confiança para cada
+variável aleatória. O programa se encerra com a disponibilização dos parâmetros, incluindo as sementes geradoras, para o caso de repetir a simulação, caso desejado.
+
 \subsection{Linguagem de Programação Utilizada}
     Foi utilizada a linguagem de programação C++. O compilador utilizado para desenvolver o sistema foi o GCC 4.4, presente em qualquer distribuição atualizada do Linux, de forma que o sistema pode ser compilado em qualquer ambiente que possua o GCC 4.4 ou superior instalado.
-    
+
     A escolha da linguagem C++ se deve à possibilidade de lidar com orientação a objetos, tornando o código mais sucinto e de melhor entendimento. Um outro fato é que C++ é a linguagem com que os membros do grupo estão melhor familiarizados, tornando o desenvolvimento do sistema mais fácil.
-    
+
     O sistema não tem garantias de funcionamento no sistema operacional Windows, porque os compiladores de C++ para Windows(MinGW) utilizam versões anteriores do GCC, que não possuem recursos utilizados para o desenvolvimento do sistema. Um dos recursos é o responsável pela geração de sementes pseudo-aleatórias.
 \subsection{Estruturas Internas Utilizadas}
 \subsection{Implementação da Lista de Eventos}
