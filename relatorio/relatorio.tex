@@ -97,15 +97,16 @@ superiores a 10 temos um valor assintótico na tabela t-student para o cálculo 
 
 \item Tipo da fila 2: Assim como a fila 1, a fila 2 pode ser FCFS ou LCFS.
 
-\item Taxa lambda: Determina a taxa de chegada de chegada de fregueses no sistema.
+\item Taxa $\lambda$: Determina a taxa de chegada de chegada de fregueses no sistema.
 
-\item Taxa mi: Determina a taxa de serviço de fregueses no sistema.
+\item Taxa $\mu$: Determina a taxa de serviço de fregueses no sistema.
 \end {itemize}
 
     Além desses parâmetros, existem outros dois parâmetros opcionais para o simulador, que determinam a semente geradora de chegadas e semente geradora
 de tempo de serviço.
 
-    Após a passagem de parâmetros, o simulador se inicia. A cada rodada, o simulador fica em loop aguardando eventos acontecerem. O loop se encerra quando for servido pelo
+    Após a passagem de parâmetros, o simulador se inicia. O simulador utiliza eventos discretos, mas tempo contínuo. Portanto os eventos acontecem em instantes
+de tempo com valores reais. A cada rodada, o simulador fica em loop aguardando eventos acontecerem. O loop se encerra quando for servido pelo
 servidor a quantidade determinada pelo parâmetro como tamanho da rodada. Os eventos que acontecem são:
 
 \begin {itemize}
@@ -129,28 +130,38 @@ variável aleatória. O programa se encerra com a disponibilização dos parâme
 
     O sistema não tem garantias de funcionamento no sistema operacional Windows, porque os compiladores de C++ para Windows(MinGW) utilizam versões anteriores do GCC, que não possuem recursos utilizados para o desenvolvimento do sistema. Um dos recursos é o responsável pela geração de sementes pseudo-aleatórias.
 \subsection{Estruturas Internas Utilizadas}
+% Aqui comentamos sobre as classes do projeto, e alguns detalhes, como a utilização do rand do linux, ou de
 \subsection{Implementação da Lista de Eventos}
+% Creio que essa seção pode morrer, pois a lista de eventos já foi mencionada antes. Talvez possamos desenvolver melhor a parte de eventos lá.
 \subsection{Geração das Variáveis Aleatórias}
-\subsection{Método de análise de resultados}
-\subsection{Parâmetros Utilizados}
+% Aqui dizemos as variáveis aleatórias que temos, e como elas são calculadas(mencionar a inversa da exponencial etc)
+\subsection{Coleta de Estatísticas}
+% Falamos sobre a coleta de estatísticas e cálculo delas(Variância e IC).
+\subsection{Método de análise}
+% Aqui mencionamos que decidimos testar os dois métodos: Batch e Replicativo. E também falar um pouco sobre eles.
+% Acredito que essa seção pode morrer.
+%\subsection{Parâmetros Utilizados}
+% Essa sub-seção eu peguei do relatório do Jonas. No projeto deles, eles determinaram um valor para alguns parâmetros que nós tomamos como fixos. Creio que isso pode morrer.
 \subsection{Tempo Gasto Para Simulação}
+% Tempo que gastamos nos testes
 
 \pagebreak
 
 \section{Teste de Correção}
-
+% Aqui temos que provar que está correto.
+% Para fazer isso, devemos comparar os resultados da execução determinística com os resultados da execução exponencial.
 \pagebreak
 
 \section{Estimativa da fase transiente}
-
+% Benchmark do Buss
 \pagebreak
 
 \section{Tabelas com resultados e comentários pertinentes}
-
+% Tabelas, tabelas e tabelas. =)
 \pagebreak
 
 \section{Otimização}
-
+% O que falar exatamente aqui?
 \pagebreak
 
 \section{Conclusão}
