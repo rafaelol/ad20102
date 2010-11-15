@@ -502,21 +502,22 @@ void imprime_parametros_execucao(void)
     printf("Voce pode executar novamente esta simulacao com os seguintes parametros:\n");
     printf("cmulator ");
     
-    if(modo_benchmark == false)
+    if(modo_benchmark == true) printf("-b ");
+    else
     {
-	printf("-m ");
+        printf("-m ");
     
-	if (modo == 1)
-	{
-	    printf("batch ");
-	}
-	else
-	{
-	    printf("replicativo ");
-	}
+        if (modo == 1)
+        {
+            printf("batch ");
+        }
+        else
+        {
+            printf("replicativo ");
+        }
 	
 	
-	printf("-n %d -r %d -t %d ", n_rodadas, t_rodada, t_transiente);
+        printf("-n %d -r %d -t %d ", n_rodadas, t_rodada, t_transiente);
     }
     
     
@@ -832,6 +833,10 @@ void roda_benchmark(void)
     vector<ResultadosConsolidados> dados;
     Simulador *sim;
     ResultadosConsolidados result;
+    
+    int passo = 50;
+    int quantidade = 10000/passo;
+    
 
     
     if(verb >= 1) printf("Inicializando estruturas do benchmark...\n");
@@ -853,9 +858,9 @@ void roda_benchmark(void)
    
     if(verb >= 1) printf("Iniciando o benchmark...");
 
-    for(int j = 0; j < 10000; j++)
+    for(int j = 0; j < quantidade; j++)
     {      
-      result = sim->executa(1, true);
+      result = sim->executa(passo, true);
       
       dados.push_back(result);
     }
@@ -865,91 +870,80 @@ void roda_benchmark(void)
     //Ok... agora temos uma penca de dados...
     printf("Resultados do Benchmark:\n");
     
-    /*printf("E[X]: [media]\n");
-    for(int i = 0; i < 10000; i++)
-    {
-        printf("%f\n", dados[i].fila1.X / (double)(i+1));
-    }
-    printf("\n");*/
-    
     printf("Fila 1 - E[W]: [media]\n");
-    for(int i = 0; i < 10000; i++)
+    for(int i = 0; i < quantidade; i++)
     {
-        printf("%f\n", dados[i].fila1.W / (double)(i+1));
+        printf("%f\n", dados[i].fila1.W / (double)((i+1) * passo));
     }
     printf("\n");
     
     printf("Fila 1 - Var(W): [media]\n");
-    for(int i = 0; i < 10000; i++)
+    for(int i = 0; i < quantidade; i++)
     {
-        double var = (dados[i].fila1.W_quad / (double)(i+1)) - (dados[i].fila1.W / (double)(i+1));
+        double var = (dados[i].fila1.W_quad / (double)((i+1) * passo)) - (dados[i].fila1.W / (double)((i+1) * passo));
         printf("%f\n", (var < 0) ? 0 : var);
     }
     printf("\n");
     
     printf("Fila 1 - E[T]: [media]\n");
-    for(int i = 0; i < 10000; i++)
+    for(int i = 0; i < quantidade; i++)
     {
-        printf("%f\n", dados[i].fila1.T / (double)(i+1));
+        printf("%f\n", dados[i].fila1.T / (double)((i+1) * passo));
     }
     printf("\n");
     
     printf("Fila 1 - E[Nq]: [media]\n");
-    for(int i = 0; i < 10000; i++)
+    for(int i = 0; i < quantidade; i++)
     {
-        printf("%f\n", dados[i].fila1.Nq / (double)(i+1));
+        printf("%f\n", dados[i].fila1.Nq / (double)((i+1) * passo));
     }
     printf("\n");
     
     printf("Fila 1 - E[N]: [media]\n");
-    for(int i = 0; i < 10000; i++)
+    for(int i = 0; i < quantidade; i++)
     {
-        printf("%f\n", dados[i].fila1.N / (double)(i+1));
+        printf("%f\n", dados[i].fila1.N / (double)((i+1) * passo));
     }
     printf("\n\n\n");
-        
-    /*printf("E[X]: [media]\n");
-    for(int i = 0; i < 10000; i++)
-    {
-        printf("%f\n", dados[i].fila2.X / (double)(i+1));
-    }
-    printf("\n");*/
     
     printf("Fila 2 - E[W]: [media]\n");
-    for(int i = 0; i < 10000; i++)
+    for(int i = 0; i < quantidade; i++)
     {
-        printf("%f\n", dados[i].fila2.W / (double)(i+1));
+        printf("%f\n", dados[i].fila2.W / (double)((i+1) * passo));
     }
     printf("\n");
     
     printf("Fila 2 - Var(W): [media]\n");
-    for(int i = 0; i < 10000; i++)
+    for(int i = 0; i < quantidade; i++)
     {
-        double var = (dados[i].fila2.W_quad / (double)(i+1)) - (dados[i].fila2.W / (double)(i+1));
+        double var = (dados[i].fila2.W_quad / (double)((i+1) * passo)) - (dados[i].fila2.W / (double)((i+1) * passo));
         printf("%f\n", (var < 0) ? 0 : var);
     }
     printf("\n");
     
     printf("Fila 2 - E[T]: [media]\n");
-    for(int i = 0; i < 10000; i++)
+    for(int i = 0; i < quantidade; i++)
     {
-        printf("%f\n", dados[i].fila2.T / (double)(i+1));
+        printf("%f\n", dados[i].fila2.T / (double)((i+1) * passo));
     }
     printf("\n");
     
     printf("Fila 2 - E[Nq]: [media]\n");
-    for(int i = 0; i < 10000; i++)
+    for(int i = 0; i < quantidade; i++)
     {
-        printf("%f\n", dados[i].fila2.Nq / (double)(i+1));
+        printf("%f\n", dados[i].fila2.Nq / (double)((i+1) * passo));
     }
     printf("\n");
     
     printf("Fila 2 - E[N]: [media]\n");
-    for(int i = 0; i < 10000; i++)
+    for(int i = 0; i < quantidade; i++)
     {
-        printf("%f\n", dados[i].fila2.N / (double)(i+1));
+        printf("%f\n", dados[i].fila2.N / (double)((i+1) * passo));
     }
     printf("\n\n");
 
+    
+    imprime_parametros_execucao();
+    
     delete sim;
 }
