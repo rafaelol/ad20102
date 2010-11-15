@@ -11,6 +11,7 @@ using namespace TrabalhoAD;
 #define INTCONF095  1.96
 
 bool verbose = false;
+bool modo_benchmark = false;
 int verb;
 int modo = -1;
 int n_rodadas = -1;
@@ -107,7 +108,7 @@ int main(int argc, char *argv[])
 
         int option_index = 0;
 
-        opcao = getopt_long (argc, argv, "bv:asm:n:r:t:1:2:l:u:c:x:", long_options, &option_index);
+        opcao = getopt_long (argc, argv, "basv:m:n:r:t:1:2:l:u:c:x:", long_options, &option_index);
 
         //printf("OPCAO = %c -- %d\n", opcao, opcao);
 
@@ -166,8 +167,8 @@ int main(int argc, char *argv[])
             printf("********************************\n\n");
             exit(0);
         case 'b':
-            roda_benchmark();
-            exit(0);
+            modo_benchmark = true;
+	    break;
         case 'm':
             if (strcasecmp("Batch", optarg) == 0)
             {
@@ -226,7 +227,7 @@ int main(int argc, char *argv[])
     //printf("fila1 = %d\nfila2 = %d\ntx_lambda = %d\ntx_mi = %d\n", fila1, fila2, tx_lambda, tx_mi);
     //printf("seed__gerador_chegadas = %ld\nseed_gerador_tempo_servico = %ld\n", seed_gerador_chegadas, seed_gerador_tempo_servico);
 
-    if ((modo != 1) && (modo != 2))
+    if ((modo != 1) && (modo != 2) && modo_benchmark == false)
     {
         printf("Escolha o tipo de simulacao deseja fazer:\n");
         printf("1 - Batch\n");
@@ -234,50 +235,58 @@ int main(int argc, char *argv[])
         printf("Escolha o numero:");
         scanf("%d",&modo);
     }
-    else
+    else if(modo_benchmark == false)
     {
         printf("Você ja escolheu o modo de simulacao: ");
         if (modo == 1) printf("Batch\n");
         else printf("Replicativo\n");
     }
-
-    if (n_rodadas <= -1)
-    {
-        printf("Escolha a quantidade de rodadas:");
-        scanf("%d",&n_rodadas);
-    }
-    else if (n_rodadas < 10)
-    {
-        do
-        {
-            printf("Voce determinou um valor menor que 10 para quantidade de rodadas, valor onde t-student nao e assintotico.\n");
-            printf("Escolha a quantidade de rodadas:");
-            scanf("%d",&n_rodadas);
-        } while (n_rodadas < 10);
-    }
     else
     {
-        printf("Você ja escolheu a quantidade de rodadas: %d\n", n_rodadas);
+	printf("Simulador irá rodar no modo de benchmark para a fase transiente.\n");
     }
 
-    if (t_rodada <= -1)
-    {
-        printf("Escolha o tamanho de cada rodada: ");
-        scanf("%d",&t_rodada);
-    }
-    else
-    {
-        printf("Você ja escolheu o tamanho de cada rodada: %d\n", t_rodada);
-    }
 
-    if (t_transiente <= -1)
+    if(modo_benchmark == false)
     {
-        printf("Escolha o tamanho da fase transiente: ");
-        scanf("%d",&t_transiente);
-    }
-    else
-    {
-        printf("Você ja escolheu o tamanho da fase transiente: %d\n", t_transiente);
+	if (n_rodadas <= -1)
+	{
+	    printf("Escolha a quantidade de rodadas:");
+	    scanf("%d",&n_rodadas);
+	}
+	else if (n_rodadas < 10)
+	{
+	    do
+	    {
+		printf("Voce determinou um valor menor que 10 para quantidade de rodadas, valor onde t-student nao e assintotico.\n");
+		printf("Escolha a quantidade de rodadas:");
+		scanf("%d",&n_rodadas);
+	    } while (n_rodadas < 10);
+	}
+	else
+	{
+	    printf("Você ja escolheu a quantidade de rodadas: %d\n", n_rodadas);
+	}
+
+	if (t_rodada <= -1)
+	{
+	    printf("Escolha o tamanho de cada rodada: ");
+	    scanf("%d",&t_rodada);
+	}
+	else
+	{
+	    printf("Você ja escolheu o tamanho de cada rodada: %d\n", t_rodada);
+	}
+
+	if (t_transiente <= -1)
+	{
+	    printf("Escolha o tamanho da fase transiente: ");
+	    scanf("%d",&t_transiente);
+	}
+	else
+	{
+	    printf("Você ja escolheu o tamanho da fase transiente: %d\n", t_transiente);
+	}
     }
 
     if (fila1 == NAODEFINIDA)
@@ -357,12 +366,17 @@ int main(int argc, char *argv[])
         }
     } while(tx_lambda / tx_mi >= 1.0);
 
-    if (modo == 1)
+    if(modo_benchmark == true)
+    {
+	//Modo Benchmark da fase transiente.
+	roda_benchmark();
+    }
+    else if (modo == 1)
     {
         //Modo Batch
         modobatch();
     }
-    if (modo == 2)
+    else if (modo == 2)
     {
         // Modo Replicativo
         modoreplicativo();
@@ -486,16 +500,27 @@ void modoreplicativo(void)
 void imprime_parametros_execucao(void)
 {
     printf("Voce pode executar novamente esta simulacao com os seguintes parametros:\n");
-    printf("-m ");
-    if (modo == 1)
+    printf("cmulator ");
+    
+    if(modo_benchmark == false)
     {
-        printf("batch ");
+	printf("-m ");
+    
+	if (modo == 1)
+	{
+	    printf("batch ");
+	}
+	else
+	{
+	    printf("replicativo ");
+	}
+	
+	
+	printf("-n %d -r %d -t %d ", n_rodadas, t_rodada, t_transiente);
     }
-    else
-    {
-        printf("replicativo ");
-    }
-    printf("-n %d -r %d -t %d -1 ", n_rodadas, t_rodada, t_transiente);
+    
+    
+    printf("-1 ");
     if (fila1 == FIFO)
     {
         printf("FCFS ");
@@ -513,6 +538,7 @@ void imprime_parametros_execucao(void)
     {
         printf("LCFS ");
     }
+    
     printf("-l %lf -u %lf -c %ld -x %ld\n", tx_lambda, tx_mi, seed_gerador_chegadas, seed_gerador_tempo_servico);
 }
 
