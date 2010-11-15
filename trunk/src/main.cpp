@@ -250,50 +250,45 @@ int main(int argc, char *argv[])
     }
     else
     {
-	printf("Simulador irá rodar no modo de benchmark para a fase transiente.\n");
+        printf("Simulador irá rodar no modo de benchmark para a fase transiente.\n");
     }
 
 
     if(modo_benchmark == false)
     {
-	if (n_rodadas <= -1)
-	{
-	    printf("Escolha a quantidade de rodadas: ");
-	    scanf("%d",&n_rodadas);
-	}
-	else if (n_rodadas < 10)
-	{
-	    do
-	    {
-		printf("Voce determinou um valor menor que 10 para quantidade de rodadas, valor onde t-student nao e assintotico.\n");
-		printf("Escolha a quantidade de rodadas: ");
-		scanf("%d",&n_rodadas);
-	    } while (n_rodadas < 10);
-	}
-	else
-	{
-	    printf("Você ja escolheu a quantidade de rodadas: %d\n", n_rodadas);
-	}
+        if (n_rodadas < 10)
+        {
+            do
+            {
+                printf("Voce determinou um valor menor que 10 para quantidade de rodadas, valor onde t-student nao e assintotico.\n");
+                printf("Escolha a quantidade de rodadas: ");
+                scanf("%d",&n_rodadas);
+            } while (n_rodadas < 10);
+        }
+        else
+        {
+            printf("Você ja escolheu a quantidade de rodadas: %d\n", n_rodadas);
+        }
 
-	if (t_rodada <= -1)
-	{
-	    printf("Escolha o tamanho de cada rodada: ");
-	    scanf("%d",&t_rodada);
-	}
-	else
-	{
-	    printf("Você ja escolheu o tamanho de cada rodada: %d\n", t_rodada);
-	}
+        if (t_rodada <= -1)
+        {
+            printf("Escolha o tamanho de cada rodada: ");
+            scanf("%d",&t_rodada);
+        }
+        else
+        {
+            printf("Você ja escolheu o tamanho de cada rodada: %d\n", t_rodada);
+        }
 
-	if (t_transiente <= -1)
-	{
-	    printf("Escolha o tamanho da fase transiente: ");
-	    scanf("%d",&t_transiente);
-	}
-	else
-	{
-	    printf("Você ja escolheu o tamanho da fase transiente: %d\n", t_transiente);
-	}
+        if (t_transiente <= -1)
+        {
+            printf("Escolha o tamanho da fase transiente: ");
+            scanf("%d",&t_transiente);
+        }
+        else
+        {
+            printf("Você ja escolheu o tamanho da fase transiente: %d\n", t_transiente);
+        }
     }
 
     if (fila1 == NAODEFINIDA)
