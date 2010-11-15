@@ -10,26 +10,28 @@ namespace TrabalhoAD
 
     /**
      * A classe DistExponencial representa um gerador pseudo-aleatório
-     * de tempos entre chegadas exponencialmente distribuídos.
+     * de tempos entre chegadas exponencialmente distribuídas.
      *
-     * A semente que inicalizou a classe ficará sempre guardada, desta forma
+     * A semente que inicalizou a classe ficará sempre guardada. Desta forma,
      * será possível recupera-la e repetir os testes de forma precisa para verificar
      * o funcionamento do simulador.
      *
-     * O método de geração é através da função inversa a PDF da distribuição
+     * A geração é feita através da função inversa da PDF da distribuição
      * exponencial.
      *
-     * \warning Esta classe não utiliza o método tradicional com srand() e rand()
-     * para a geração de números pseudo-aleatórios, mas utiliza as funções
-     * drand48_r() e srand48_r(), pois além delas retornarem um número pseudo-aleatório
-     * uniformemente distribuído entre [0.0, 1.0), estas funções são re-entrantes o que
-     * evita problemas no caso do simulador onde teremos mais de um classe deste tipo gerando
-     * tempos de chegada.
+     * \warning Esta classe não utiliza métodos tradicionais como srand() e rand()
+     * para a geração de números pseudo-aleatórios e sim as funções
+     * drand48_r() e srand48_r() pois, além delas retornarem um número pseudo-aleatório
+     * uniformemente distribuído entre [0.0, 1.0), estas funções são re-entrantes, o que
+     * evita problemas no caso do simulador, onde teremos mais de um classe deste tipo gerando
+     * tempos de chegada concomitantemente. Estes métodos não estão presentes nativamente no
+     * MingW, assim, para compilar o código em ambiente Windows, é necessário ferramentas como
+     * o CygWin.
      */
     class DistExponencial
     {
     private:
-    long int m_semente; /**< Guarda a semente inicial, importante para podermos repetir os testes de forma garantida */
+    long int m_semente; /**< Guarda a semente inicial, importante para garantirmos a uniformidade dos testes */
     struct drand48_data m_estado_prng; /**< Guarda o estado do gerador de números pseudo-aleatórios */
     double m_taxa; /**< Taxa lambda */
 
