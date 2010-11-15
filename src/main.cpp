@@ -829,15 +829,13 @@ void intervalos_confianca(vector<ResultadosConsolidados> &dados)
 
 void roda_benchmark(void)
 {
-    vector<ResultadosConsolidados> dados; // vetor com os resultados consolidados de todas as rodadas
+    vector<ResultadosConsolidados> dados;
     Simulador *sim;
     ResultadosConsolidados result;
 
-    modo = -1;
-    n_rodadas = -1;
-    t_rodada = -1;
-    t_transiente = 0;
-
+    
+    if(verb >= 1) printf("Inicializando estruturas do benchmark...\n");
+    
     if (seed_gerador_chegadas == -1 || seed_gerador_tempo_servico == -1)
     {
         sim = new Simulador(fila1, fila2, tx_lambda, tx_mi);
@@ -852,38 +850,108 @@ void roda_benchmark(void)
     }
 
     sim->define_verbose(verbose);
+   
+    if(verb >= 1) printf("Iniciando o benchmark...");
 
-    if (verb == 2) printf("[INICIO] Executando fase transiente\n");
-
-    sim->executa(0, false);
-
-    if (verb == 2) printf("[FIM] Termino fase transiente\n");
-
-    for (n_rodadas = 1; n_rodadas <= 1000; n_rodadas++)
-    {
-        for (t_rodada = 1; t_rodada <= 1000; t_rodada++)
-        {
-            if (verb == 2) printf("[INICIO] Executando rodada %d com t_rodada %d\n", n_rodadas, t_rodada);
-
-            //Executando a rodada i
-            result = sim->executa(t_rodada, true);
-
-            if (verb == 2) printf("[FIM] Termino da rodada %d com t_rodada %d\n\n", n_rodadas, t_rodada);
-
-            // Armazena em um vetor os resultados
-            dados.push_back(result);
-
-            sim->limpa_dados_coletados();
-
-            intervalos_confianca(dados);
-
-            imprime_parametros_execucao();
-        }
-
-
+    for(int j = 0; j < 10000; j++)
+    {      
+      result = sim->executa(1, true);
+      
+      dados.push_back(result);
     }
 
+    if(verb >= 1) printf(" fim \n");
+
+    //Ok... agora temos uma penca de dados...
+    printf("Resultados do Benchmark:\n");
+    
+    printf("Fila 1:\n");
+    
+    /*printf("E[X]: [n-esimo fregues] - [media]\n");
+    for(int i = 0; i < 10000; i++)
+    {
+        printf("%d - %f\n", i + 1, dados[i].fila1.X / (double)(i+1));
+    }
+    printf("\n");*/
+    
+    printf("E[W]: [n-esimo fregues] - [media]\n");
+    for(int i = 0; i < 10000; i++)
+    {
+        printf("%d - %f\n", i + 1, dados[i].fila1.W / (double)(i+1));
+    }
+    printf("\n");
+    
+    printf("Var(W): [n-esimo fregues] - [media]\n");
+    for(int i = 0; i < 10000; i++)
+    {
+        printf("%d - %f\n", i + 1,  (dados[i].fila1.W_quad / (double)(i+1)) - (dados[i].fila1.W / (double)(i+1)));
+    }
+    printf("\n");
+    
+    printf("E[T]: [n-esimo fregues] - [media]\n");
+    for(int i = 0; i < 10000; i++)
+    {
+        printf("%d - %f\n", i + 1, dados[i].fila1.T / (double)(i+1));
+    }
+    printf("\n");
+    
+    printf("E[Nq]: [n-esimo fregues] - [media]\n");
+    for(int i = 0; i < 10000; i++)
+    {
+        printf("%d - %f\n", i + 1, dados[i].fila1.Nq / (double)(i+1));
+    }
+    printf("\n");
+    
+    printf("E[N]: [n-esimo fregues] - [media]\n");
+    for(int i = 0; i < 10000; i++)
+    {
+        printf("%d - %f\n", i + 1, dados[i].fila1.N / (double)(i+1));
+    }
+    printf("\n\n\n");
+    
+    printf("Fila 2:\n");
+    
+    /*printf("E[X]: [n-esimo fregues] - [media]\n");
+    for(int i = 0; i < 10000; i++)
+    {
+        printf("%d - %f\n", i + 1, dados[i].fila2.X / (double)(i+1));
+    }
+    printf("\n");*/
+    
+    printf("E[W]: [n-esimo fregues] - [media]\n");
+    for(int i = 0; i < 10000; i++)
+    {
+        printf("%d - %f\n", i + 1, dados[i].fila2.W / (double)(i+1));
+    }
+    printf("\n");
+    
+    printf("Var(W): [n-esimo fregues] - [media]\n");
+    for(int i = 0; i < 10000; i++)
+    {
+        printf("%d - %f\n", i + 1,  (dados[i].fila2.W_quad / (double)(i+1)) - (dados[i].fila2.W / (double)(i+1)));
+    }
+    printf("\n");
+    
+    printf("E[T]: [n-esimo fregues] - [media]\n");
+    for(int i = 0; i < 10000; i++)
+    {
+        printf("%d - %f\n", i + 1, dados[i].fila2.T / (double)(i+1));
+    }
+    printf("\n");
+    
+    printf("E[Nq]: [n-esimo fregues] - [media]\n");
+    for(int i = 0; i < 10000; i++)
+    {
+        printf("%d - %f\n", i + 1, dados[i].fila2.Nq / (double)(i+1));
+    }
+    printf("\n");
+    
+    printf("E[N]: [n-esimo fregues] - [media]\n");
+    for(int i = 0; i < 10000; i++)
+    {
+        printf("%d - %f\n", i + 1, dados[i].fila2.N / (double)(i+1));
+    }
+    printf("\n\n");
+
     delete sim;
-
-
 }
