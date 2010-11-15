@@ -16,35 +16,35 @@ namespace TrabalhoAD
     enum ETipo {proxima_chegada_no_sistema, termino_servico};
 
     /**
-     *  A classe Evento representa um evento ocorrido em nosso sistema.
+     *  A classe Evento representa um evento ocorrido no sistema.
      *
      *  A classe descreve o tipo de evento e o tempo em que o evento ocorrerá.
      */
     class Evento
     {
-    private:
-    ETipo m_tipo; /**< Indica qual o tipo do evento */
-    double m_tempo; /**< Indica o tempo no qual o evento ocorrerá */
+        private:
+        ETipo m_tipo; /**< Indica qual o tipo do evento */
+        double m_tempo; /**< Indica o tempo no qual o evento ocorrerá */
 
-    public:
+        public:
 
-    /**
-     * Construtor da classe Evento
-     *
-     * \param tipo Determina o tipo do evento.
-     * \param tempo O tempo em que o evento ocorrerá.
-     */
-    Evento(ETipo tipo, double tempo);
+        /**
+         * Construtor da classe Evento
+         *
+         * \param tipo Determina o tipo do evento.
+         * \param tempo O tempo em que o evento ocorrerá.
+         */
+        Evento(ETipo tipo, double tempo);
 
-    /**
-     * Retorna o tipo do evento.
-     */
-    ETipo tipo() const;
+        /**
+         * Retorna o tipo do evento.
+         */
+        ETipo tipo() const;
 
-    /**
-     * Retorna o tempo em que o evento ocorrerá.
-     */
-    double tempo() const;
+        /**
+         * Retorna o tempo em que o evento ocorrerá.
+         */
+        double tempo() const;
     };
 
 
