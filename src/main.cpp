@@ -232,7 +232,7 @@ int main(int argc, char *argv[])
         printf("Escolha o tipo de simulacao deseja fazer:\n");
         printf("1 - Batch\n");
         printf("2 - Replicativo\n");
-        printf("Escolha o numero:");
+        printf("Escolha o numero: ");
         scanf("%d",&modo);
     }
     else if(modo_benchmark == false)
@@ -251,7 +251,7 @@ int main(int argc, char *argv[])
     {
 	if (n_rodadas <= -1)
 	{
-	    printf("Escolha a quantidade de rodadas:");
+	    printf("Escolha a quantidade de rodadas: ");
 	    scanf("%d",&n_rodadas);
 	}
 	else if (n_rodadas < 10)
@@ -259,7 +259,7 @@ int main(int argc, char *argv[])
 	    do
 	    {
 		printf("Voce determinou um valor menor que 10 para quantidade de rodadas, valor onde t-student nao e assintotico.\n");
-		printf("Escolha a quantidade de rodadas:");
+		printf("Escolha a quantidade de rodadas: ");
 		scanf("%d",&n_rodadas);
 	    } while (n_rodadas < 10);
 	}
@@ -298,7 +298,7 @@ int main(int argc, char *argv[])
             printf("Escolha o tipo de serviço para a fila 1:\n");
             printf("1 - FCFS\n");
             printf("2 - LCFS\n");
-            printf("Escolha o numero:");
+            printf("Escolha o numero: ");
             scanf("%d",&op);
             if (op == 1) fila1 = FIFO;
             else if (op == 2) fila1 = LIFO;
@@ -321,7 +321,7 @@ int main(int argc, char *argv[])
             printf("Escolha o tipo de serviço para a fila 2:\n");
             printf("1 - FCFS\n");
             printf("2 - LCFS\n");
-            printf("Escolha o numero:");
+            printf("Escolha o numero: ");
             scanf("%d",&op);
             if (op == 1) fila2 = FIFO;
             else if (op == 2) fila2 = LIFO;
