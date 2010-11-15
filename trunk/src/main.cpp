@@ -884,7 +884,8 @@ void roda_benchmark(void)
     printf("Var(W): [n-esimo fregues] - [media]\n");
     for(int i = 0; i < 10000; i++)
     {
-        printf("%d - %f\n", i + 1,  (dados[i].fila1.W_quad / (double)(i+1)) - (dados[i].fila1.W / (double)(i+1)));
+        double var = (dados[i].fila1.W_quad / (double)(i+1)) - (dados[i].fila1.W / (double)(i+1));
+        printf("%d - %f\n", i + 1, (var < 0) ? 0 : var);
     }
     printf("\n");
     
@@ -928,7 +929,8 @@ void roda_benchmark(void)
     printf("Var(W): [n-esimo fregues] - [media]\n");
     for(int i = 0; i < 10000; i++)
     {
-        printf("%d - %f\n", i + 1,  (dados[i].fila2.W_quad / (double)(i+1)) - (dados[i].fila2.W / (double)(i+1)));
+        double var = (dados[i].fila2.W_quad / (double)(i+1)) - (dados[i].fila2.W / (double)(i+1));
+        printf("%d - %f\n", i + 1, (var < 0) ? 0 : var);
     }
     printf("\n");
     
