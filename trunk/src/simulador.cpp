@@ -146,8 +146,8 @@ namespace TrabalhoAD
                 {
                     printf("[Evento] Fregues tipico chega no sistema.\n");
                     printf("-- Tempo evento: %lf\n", m_tempo_atual);
-                    printf("-- tamanho fila 1: %d\n", m_fila1.size());
-                    printf("-- tamanho fila 2: %d\n", m_fila2.size());
+                    printf("-- tamanho fila 1: %d\n", (int) m_fila1.size());
+                    printf("-- tamanho fila 2: %d\n", (int) m_fila2.size());
                     if (m_servidor_ocupado == false) printf("-- servidor vazio\n\n");
                     else printf("-- fregues no servidor pertence a fila %d\n\n", m_fregues_em_servico.fila_pertencente());
                 }
@@ -174,8 +174,8 @@ namespace TrabalhoAD
                     {
                         printf("[Evento] Fregues tipico da fila1 terminou o servico no servidor.\n");
                         printf("-- Tempo evento: %lf\n", m_tempo_atual);
-                        printf("-- tamanho fila 1: %d\n", m_fila1.size());
-                        printf("-- tamanho fila 2: %d\n", m_fila2.size());
+                        printf("-- tamanho fila 1: %d\n", (int) m_fila1.size());
+                        printf("-- tamanho fila 2: %d\n", (int) m_fila2.size());
                         if (m_servidor_ocupado == false) printf("-- servidor vazio\n\n");
                         else printf("-- fregues no servidor pertence a fila %d\n\n", m_fregues_em_servico.fila_pertencente());
                     }
@@ -230,8 +230,8 @@ namespace TrabalhoAD
                     {
                         printf("[Evento] Fregues tipico da fila2 terminou o servico no servidor.\n");
                         printf("-- Tempo evento: %lf\n", m_tempo_atual);
-                        printf("-- tamanho fila 1: %d\n", m_fila1.size());
-                        printf("-- tamanho fila 2: %d\n", m_fila2.size());
+                        printf("-- tamanho fila 1: %d\n", (int) m_fila1.size());
+                        printf("-- tamanho fila 2: %d\n", (int) m_fila2.size());
                         if (m_servidor_ocupado == false) printf("-- servidor vazio\n\n");
                         else printf("-- fregues no servidor pertence a fila %d\n\n", m_fregues_em_servico.fila_pertencente());
                     }
@@ -261,8 +261,8 @@ namespace TrabalhoAD
                     {
                         printf("[Evento] Fregues tipico da fila 1 entra no servidor.\n");
                         printf("-- Tempo evento: %lf\n", m_tempo_atual);
-                        printf("-- tamanho fila 1: %d\n", m_fila1.size());
-                        printf("-- tamanho fila 2: %d\n", m_fila2.size());
+                        printf("-- tamanho fila 1: %d\n", (int) m_fila1.size());
+                        printf("-- tamanho fila 2: %d\n", (int) m_fila2.size());
                         if (m_servidor_ocupado == false) printf("-- servidor vazio\n\n");
                         else printf("-- fregues no servidor pertence a fila %d\n\n", m_fregues_em_servico.fila_pertencente());
                     }
@@ -283,8 +283,8 @@ namespace TrabalhoAD
                     {
                         printf("[Evento] Fregues tipico da fila 2 entra no servidor.\n");
                         printf("-- Tempo evento: %lf\n", m_tempo_atual);
-                        printf("-- tamanho fila 1: %d\n", m_fila1.size());
-                        printf("-- tamanho fila 2: %d\n", m_fila2.size());
+                        printf("-- tamanho fila 1: %d\n", (int) m_fila1.size());
+                        printf("-- tamanho fila 2: %d\n", (int) m_fila2.size());
                         if (m_servidor_ocupado == false) printf("-- servidor vazio\n\n");
                         else printf("-- fregues no servidor pertence a fila %d\n\n", m_fregues_em_servico.fila_pertencente());
                     }
