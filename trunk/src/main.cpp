@@ -870,14 +870,14 @@ void roda_benchmark(void)
     /*printf("E[X]: [media]\n");
     for(int i = 0; i < 10000; i++)
     {
-        printf("%f\n", i + 1, dados[i].fila1.X / (double)(i+1));
+        printf("%f\n", dados[i].fila1.X / (double)(i+1));
     }
     printf("\n");*/
     
     printf("E[W]: [media]\n");
     for(int i = 0; i < 10000; i++)
     {
-        printf("%f\n", i + 1, dados[i].fila1.W / (double)(i+1));
+        printf("%f\n", dados[i].fila1.W / (double)(i+1));
     }
     printf("\n");
     
@@ -885,28 +885,28 @@ void roda_benchmark(void)
     for(int i = 0; i < 10000; i++)
     {
         double var = (dados[i].fila1.W_quad / (double)(i+1)) - (dados[i].fila1.W / (double)(i+1));
-        printf("%f\n", i + 1, (var < 0) ? 0 : var);
+        printf("%f\n", (var < 0) ? 0 : var);
     }
     printf("\n");
     
     printf("E[T]: [media]\n");
     for(int i = 0; i < 10000; i++)
     {
-        printf("%f\n", i + 1, dados[i].fila1.T / (double)(i+1));
+        printf("%f\n", dados[i].fila1.T / (double)(i+1));
     }
     printf("\n");
     
     printf("E[Nq]: [media]\n");
     for(int i = 0; i < 10000; i++)
     {
-        printf("%f\n", i + 1, dados[i].fila1.Nq / (double)(i+1));
+        printf("%f\n", dados[i].fila1.Nq / (double)(i+1));
     }
     printf("\n");
     
     printf("E[N]: [media]\n");
     for(int i = 0; i < 10000; i++)
     {
-        printf("%f\n", i + 1, dados[i].fila1.N / (double)(i+1));
+        printf("%f\n", dados[i].fila1.N / (double)(i+1));
     }
     printf("\n\n\n");
     
@@ -915,14 +915,14 @@ void roda_benchmark(void)
     /*printf("E[X]: [media]\n");
     for(int i = 0; i < 10000; i++)
     {
-        printf("%f\n", i + 1, dados[i].fila2.X / (double)(i+1));
+        printf("%f\n", dados[i].fila2.X / (double)(i+1));
     }
     printf("\n");*/
     
     printf("E[W]: [media]\n");
     for(int i = 0; i < 10000; i++)
     {
-        printf("%f\n", i + 1, dados[i].fila2.W / (double)(i+1));
+        printf("%f\n", dados[i].fila2.W / (double)(i+1));
     }
     printf("\n");
     
@@ -930,28 +930,28 @@ void roda_benchmark(void)
     for(int i = 0; i < 10000; i++)
     {
         double var = (dados[i].fila2.W_quad / (double)(i+1)) - (dados[i].fila2.W / (double)(i+1));
-        printf("%f\n", i + 1, (var < 0) ? 0 : var);
+        printf("%f\n", (var < 0) ? 0 : var);
     }
     printf("\n");
     
     printf("E[T]: [media]\n");
     for(int i = 0; i < 10000; i++)
     {
-        printf("%f\n", i + 1, dados[i].fila2.T / (double)(i+1));
+        printf("%f\n", dados[i].fila2.T / (double)(i+1));
     }
     printf("\n");
     
     printf("E[Nq]: [media]\n");
     for(int i = 0; i < 10000; i++)
     {
-        printf("%f\n", i + 1, dados[i].fila2.Nq / (double)(i+1));
+        printf("%f\n", dados[i].fila2.Nq / (double)(i+1));
     }
     printf("\n");
     
     printf("E[N]: [media]\n");
     for(int i = 0; i < 10000; i++)
     {
-        printf("%f\n", i + 1, dados[i].fila2.N / (double)(i+1));
+        printf("%f\n", dados[i].fila2.N / (double)(i+1));
     }
     printf("\n\n");
 
