@@ -357,7 +357,7 @@ int main(int argc, char *argv[])
             printf("Você ja escolheu o valor da taxa mi: %f\n", tx_mi);
         }
 
-        if (tx_lambda / tx_mi >= 1.0)
+        if (((2.0 * tx_lambda) / tx_mi) >= 1.0)
         {
             printf("As taxas escolhidas implicam em um ro maior que um. Isso faz as filas crescerem infinitamente.\n");
             printf("Escolha novos valores para tx_lambda e tx_mi.\n");
@@ -865,8 +865,6 @@ void roda_benchmark(void)
     //Ok... agora temos uma penca de dados...
     printf("Resultados do Benchmark:\n");
     
-    printf("Fila 1:\n");
-    
     /*printf("E[X]: [media]\n");
     for(int i = 0; i < 10000; i++)
     {
@@ -874,14 +872,14 @@ void roda_benchmark(void)
     }
     printf("\n");*/
     
-    printf("E[W]: [media]\n");
+    printf("Fila 1 - E[W]: [media]\n");
     for(int i = 0; i < 10000; i++)
     {
         printf("%f\n", dados[i].fila1.W / (double)(i+1));
     }
     printf("\n");
     
-    printf("Var(W): [media]\n");
+    printf("Fila 1 - Var(W): [media]\n");
     for(int i = 0; i < 10000; i++)
     {
         double var = (dados[i].fila1.W_quad / (double)(i+1)) - (dados[i].fila1.W / (double)(i+1));
@@ -889,29 +887,27 @@ void roda_benchmark(void)
     }
     printf("\n");
     
-    printf("E[T]: [media]\n");
+    printf("Fila 1 - E[T]: [media]\n");
     for(int i = 0; i < 10000; i++)
     {
         printf("%f\n", dados[i].fila1.T / (double)(i+1));
     }
     printf("\n");
     
-    printf("E[Nq]: [media]\n");
+    printf("Fila 1 - E[Nq]: [media]\n");
     for(int i = 0; i < 10000; i++)
     {
         printf("%f\n", dados[i].fila1.Nq / (double)(i+1));
     }
     printf("\n");
     
-    printf("E[N]: [media]\n");
+    printf("Fila 1 - E[N]: [media]\n");
     for(int i = 0; i < 10000; i++)
     {
         printf("%f\n", dados[i].fila1.N / (double)(i+1));
     }
     printf("\n\n\n");
-    
-    printf("Fila 2:\n");
-    
+        
     /*printf("E[X]: [media]\n");
     for(int i = 0; i < 10000; i++)
     {
@@ -919,14 +915,14 @@ void roda_benchmark(void)
     }
     printf("\n");*/
     
-    printf("E[W]: [media]\n");
+    printf("Fila 2 - E[W]: [media]\n");
     for(int i = 0; i < 10000; i++)
     {
         printf("%f\n", dados[i].fila2.W / (double)(i+1));
     }
     printf("\n");
     
-    printf("Var(W): [media]\n");
+    printf("Fila 2 - Var(W): [media]\n");
     for(int i = 0; i < 10000; i++)
     {
         double var = (dados[i].fila2.W_quad / (double)(i+1)) - (dados[i].fila2.W / (double)(i+1));
@@ -934,21 +930,21 @@ void roda_benchmark(void)
     }
     printf("\n");
     
-    printf("E[T]: [media]\n");
+    printf("Fila 2 - E[T]: [media]\n");
     for(int i = 0; i < 10000; i++)
     {
         printf("%f\n", dados[i].fila2.T / (double)(i+1));
     }
     printf("\n");
     
-    printf("E[Nq]: [media]\n");
+    printf("Fila 2 - E[Nq]: [media]\n");
     for(int i = 0; i < 10000; i++)
     {
         printf("%f\n", dados[i].fila2.Nq / (double)(i+1));
     }
     printf("\n");
     
-    printf("E[N]: [media]\n");
+    printf("Fila 2 - E[N]: [media]\n");
     for(int i = 0; i < 10000; i++)
     {
         printf("%f\n", dados[i].fila2.N / (double)(i+1));
