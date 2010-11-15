@@ -151,6 +151,12 @@ namespace TrabalhoAD
      */
     long int semente_gerador_chegadas(void);
 
+    /**
+     * Coloca os geradores de chegadas para operar em modo determinístico.
+     */
+    void geradores_deterministicos(bool ativado);
+
+    
     };
 
 

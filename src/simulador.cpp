@@ -314,4 +314,10 @@ namespace TrabalhoAD
 
     }
 
+    void Simulador::geradores_deterministicos(bool ativado)
+    {
+        m_chegada->determistico(ativado);
+        m_servico->determistico(ativado);
+    }
+
 }

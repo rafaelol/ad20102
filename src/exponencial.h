@@ -34,6 +34,7 @@ namespace TrabalhoAD
     long int m_semente; /**< Guarda a semente inicial, importante para garantirmos a uniformidade dos testes */
     struct drand48_data m_estado_prng; /**< Guarda o estado do gerador de números pseudo-aleatórios */
     double m_taxa; /**< Taxa lambda */
+    bool m_deterministico; /**< Indica se o gerador deve rodar em modo determinístico ou não. */
 
     /**
      * Reversa da função exponencial.
@@ -65,9 +66,14 @@ namespace TrabalhoAD
     long int semente() const;
 
     /**
-     * Retorna o tempo até a próxima chegada
+     * Retorna o tempo até a próxima chegada.
      */
     double proxima_chegada();
+    
+    /**
+     * Ativa ou desativa o modo deterministico.
+     */
+    void determistico(bool ativado);    
     };
 
 }
