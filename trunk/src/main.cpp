@@ -839,8 +839,8 @@ void roda_benchmark(void)
     Simulador *sim;
     ResultadosConsolidados result;
     
-    int passo = 50;
-    int quantidade = 10000/passo;
+    int passo = 250;
+    int quantidade = 100000/passo;
     
 
     
