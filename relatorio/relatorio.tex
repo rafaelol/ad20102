@@ -37,12 +37,12 @@ Trabalho de Simulaçao: Implementação e análise de um simulador.
 \large
 
 \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\\
-Bruno C. Buss\\(Implementação e documentação do código)\\
+Bruno C. Buss\\(Implementação, documentação do código e relatório final)\\
 
 \vspace{0.5cm}
 
 \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\\
-Felipe P. Martinez\\()\\
+Felipe P. Martinez\\(Implementação, documentação do código e relatório final)\\
 
 \vspace{0.5cm}
 
@@ -52,7 +52,7 @@ Rafael O. Lopes\\(Implementação, documentação do código e relatório final)
 \vspace{0.5cm}
 
 \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\\
-Yanko G. Oliveira\\()\\
+Yanko G. Oliveira\\(Implementação, documentação do código e relatório final)\\
 
 \vspace{0.5cm}
 
@@ -81,33 +81,41 @@ Professor: Paulo Henrique de Aguiar Rodrigues\\
 
 \section{Introdução}
 \subsection{Funcionamento Geral do Simulador}
-    O simulador funciona de maneira simples. Ao executar o programa, parâmetros são passados para que se inicie a simulação. Tais parâmetros são:
+    O simulador é executado por linha de comando (comando padrão: "./cmulator"). Este aguarda diversos parâmetros que podem ser passados pela linha de comando ou, caso isso não seja feito, são pedidos em tempo de execução. Tais parâmetros são:
 
 \begin {itemize}
-\item Modo: O usuário escolhe qual o parâmetro de execução da simulação, se será replicativo ou batch.
+\item \textbf{Modo:} O usuário escolhe qual o parâmetro de execução da simulação, se será replicativo ou batch. Na linha de comando: \emph{--modo} ou \emph{-m}. Opções possíveis: \emph{"Batch"} ou \emph{"Replicativo"};
 
-\item Quantidade de rodadas: O usuário decide a quantidade de rodadas. A quantidade de rodadas deve ser superior a 10, pois apenas com quantidades de rodadas
-superiores a 10 temos um valor assintótico na tabela t-student para o cálculo do intervalo de confiança.
+\item \textbf{Quantidade de rodadas:} O usuário decide a quantidade de rodadas; esta deve ser superior a 10, pois apenas assim temos um valor assintótico na tabela t-student para o cálculo do intervalo de confiança. Na linha de comando: \emph{--n_rodadas} ou \emph{-n}. Opções possíveis: números inteiros;
 
-\item Tamanho da rodada: Determina a quantidade de fregueses típicos em cada rodada.
+\item \textbf{Tamanho da rodada:} Determina a quantidade de fregueses típicos em cada rodada. Na linha de comando: \emph{--t_rodada} ou \emph{-r}. Opções possíveis: números inteiros;
 
-\item Tamanho da fase transiente: Determina a quantidade de fregueses típicos existirão na fase transiente, de forma a termos um sistema em equilíbrio nas rodadas.
+\item \textbf{Tamanho da fase transiente:} Determina a quantidade de fregueses típicos a serem considerados pertencentes à fase transiente, de forma a considerarmos apenas dados coletados após o sistema estar em equilíbrio. Na linha de comando: \emph{--t_transiente} ou \emph{-t}. Opções possíveis: números inteiros;
 
-\item Tipo da fila 1: O tipo da fila pode ser FCFS(fila), ou LCFS(pilha).
+\item \textbf{Tipo da fila 1:} O tipo da fila pode ser FCFS(fila), ou LCFS(pilha). Na linha de comando: \emph{--fila_1} ou \emph{-1}. Opções possíveis: \emph{"FCFS"} ou \emph{"LCFS"};
 
-\item Tipo da fila 2: Assim como a fila 1, a fila 2 pode ser FCFS ou LCFS.
+\item \textbf{Tipo da fila 2:} Assim como a fila 1, a fila 2 pode ser FCFS ou LCFS. Na linha de comando: \emph{--fila_2} ou \emph{-2}. Opções possíveis: \emph{"FCFS"} ou \emph{"LCFS"};
 
-\item Taxa $\lambda$: Determina a taxa de chegada de chegada de fregueses no sistema.
+\item \textbf{Taxa $\lambda$:} Determina a taxa de chegada de chegada de fregueses no sistema. Na linha de comando: \emph{--tx_lambda} ou \emph{-l}. Opções possíveis: números reais;
 
-\item Taxa $\mu$: Determina a taxa de serviço de fregueses no sistema.
+\item \textbf{Taxa $\mu$:} Determina a taxa de serviço de fregueses no sistema. Na linha de comando: \emph{--tx_mi} ou \emph{-m}. Opções possíveis: números reais.
 \end {itemize}
 
-    Além desses parâmetros, existem outros dois parâmetros opcionais para o simulador, que determinam a semente geradora de chegadas e semente geradora
-de tempo de serviço.
+    Além desses parâmetros, que são obrigatoriamente pedidos, existem outros parâmetros opcionais para o simulador, a serem passados pela linha de comando:
 
-    Após a passagem de parâmetros, o simulador se inicia. O simulador utiliza eventos discretos, mas tempo contínuo. Portanto os eventos acontecem em instantes
-de tempo com valores reais. A cada rodada, o simulador fica em loop aguardando eventos acontecerem. O loop se encerra quando for servido pelo
-servidor a quantidade determinada pelo parâmetro como tamanho da rodada. Os eventos que acontecem são:
+\begin {itemize}
+\item \textbf{Semente para gerador de chegadas:} semente utilizada para o gerador de números pseudo-aleatórios responsável por gerar os tempos de chegada. Na linha de comando: \emph{--seed_gerador_chegadas} ou \emph{-c}. Opções possíveis: números reais;
+
+\item \textbf{Semente para gerador de tempos de serviço:} semente utilizada para o gerador de números pseudo-aleatórios responsável por gerar os tempos de serviço. Na linha de comando: \emph{--seed_gerador_tempo_servico} ou \emph{-x}. Opções possíveis: números reais;
+
+\item \textbf{Sobre:} imprime informações sobre o simulador e seus autores. Na linha de comando: \emph{--sobre} ou \emph{-s}. Não recebe parâmetros;
+
+\item \textbf{Ajuda:} imprime todos os comandos possíveis e suas descrições. Na linha de comando: \emph{--ajuda} ou \emph{-a}. Não recebe parâmetros;
+
+\item \textbf{Modo verborrágico:} roda o simulador imprimindo diferentes níveis de detalhe sobre as operações sendo executadas internamente. Na linha de comando: \emph{--verbose} ou \emph{-v} Opções: 0,1 ou 2;
+\end {itemize}
+
+    Após a entrada de parâmetros, o simulador se inicia. Este utiliza eventos discretos, mas tempo contínuo, logo, os eventos acontecem em instantes de tempo com valores numéricos reais. A cada rodada, o simulador fica em loop aguardando eventos acontecerem. O loop se encerra quando a quantidade de fregueses determinada pelo parâmetro \emph{"tamanho da rodada"} for servida. Os eventos que acontecem são:
 
 \begin {itemize}
 \item Chegada de um freguês na fila 1: Um freguês chega e é inserido na fila1, de acordo com a disciplina de atendimento da fila. Se for FCFS, é inserido no final da fila
