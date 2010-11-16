@@ -1,0 +1,3 @@
+
+pdflatex:
+	pdflatex relatorio.tex	

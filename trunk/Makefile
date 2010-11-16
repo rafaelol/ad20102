@@ -20,10 +20,13 @@ simulador: src/simulador.h src/simulador.cpp
 clean:
 	rm -f fregues.o eventos.o exponencial.o simulador.o cmulator
 	rm -f doc_codigo.pdf
+	rm -f relatorio.pdf
 
 docs: relatorio doxygen
 
-relatorio:
+relatorio: relatorio/relatorio.tex
+	make -C relatorio pdflatex
+	cp relatorio/relatorio.pdf relatorio.pdf
 
 doxygen:
 	doxygen
