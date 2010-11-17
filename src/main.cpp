@@ -265,7 +265,7 @@ int main(int argc, char *argv[])
         {
             do
             {
-                printf("Voce determinou um valor menor que 10 para quantidade de rodadas, valor onde t-student nao e assintotico.\n");
+                printf("Voce nao determinou ou escolheu um valor menor que 10 para a quantidade de rodadas, valor onde t-student nao e assintotico.\n");
                 printf("Escolha a quantidade de rodadas: ");
                 scanf("%d",&n_rodadas);
             } while (n_rodadas < 10);
