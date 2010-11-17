@@ -118,25 +118,26 @@ Professor: Paulo Henrique de Aguiar Rodrigues\\
     Após a entrada de parâmetros, o simulador se inicia. Este utiliza eventos discretos, mas tempo contínuo, logo, os eventos acontecem em instantes de tempo com valores numéricos reais. A cada rodada, o simulador fica em loop aguardando eventos acontecerem. O loop se encerra quando a quantidade de fregueses determinada pelo parâmetro \emph{"tamanho da rodada"} for servida. Os eventos que acontecem são:
 
 \begin {itemize}
-\item Chegada de um freguês na fila 1: Um freguês chega e é inserido na fila1, de acordo com a disciplina de atendimento da fila. Se for FCFS, é inserido no final da fila
-se for LCFS, adicionado no início da fila.
+\item \textbf{Chegada de um freguês na fila 1:} Um freguês chega e é inserido na fila 1, de acordo com a disciplina de atendimento escolhida - caso seja FCFS, o mesmo é inserido no final e, caso seja LCFS, é adicionado no início.
 
-\item Término do serviço do freguês no servidor: No momento que um freguês termina seu atendimento no servidor, é verificado qual a fila original dele. Se for a fila 1,
-ele é adicionado na fila 2, de acordo com a disciplina de atendimento. Se o freguês era da fila 2, dados estatísticos são coletados e é retirado do sistema.
+\item \textbf{Término do serviço do freguês no servidor:} No momento em que um freguês termina seu atendimento no servidor, é verificado qual sua fila original. Caso seja a fila 1,
+ele é movido para a fila 2 (sempre respeitando a disciplina de atendimento). Se o freguês veio da fila 2, dados estatísticos são coletados e o mesmo é retirado do sistema.
 \end {itemize}
 
-    Após a verificação de qual evento ocorreu, verifica-se se o servidor está vazio. Caso esteja vazio, é inserido no servidor um freguês, de acordo com as regras
-determinadas: sempre que houver um freguês na fila 1, ele é atendido, e os fregueses da fila 2 só serão atendidos no momento em que não houver ninguém na fila 1.
+    Após a tratar o evento ocorrido, verifica-se se o servidor está vazio. Caso esteja, é inserido no servidor um freguês, de acordo com as regras determinadas; neste caso, dando prioridade aos fregueses da fila 1 e sendo os da fila 2 servidos apenas quando a primeira estiver vazia.
 
-    Após a execução de todas as rodadas, dados estatísticos são coletados. No final da execução de todas as rodadas, é calculado o intervalo de confiança para cada
-variável aleatória. O programa se encerra com a disponibilização dos parâmetros, incluindo as sementes geradoras, para o caso de repetir a simulação, caso desejado.
+    Após a execução de todas as rodadas, os dados estatísticos coletados são analisados e é calculado o intervalo de confiança para cada variável aleatória. O programa se encerra imprimindo na tela a linha de comando com todos os parâmetros utilizados (mesmo que estes tenham sido entrados em tempo de execução), incluindo as sementes geradoras para, caso seja desejado, executar mais uma vez a exata mesma rotina.
 
 \subsection{Linguagem de Programação Utilizada}
+
     Foi utilizada a linguagem de programação C++. O compilador utilizado para desenvolver o sistema foi o GCC 4.4, presente em qualquer distribuição atualizada do Linux, de forma que o sistema pode ser compilado em qualquer ambiente que possua o GCC 4.4 ou superior instalado.
 
-    A escolha da linguagem C++ se deve à possibilidade de lidar com orientação a objetos, tornando o código mais sucinto e de melhor entendimento. Um outro fato é que C++ é a linguagem com que os membros do grupo estão melhor familiarizados, tornando o desenvolvimento do sistema mais fácil.
+\emph{Nota: o GCC padrão incluso no pacote MingW para compilação no ambiente Windows não possui algumas funções utilizadas pelo simulador (neste caso, as relacionadas à geração de números pseudo-aleatórios). Sendo assim, para que o mesmo seja compilado nesta plataforma, é necessário o uso de GCCs modificados e/ou ferramentas como o Cygwin.}
 
-    O sistema não tem garantias de funcionamento no sistema operacional Windows, porque os compiladores de C++ para Windows(MinGW) utilizam versões anteriores do GCC, que não possuem recursos utilizados para o desenvolvimento do sistema. Um dos recursos é o responsável pela geração de sementes pseudo-aleatórias.
+    O principal fator para escolha da linguagem foi a possibilidade de lidar com orientação a objetos, tornando o código mais sucinto e de melhor entendimento. Um outro fator é o fato de que C++ é a linguagem com que os membros do grupo estão melhor familiarizados, proporcionando uma maior facilidade na hora da implementação.
+
+    O programa foi completamente desenvolvido e testado em ambiente Linux, não havendo garantias de seu funcionamento em ambiente Windows.
+
 \subsection{Estruturas Internas Utilizadas}
 % Aqui comentamos sobre as classes do projeto, e alguns detalhes, como a utilização do rand do linux, ou de
 \subsection{Implementação da Lista de Eventos}
@@ -146,6 +147,14 @@ variável aleatória. O programa se encerra com a disponibilização dos parâme
 \subsection{Coleta de Estatísticas}
 % Falamos sobre a coleta de estatísticas e cálculo delas(Variância e IC).
 \subsection{Método de análise}
+   
+    O simulador foi construído para funcionar de maneira genérica, sendo assim, a única parte fixa é o formato das filas do sistema (fila 1 prioritária sobre fila 2, ambas sendo servidas por um mesmo servidor), enquanto as disciplinas de serviço podem ser escolhidas pelo usuário. Com isso, também foi planejado para aceitar ambos os métodos de análise: Batch e Replicativo.
+
+    No método Batch, diversas rodadas são executadas a partir de uma mesma semente. Desta forma, precisamos estimar a fase transiente apenas uma vez, utilizando apenas um sistema de \emph{"coloração"} para definir quais dados devem ser coletados. Os clientes gerados em uma determinada rodada possuem um identificador da mesma e, quando saem do sistema, apenas são considerados para as estatísticas aqueles pertencentes à rodada atual de simulação. Caso a rodada acabe e ainda haja fregueses na fila, estes permanecem fazendo parte da simulação, mas seus dados não são contados na rodada seguinte.
+
+    No método Replicativo, há uma semente gerada para cada rodada. Sendo assim, há também uma fase transiente para ser estimada. Assim como em uma rodada anterior do método Batch, os fregueses não atendidos que estavam na fila de espera em uma rodada continuam na fila, mas não são computados nas estatísticas da rodada referente.
+
+
 % Aqui mencionamos que decidimos testar os dois métodos: Batch e Replicativo. E também falar um pouco sobre eles.
 % Acredito que essa seção pode morrer.
 %\subsection{Parâmetros Utilizados}
