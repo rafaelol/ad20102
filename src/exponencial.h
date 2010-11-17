@@ -69,11 +69,13 @@ namespace TrabalhoAD
      * Retorna o tempo até a próxima chegada.
      */
     double proxima_chegada();
-    
+
     /**
      * Ativa ou desativa o modo deterministico.
+     *
+     * \param ativado TRUE para ativar o modo determinístico, FALSE para desativar.
      */
-    void determistico(bool ativado);    
+    void determistico(bool ativado);
     };
 
 }

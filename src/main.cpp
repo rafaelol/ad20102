@@ -42,11 +42,16 @@ void imprime_parametros_execucao(void);
 
 /**
  * Imprime os dados estatisticos coletados em uma rodada de uma simulação.
+ *
+ * \param result Resultados consolidados obtidos através da execução do simulador
+ * \param rodada Numero da rodada de simulação
  */
 void imprimeresultado_rodada(ResultadosConsolidados result, int rodada);
 
 /**
   * Faz a chamada para todos os cálculos de intervalo de confiança.
+  *
+  * \param dados Armazena um vetor de todos os resultados consolidados obtidos (em uma rodada).
   */
 void intervalos_confianca(vector<ResultadosConsolidados> &dados);
 
@@ -93,7 +98,7 @@ int main(int argc, char *argv[])
         {
         {"benchmark",                   no_argument,            0, 'b'},
         {"ajuda",                       no_argument,            0, 'a'},
-        {"deterministico",              no_argument,            0, 'd'},        
+        {"deterministico",              no_argument,            0, 'd'},
         {"sobre",                       no_argument,            0, 's'},
         {"verbose",                     required_argument,      0, 'v'},
         {"modo",                        required_argument,      0, 'm'},
@@ -505,12 +510,12 @@ void imprime_parametros_execucao(void)
 {
     printf("Voce pode executar novamente esta simulacao com os seguintes parametros:\n");
     printf("cmulator ");
-    
+
     if(modo_benchmark == true) printf("-b ");
     else
     {
         printf("-m ");
-    
+
         if (modo == 1)
         {
             printf("batch ");
@@ -519,13 +524,13 @@ void imprime_parametros_execucao(void)
         {
             printf("replicativo ");
         }
-	
-	
+
+
         printf("-n %d -r %d -t %d ", n_rodadas, t_rodada, t_transiente);
     }
-    
+
     if(modo_deterministico == true) printf("-d ");
-    
+
     printf("-1 ");
     if (fila1 == FIFO)
     {
@@ -544,7 +549,7 @@ void imprime_parametros_execucao(void)
     {
         printf("LCFS ");
     }
-    
+
     printf("-l %lf -u %lf -c %ld -x %ld\n", tx_lambda, tx_mi, seed_gerador_chegadas, seed_gerador_tempo_servico);
 }
 
@@ -838,14 +843,14 @@ void roda_benchmark(void)
     vector<ResultadosConsolidados> dados;
     Simulador *sim;
     ResultadosConsolidados result;
-    
+
     int passo = 250;
     int quantidade = 100000/passo;
-    
 
-    
+
+
     if(verb >= 1) printf("Inicializando estruturas do benchmark...\n");
-    
+
     if (seed_gerador_chegadas == -1 || seed_gerador_tempo_servico == -1)
     {
         sim = new Simulador(fila1, fila2, tx_lambda, tx_mi);
@@ -861,13 +866,13 @@ void roda_benchmark(void)
 
     sim->geradores_deterministicos(modo_deterministico);
     sim->define_verbose(verbose);
-   
+
     if(verb >= 1) printf("Iniciando o benchmark...");
 
     for(int j = 0; j < quantidade; j++)
-    {      
+    {
       result = sim->executa(passo, true);
-      
+
       dados.push_back(result);
     }
 
@@ -875,14 +880,14 @@ void roda_benchmark(void)
 
     //Ok... agora temos uma penca de dados...
     printf("Resultados do Benchmark:\n");
-    
+
     printf("Fila 1 - E[W]: [media]\n");
     for(int i = 0; i < quantidade; i++)
     {
         printf("%f\n", dados[i].fila1.W / (double)((i+1) * passo));
     }
     printf("\n");
-    
+
     printf("Fila 1 - Var(W): [media]\n");
     for(int i = 0; i < quantidade; i++)
     {
@@ -890,35 +895,35 @@ void roda_benchmark(void)
         printf("%f\n", (var < 0) ? 0 : var);
     }
     printf("\n");
-    
+
     printf("Fila 1 - E[T]: [media]\n");
     for(int i = 0; i < quantidade; i++)
     {
         printf("%f\n", dados[i].fila1.T / (double)((i+1) * passo));
     }
     printf("\n");
-    
+
     printf("Fila 1 - E[Nq]: [media]\n");
     for(int i = 0; i < quantidade; i++)
     {
         printf("%f\n", dados[i].fila1.Nq / (double)((i+1) * passo));
     }
     printf("\n");
-    
+
     printf("Fila 1 - E[N]: [media]\n");
     for(int i = 0; i < quantidade; i++)
     {
         printf("%f\n", dados[i].fila1.N / (double)((i+1) * passo));
     }
     printf("\n\n\n");
-    
+
     printf("Fila 2 - E[W]: [media]\n");
     for(int i = 0; i < quantidade; i++)
     {
         printf("%f\n", dados[i].fila2.W / (double)((i+1) * passo));
     }
     printf("\n");
-    
+
     printf("Fila 2 - Var(W): [media]\n");
     for(int i = 0; i < quantidade; i++)
     {
@@ -926,21 +931,21 @@ void roda_benchmark(void)
         printf("%f\n", (var < 0) ? 0 : var);
     }
     printf("\n");
-    
+
     printf("Fila 2 - E[T]: [media]\n");
     for(int i = 0; i < quantidade; i++)
     {
         printf("%f\n", dados[i].fila2.T / (double)((i+1) * passo));
     }
     printf("\n");
-    
+
     printf("Fila 2 - E[Nq]: [media]\n");
     for(int i = 0; i < quantidade; i++)
     {
         printf("%f\n", dados[i].fila2.Nq / (double)((i+1) * passo));
     }
     printf("\n");
-    
+
     printf("Fila 2 - E[N]: [media]\n");
     for(int i = 0; i < quantidade; i++)
     {
@@ -948,8 +953,8 @@ void roda_benchmark(void)
     }
     printf("\n\n");
 
-    
+
     imprime_parametros_execucao();
-    
+
     delete sim;
 }
