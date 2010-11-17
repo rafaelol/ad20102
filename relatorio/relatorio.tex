@@ -86,27 +86,27 @@ Professor: Paulo Henrique de Aguiar Rodrigues\\
 \begin {itemize}
 \item \textbf{Modo:} O usuário escolhe qual o parâmetro de execução da simulação, se será replicativo ou batch. Na linha de comando: \emph{--modo} ou \emph{-m}. Opções possíveis: \emph{"Batch"} ou \emph{"Replicativo"};
 
-\item \textbf{Quantidade de rodadas:} O usuário decide a quantidade de rodadas; esta deve ser superior a 10, pois apenas assim temos um valor assintótico na tabela t-student para o cálculo do intervalo de confiança. Na linha de comando: \emph{--n_rodadas} ou \emph{-n}. Opções possíveis: números inteiros;
+\item \textbf{Quantidade de rodadas:} O usuário decide a quantidade de rodadas; esta deve ser superior a 10, pois apenas assim temos um valor assintótico na tabela t-student para o cálculo do intervalo de confiança. Na linha de comando: \emph{--n\_rodadas} ou \emph{-n}. Opções possíveis: números inteiros;
 
-\item \textbf{Tamanho da rodada:} Determina a quantidade de fregueses típicos em cada rodada. Na linha de comando: \emph{--t_rodada} ou \emph{-r}. Opções possíveis: números inteiros;
+\item \textbf{Tamanho da rodada:} Determina a quantidade de fregueses típicos em cada rodada. Na linha de comando: \emph{--t\_rodada} ou \emph{-r}. Opções possíveis: números inteiros;
 
-\item \textbf{Tamanho da fase transiente:} Determina a quantidade de fregueses típicos a serem considerados pertencentes à fase transiente, de forma a considerarmos apenas dados coletados após o sistema estar em equilíbrio. Na linha de comando: \emph{--t_transiente} ou \emph{-t}. Opções possíveis: números inteiros;
+\item \textbf{Tamanho da fase transiente:} Determina a quantidade de fregueses típicos a serem considerados pertencentes à fase transiente, de forma a considerarmos apenas dados coletados após o sistema estar em equilíbrio. Na linha de comando: \emph{--t\_transiente} ou \emph{-t}. Opções possíveis: números inteiros;
 
-\item \textbf{Tipo da fila 1:} O tipo da fila pode ser FCFS(fila), ou LCFS(pilha). Na linha de comando: \emph{--fila_1} ou \emph{-1}. Opções possíveis: \emph{"FCFS"} ou \emph{"LCFS"};
+\item \textbf{Tipo da fila 1:} O tipo da fila pode ser FCFS(fila), ou LCFS(pilha). Na linha de comando: \emph{--fila\_1} ou \emph{-1}. Opções possíveis: \emph{"FCFS"} ou \emph{"LCFS"};
 
-\item \textbf{Tipo da fila 2:} Assim como a fila 1, a fila 2 pode ser FCFS ou LCFS. Na linha de comando: \emph{--fila_2} ou \emph{-2}. Opções possíveis: \emph{"FCFS"} ou \emph{"LCFS"};
+\item \textbf{Tipo da fila 2:} Assim como a fila 1, a fila 2 pode ser FCFS ou LCFS. Na linha de comando: \emph{--fila\_2} ou \emph{-2}. Opções possíveis: \emph{"FCFS"} ou \emph{"LCFS"};
 
-\item \textbf{Taxa $\lambda$:} Determina a taxa de chegada de chegada de fregueses no sistema. Na linha de comando: \emph{--tx_lambda} ou \emph{-l}. Opções possíveis: números reais;
+\item \textbf{Taxa $\lambda$:} Determina a taxa de chegada de chegada de fregueses no sistema. Na linha de comando: \emph{--tx\_lambda} ou \emph{-l}. Opções possíveis: números reais;
 
-\item \textbf{Taxa $\mu$:} Determina a taxa de serviço de fregueses no sistema. Na linha de comando: \emph{--tx_mi} ou \emph{-m}. Opções possíveis: números reais.
+\item \textbf{Taxa $\mu$:} Determina a taxa de serviço de fregueses no sistema. Na linha de comando: \emph{--tx\_mi} ou \emph{-m}. Opções possíveis: números reais.
 \end {itemize}
 
     Além desses parâmetros, que são obrigatoriamente pedidos, existem outros parâmetros opcionais para o simulador, a serem passados pela linha de comando:
 
 \begin {itemize}
-\item \textbf{Semente para gerador de chegadas:} semente utilizada para o gerador de números pseudo-aleatórios responsável por gerar os tempos de chegada. Na linha de comando: \emph{--seed_gerador_chegadas} ou \emph{-c}. Opções possíveis: números reais;
+\item \textbf{Semente para gerador de chegadas:} semente utilizada para o gerador de números pseudo-aleatórios responsável por gerar os tempos de chegada. Na linha de comando: \emph{--seed\_gerador\_chegadas} ou \emph{-c}. Opções possíveis: números reais;
 
-\item \textbf{Semente para gerador de tempos de serviço:} semente utilizada para o gerador de números pseudo-aleatórios responsável por gerar os tempos de serviço. Na linha de comando: \emph{--seed_gerador_tempo_servico} ou \emph{-x}. Opções possíveis: números reais;
+\item \textbf{Semente para gerador de tempos de serviço:} semente utilizada para o gerador de números pseudo-aleatórios responsável por gerar os tempos de serviço. Na linha de comando: \emph{--seed\_gerador\_tempo\_servico} ou \emph{-x}. Opções possíveis: números reais;
 
 \item \textbf{Sobre:} imprime informações sobre o simulador e seus autores. Na linha de comando: \emph{--sobre} ou \emph{-s}. Não recebe parâmetros;
 
