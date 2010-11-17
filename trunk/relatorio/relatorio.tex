@@ -139,6 +139,36 @@ ele é movido para a fila 2 (sempre respeitando a disciplina de atendimento). Se
     O programa foi completamente desenvolvido e testado em ambiente Linux, não havendo garantias de seu funcionamento em ambiente Windows.
 
 \subsection{Estruturas Internas Utilizadas}
+
+    Todo o código do simulador está comentado e foi documentado utilizando a ferramenta \emph{DoxyGen}, estando a documentação gerada anexa. Nesta seção, faremos uma breve análise da implementação e estruturas utilizadas.
+
+    Todas as estruturas do simulador estão no namespace \emph{TrabalhoAD}, permitindo não só maior organização do código do próprio trabalho mas também caso eventualmente este seja tilizado juntamente a outras aplicações. Nele há as classes \emph{Evento, DistExponencial, Fregues} e \emph{Simulador}, as structs \emph{AmostragemFila} e \emph{ResultadosConsolidados}, além dos operadores sobrecarregados \emph{\>} e \emph{\>\=} e das enumerações \emph{ETipo} e \enum{TipoFila}.
+
+    Os operadores sobrecarregados são responsáveis por comparar dois eventos do simulador, sendo o maior aquele com o tempo em que ocorreu de valor mais alto. Os enums \emph{ETipo} e \enum{TipoFila} listam, respectivamente, os tipos de evento possíveis (se um novo freguês chegou ao sistema, ou se seu serviço terminou de ser executado) e o regime de serviço das filas (FCFS ou LCFS).
+
+    Descrição breve das classes:
+
+\begin {itemize}
+\item \textbf{class Evento:} representa um evento ocorrido no sistema, descrevendo seu tipo o tempo em que ocorrerá;
+
+\item \textbf{class DistExponencial:} responsável pelo gerador pseudo-aleatório de tempos entre chegadas exponencialmente distribuídas. O método de geração é através da função inversa a PDF da distribuição exponencial. Além disso, a semente inicial é guardada, para que a simulação possa ser repetida de forma precisa;
+
+\item \textbf{class Fregues:} representa um freguês que chegou durante a simulação. É a responsável por gravar todos os dados da simulação (o tempo em que entrou e saiu das filas, o tempo de espera, qual fila está atualmente, a qual rodada pertence etc);
+
+\item \textbf{class Simulador:} responsável por executar a simulação propriamente dita, coletar e armazenar os resultados de cada rodada e apresentar o resultado final da simulação.
+\end {itemize}
+
+    Além destas, temos os structs:
+
+\begin {itemize}
+\item \textbf{struct AmostragemFila:} unifica todos os dados de uma determinada fila. Nela constam as quantidades de pessoas na fila, a soma dos tempo de espera, no servidor etc e seus quadrados, para posterior análise estatística;
+
+\item \textbf{struct ResultadosConsolidados:} reúne todos os dados coletados das \emph{duas} filas (através de duas \emph{AmostragemFila}) e da quantidade de amostras analisadas.
+\end {itemize}
+
+    Um detalhe importante sobre a implementação do simulador é a utilização de geradores de números pseudo-aleatórios diferentes do padrão (como citado na seção "Linguagem de Programação Utilizada"): \emph{drand48\_r\(\)} e \emph{srand48\_r\(\)}. Esta escolha foi feita pois além de retornarem um número pseudo-aleatório uniformemente distribuído entre [0.0, 1.0), estas funções são re-entrantes, o que evita problemas nos casos em que temos mais de um classe deste tipo gerando tempos de chegada concomitantemente. 
+
+
 % Aqui comentamos sobre as classes do projeto, e alguns detalhes, como a utilização do rand do linux, ou de
 \subsection{Implementação da Lista de Eventos}
 % Creio que essa seção pode morrer, pois a lista de eventos já foi mencionada antes. Talvez possamos desenvolver melhor a parte de eventos lá.
