@@ -138,6 +138,8 @@ namespace TrabalhoAD
 
     /**
      * Ativa ou desativa o modo verborrágico do Simulador.
+     *
+     * \param ativado TRUE para ativar o modo verborragico; FALSE para desativa-lo.
      */
     void define_verbose(bool ativado);
 
@@ -153,10 +155,12 @@ namespace TrabalhoAD
 
     /**
      * Coloca os geradores de chegadas para operar em modo determinístico.
+     *
+     * \param ativado TRUE para ativar o modo deterministico nos geradores de chegagas, FALSE para desativar.
      */
     void geradores_deterministicos(bool ativado);
 
-    
+
     };
 
 
