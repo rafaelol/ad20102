@@ -261,16 +261,20 @@ int main(int argc, char *argv[])
 
     if(modo_benchmark == false)
     {
+        // Primeiro verifica se o valor n_rodadas foi passado
+        if (n_rodadas <= -1)
+        {
+            printf("Escolha a quantidade de rodadas: ");
+            scanf("%d",&n_rodadas);
+        }
+        // Depois verifica se ele é menor que dez.
         if (n_rodadas < 10)
         {
-            int aux = 0;
-
             do
             {
-                if (aux) printf("Voce nao determinou ou escolheu um valor menor que 10 para a quantidade de rodadas, valor onde t-student nao e assintotico.\n");
+                printf("Voce nao determinou ou escolheu um valor menor que 10 para a quantidade de rodadas, valor onde t-student nao e assintotico.\n");
                 printf("Escolha a quantidade de rodadas: ");
                 scanf("%d",&n_rodadas);
-                aux = 1;
             } while (n_rodadas < 10);
         }
         else
@@ -280,8 +284,11 @@ int main(int argc, char *argv[])
 
         if (t_rodada <= -1)
         {
-            printf("Escolha o tamanho de cada rodada: ");
-            scanf("%d",&t_rodada);
+            do
+            {
+                printf("Escolha o tamanho de cada rodada: ");
+                scanf("%d",&t_rodada);
+            } while (t_rodada <= -1);
         }
         else
         {
@@ -290,8 +297,11 @@ int main(int argc, char *argv[])
 
         if (t_transiente <= -1)
         {
-            printf("Escolha o tamanho da fase transiente: ");
-            scanf("%d",&t_transiente);
+            do
+            {
+                printf("Escolha o tamanho da fase transiente: ");
+                scanf("%d",&t_transiente);
+            } while (t_transiente <= -1);
         }
         else
         {
@@ -378,8 +388,8 @@ int main(int argc, char *argv[])
 
     if(modo_benchmark == true)
     {
-	//Modo Benchmark da fase transiente.
-	roda_benchmark();
+        //Modo Benchmark da fase transiente.
+        roda_benchmark();
     }
     else if (modo == 1)
     {
