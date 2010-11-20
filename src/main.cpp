@@ -1,3 +1,14 @@
+/**
+ * @file main.cpp
+ * @details Arquivo inicial do simulador. Contem a inicializacao do programa, criacao do simulador com seus parametros, e chama os calculos de intervalo de confianca
+ *
+ * @author Rafael Lopes \n
+           Bruno Buss \n
+           Felipe Pedrosa \n
+           Yanko Gitahy \n
+ *
+ */
+
 #include <cstdio>
 #include <cstring>
 #include <cstdlib>
@@ -8,6 +19,10 @@
 using namespace std;
 using namespace TrabalhoAD;
 
+/**
+ * @def INTCONF095
+ * A INTCONF095 determina o valor assintotico com intervalo de confiança de 95% da tabela t-student como 1.96
+ */
 #define INTCONF095  1.96
 
 bool verbose = false;
@@ -61,27 +76,30 @@ void intervalos_confianca(vector<ResultadosConsolidados> &dados);
 void roda_benchmark(void);
 
 /**
- * A classe main define a forma que o simulador será executado. Existem duas formas de determinar como será executado.
- * Forma 1:
- * O dado é passado através de parâmetros ao executar o programa. Os parâmetros são:
- * "--modo": ao selecionar esse parâmetro, escolhemos o modo de execução das simulações, que pode ser tanto Batch como Replicativo.
- * "--n_rodadas": ao selecionar esse parâmetro, escolhemos a quantidade de rodadas que serão executadas
- * "--t_rodada": ao selecionar esse parâmetro, escolhemos o tamanho que as rodadas possuem.
- * "--t_transiente": ao selecionar esse parâmetro, escolhemos o tamanho da fase transiente.
- * "--fila1": Escolhe a disciplina de atendimento da Fila 1(FCFS ou LCFS)
- * "--fila2": Escolhe a disciplina de atendimento da Fila 2(FCFS ou LCFS)
- * "--tx_lambda": Escolhe o valor da taxa lambda, de chegada os clientes
- * "--tx_mi": Escolhe o valor da taxa mi, de atendimento do servidor.
- * "--seed_gerador_chegadas":
- * "--seed_gerador_tempo_servico":
- * "--benchmark": Neste modo o simulador executará um benchmark para os valores do tamanho da fase transiente. Este modo irá interromper a execução do simulador após retornar os dados.
- * "--deterministico": Indica ao simulador que os geradores de chegada e de servico devem atuar em modo deterministico, para fins de verificação.
- * Forma 2:
- * Ao executar o simulador, a primeira coisa que é feita é verificar se os parâmetros foram passados. Se algum não foi passado, ele pedirá que se passe antes de começar a simulação.
+ * A função main define a forma que o simulador será executado. Existem duas formas de determinar como será executado. \n
+ * Forma 1: \n
+ * O dado é passado através de parâmetros ao executar o programa. Os parâmetros são: \n
+ * "--modo": ao selecionar esse parâmetro, escolhemos o modo de execução das simulações, que pode ser tanto Batch como Replicativo. \n
+ * "--n_rodadas": ao selecionar esse parâmetro, escolhemos a quantidade de rodadas que serão executadas \n
+ * "--t_rodada": ao selecionar esse parâmetro, escolhemos o tamanho que as rodadas possuem. \n
+ * "--t_transiente": ao selecionar esse parâmetro, escolhemos o tamanho da fase transiente. \n
+ * "--fila1": Escolhe a disciplina de atendimento da Fila 1(FCFS ou LCFS) \n
+ * "--fila2": Escolhe a disciplina de atendimento da Fila 2(FCFS ou LCFS) \n
+ * "--tx_lambda": Escolhe o valor da taxa lambda, de chegada os clientes \n
+ * "--tx_mi": Escolhe o valor da taxa mi, de atendimento do servidor. \n
+ * "--seed_gerador_chegadas": \n
+ * "--seed_gerador_tempo_servico": \n
+ * "--benchmark": Neste modo o simulador executará um benchmark para os valores do tamanho da fase transiente. Este modo irá interromper a execução do simulador após retornar os dados. \n
+ * "--deterministico": Indica ao simulador que os geradores de chegada e de servico devem atuar em modo deterministico, para fins de verificação. \n
+ * Forma 2: \n
+ * Ao executar o simulador, a primeira coisa que é feita é verificar se os parâmetros foram passados. Se algum não foi passado, ele pedirá que se passe antes de começar a simulação. \n
  *
- * Também temos a opção de escolher como parâmetro do programa os parâmetros --ajuda, ou --sobre.
- * O parâmetro ajuda dá uma explicação resumida sobre os parâmetros que podem ser escolhidos.
- * O parâmetro sobre passa informações básicas sobre o grupo, integrantes e página do grupo.
+ * Também temos a opção de escolher como parâmetro do programa os parâmetros --ajuda, ou --sobre. \n
+ * O parâmetro --ajuda dá uma explicação resumida sobre os parâmetros que podem ser escolhidos. \n
+ * O parâmetro --sobre passa informações básicas sobre o grupo, integrantes e página do grupo. \n
+ *
+ * \attention Durante a passagem dos parâmetros, eles devem ser passados como valores não-negativos. Caso informe um valor negativo, o programa considerará que tal parâmetro não foi passado. No modo iterativo, caso informe um valor negativo, ele pedirá novamente o mesmo parâmetro. \n
+ *
  */
 int main(int argc, char *argv[])
 {

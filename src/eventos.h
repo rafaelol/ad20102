@@ -5,20 +5,17 @@ namespace TrabalhoAD
 {
 
     /**
-     * ETipo define os tipos de eventos que podem ocorrer no sistema.
+     * ETipo define os tipos de eventos que podem ocorrer no sistema. Eles são: \n
      *
-     * proxima_chegada_no_sistema:
-     * Um novo fregues chegou ao sistema.
-     *
-     * termino_servico:
-     * O serviço a um fregues terminou.
+     *  - proxima_chegada_no_sistema: Um novo fregues chegou ao sistema. \n
+     *  - termino_servico: O serviço a um fregues terminou.
      */
     enum ETipo {proxima_chegada_no_sistema, termino_servico};
 
     /**
-     *  A classe Evento representa um evento ocorrido no sistema.
+     *  \brief A classe Evento representa um evento ocorrido no sistema.
      *
-     *  A classe descreve o tipo de evento e o tempo em que o evento ocorrerá.
+     *  Ele descreve o tipo de evento e o tempo em que o evento ocorrerá.
      */
     class Evento
     {
