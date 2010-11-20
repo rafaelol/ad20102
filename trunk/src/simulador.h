@@ -78,6 +78,7 @@ namespace TrabalhoAD
 
         ResultadosConsolidados m_resultados; /**< Armazena os dados coletados por esta instância do simulador. */
         bool m_verbose; /**< Indica se o Simulador deve imprimir informações sobre sua execução (modo verborrágico). Padrão: FALSO. */
+        bool m_novo; /**< Indica se o simulador deve executar a simulação do modo novo. Padrão: FALSO. */
 
         /**
          * Função interna para inicializar as variáveis internas do simulador.
@@ -122,8 +123,9 @@ namespace TrabalhoAD
          *
          * \param quantidade Número de fregueses que devem ser servidos completamente.
          * \param coleta Realiza a coleta de dados estatísticos ou não.
+         * \param rodada Número da rodada que esta execução está fazendo na simulação. Caso seja fase transiente, rodada será -1.
          */
-        ResultadosConsolidados executa(int quantidade, bool coleta);
+        ResultadosConsolidados executa(int quantidade, bool coleta, int rodada);
 
         /**
          * Zera todos os dados estatísticos coletados até o momento.
@@ -159,6 +161,13 @@ namespace TrabalhoAD
          * \param ativado TRUE para ativar o modo deterministico nos geradores de chegagas, FALSE para desativar.
          */
         void geradores_deterministicos(bool ativado);
+
+        /**
+         * Ativa ou desativa o modo novo de execucao do simulador.
+         *
+         * \param ativado TRUE para ativar o modo novo de execução, FALSE para desativar.
+         */
+        void define_ativacao_metodo_execucao(bool ativado);
 
 
     };

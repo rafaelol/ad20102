@@ -8,10 +8,10 @@ namespace TrabalhoAD
 
     /** \brief A classe Fregues representa um freguês que chegou durante a simulação.
      *
-     *  Um objeto do tipo freguês armazena dados obtidos durante a simulação, como por exemplo \n
-     *  o tempo de espera em cada um das filas, a duração do serviço para ele e a quantidade \n
-     *  de outros fregueses em cada fila no momento de sua chegada no sistema. Estes dados serão \n
-     *  utilizados no final da simulação para a obtenção dos valores médios e variâncias do sistema simulado. \n
+     *  Um objeto do tipo freguês armazena dados obtidos durante a simulação, como por exemplo
+     *  o tempo de espera em cada um das filas, a duração do serviço para ele e a quantidade
+     *  de outros fregueses em cada fila no momento de sua chegada no sistema. Estes dados serão
+     *  utilizados no final da simulação para a obtenção dos valores médios e variâncias do sistema simulado.
      *
      *
      */
@@ -19,6 +19,7 @@ namespace TrabalhoAD
     {
         private:
         int m_id; /**< Identificador único do freguês no sistema */
+        int m_rodada; /**< Em qual rodada o freguês está. */
 
         int m_fila; /**< Em qual fila o freguês está */
 
@@ -46,8 +47,9 @@ namespace TrabalhoAD
          * \param quantidade_fila1 Quantidade de outros fregueses na fila de espera 1 no momento que o freguês chega ao sistema.
          * \param quantidade_fila2 Quantidade de outros fregueses na fila de espera 2 no momento que o freguês chega ao sistema.
          * \param tipo_cliente_servido Se no momento da chegada o freguês servido era da fila 1, 2 ou se não havia freguês em atendimento no servidor.
+         * \param n_rodada Indica a rodada que o freguês pertence.
          */
-        Fregues(int id, double tempo_chegada, int quantidade_fila1, int quantidade_fila2, int tipo_cliente_servido);
+        Fregues(int id, double tempo_chegada, int quantidade_fila1, int quantidade_fila2, int tipo_cliente_servido, int n_rodada);
 
         /**
          * Registra o tempo em que o freguês saiu da fila de espera 1 para o seu primeiro serviço.
@@ -136,6 +138,11 @@ namespace TrabalhoAD
          * Se o freguês no momento está no processo da fila 1 ou fila 2.
          */
         int fila_pertencente();
+
+        /**
+         * Qual a rodada o freguês pertence.
+         */
+        int rodada_pertencente();
 
         /**
          * Imprime as informações do freguês.
