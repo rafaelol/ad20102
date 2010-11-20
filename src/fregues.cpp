@@ -17,9 +17,11 @@ namespace TrabalhoAD {
         m_quantidade_fila2 = 0;
 
         m_tipo_cliente_servido = 0;
+
+        m_rodada = 0;
     }
 
-    Fregues::Fregues(int id, double tempo_chegada, int quantidade_fila1, int quantidade_fila2, int tipo_cliente_servido)
+    Fregues::Fregues(int id, double tempo_chegada, int quantidade_fila1, int quantidade_fila2, int tipo_cliente_servido, int n_rodada)
     {
         m_id = id;
         m_fila = 1;
@@ -34,6 +36,8 @@ namespace TrabalhoAD {
         m_quantidade_fila2 = quantidade_fila2;
 
         m_tipo_cliente_servido = tipo_cliente_servido;
+
+        m_rodada = n_rodada;
     }
 
     void Fregues::saiu_fila1(double tempo)
@@ -115,6 +119,11 @@ namespace TrabalhoAD {
     int Fregues::fila_pertencente()
     {
         return m_fila;
+    }
+
+    int Fregues::rodada_pertencente()
+    {
+        return m_rodada;
     }
 
     void Fregues::print()

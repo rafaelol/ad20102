@@ -36,6 +36,7 @@ namespace TrabalhoAD
         m_servico = new DistExponencial(taxa_servico);
 
         m_verbose = false;
+        m_novo = false;
 
         setup();
     }
@@ -50,6 +51,7 @@ namespace TrabalhoAD
         m_servico = new DistExponencial(taxa_servico, semente_servico);
 
         m_verbose = false;
+        m_novo = false;
 
         setup();
     }
@@ -112,7 +114,7 @@ namespace TrabalhoAD
         setup();
     }
 
-    ResultadosConsolidados Simulador::executa(int quantidade, bool coleta)
+    ResultadosConsolidados Simulador::executa(int quantidade, bool coleta, int rodada)
     {
         int clientes_servidos = 0;
 
@@ -130,7 +132,7 @@ namespace TrabalhoAD
             {
                 //Cria um novo Fregues e adiciona na fila 1
                 Fregues novoFregues = Fregues(m_prox_id++, m_tempo_atual, m_fila1.size(), m_fila2.size(),
-                                 (m_servidor_ocupado == false) ? 0 : m_fregues_em_servico.fila_pertencente());
+                                 (m_servidor_ocupado == false) ? 0 : m_fregues_em_servico.fila_pertencente(), rodada);
 
                 if(m_tipo_fila1 == FIFO)
                 {
@@ -184,59 +186,62 @@ namespace TrabalhoAD
                 {
                     m_fregues_em_servico.terminou_servico2(m_tempo_atual);
 
-                    if(coleta) //Devemos coletar os dados do cliente antes de remove-lo do sistema.
+                    if (((m_fregues_em_servico.rodada_pertencente() == rodada ) && (m_novo == true)) || (m_novo == false))
                     {
-                        m_resultados.quantidade++;
+                        if(coleta) //Devemos coletar os dados do cliente antes de remove-lo do sistema.
+                        {
+                            m_resultados.quantidade++;
 
-                        //Dados da fila 1
-                        m_resultados.fila1.X += m_fregues_em_servico.tempo_servico1();
-                        m_resultados.fila1.X_quad += m_fregues_em_servico.tempo_servico1() * m_fregues_em_servico.tempo_servico1();
+                            //Dados da fila 1
+                            m_resultados.fila1.X += m_fregues_em_servico.tempo_servico1();
+                            m_resultados.fila1.X_quad += m_fregues_em_servico.tempo_servico1() * m_fregues_em_servico.tempo_servico1();
 
-                        m_resultados.fila1.W += m_fregues_em_servico.tempo_espera1();
-                        m_resultados.fila1.W_quad += m_fregues_em_servico.tempo_espera1() * m_fregues_em_servico.tempo_espera1();
+                            m_resultados.fila1.W += m_fregues_em_servico.tempo_espera1();
+                            m_resultados.fila1.W_quad += m_fregues_em_servico.tempo_espera1() * m_fregues_em_servico.tempo_espera1();
 
-                        m_resultados.fila1.T += m_fregues_em_servico.tempo_total1();
-                        m_resultados.fila1.T_quad += m_fregues_em_servico.tempo_total1() * m_fregues_em_servico.tempo_total1();
+                            m_resultados.fila1.T += m_fregues_em_servico.tempo_total1();
+                            m_resultados.fila1.T_quad += m_fregues_em_servico.tempo_total1() * m_fregues_em_servico.tempo_total1();
 
-                        m_resultados.fila1.Nq += m_fregues_em_servico.quantidade_elementos_fila1();
-                        m_resultados.fila1.Nq_quad += m_fregues_em_servico.quantidade_elementos_fila1() *
-                                        m_fregues_em_servico.quantidade_elementos_fila1();
+                            m_resultados.fila1.Nq += m_fregues_em_servico.quantidade_elementos_fila1();
+                            m_resultados.fila1.Nq_quad += m_fregues_em_servico.quantidade_elementos_fila1() *
+                                            m_fregues_em_servico.quantidade_elementos_fila1();
 
-                        m_resultados.fila1.N += m_fregues_em_servico.quantidade_elementos_sistema1();
-                        m_resultados.fila1.N_quad += m_fregues_em_servico.quantidade_elementos_sistema1() *
-                                        m_fregues_em_servico.quantidade_elementos_sistema1();
+                            m_resultados.fila1.N += m_fregues_em_servico.quantidade_elementos_sistema1();
+                            m_resultados.fila1.N_quad += m_fregues_em_servico.quantidade_elementos_sistema1() *
+                                            m_fregues_em_servico.quantidade_elementos_sistema1();
 
 
-                        //Dados da fila 2
-                        m_resultados.fila2.X += m_fregues_em_servico.tempo_servico2();
-                        m_resultados.fila2.X_quad += m_fregues_em_servico.tempo_servico2() * m_fregues_em_servico.tempo_servico2();
+                            //Dados da fila 2
+                            m_resultados.fila2.X += m_fregues_em_servico.tempo_servico2();
+                            m_resultados.fila2.X_quad += m_fregues_em_servico.tempo_servico2() * m_fregues_em_servico.tempo_servico2();
 
-                        m_resultados.fila2.W += m_fregues_em_servico.tempo_espera2();
-                        m_resultados.fila2.W_quad += m_fregues_em_servico.tempo_espera2() * m_fregues_em_servico.tempo_espera2();
+                            m_resultados.fila2.W += m_fregues_em_servico.tempo_espera2();
+                            m_resultados.fila2.W_quad += m_fregues_em_servico.tempo_espera2() * m_fregues_em_servico.tempo_espera2();
 
-                        m_resultados.fila2.T += m_fregues_em_servico.tempo_total2();
-                        m_resultados.fila2.T_quad += m_fregues_em_servico.tempo_total2() * m_fregues_em_servico.tempo_total2();
+                            m_resultados.fila2.T += m_fregues_em_servico.tempo_total2();
+                            m_resultados.fila2.T_quad += m_fregues_em_servico.tempo_total2() * m_fregues_em_servico.tempo_total2();
 
-                        m_resultados.fila2.Nq += m_fregues_em_servico.quantidade_elementos_fila2();
-                        m_resultados.fila2.Nq_quad += m_fregues_em_servico.quantidade_elementos_fila2() *
-                                        m_fregues_em_servico.quantidade_elementos_fila2();
+                            m_resultados.fila2.Nq += m_fregues_em_servico.quantidade_elementos_fila2();
+                            m_resultados.fila2.Nq_quad += m_fregues_em_servico.quantidade_elementos_fila2() *
+                                            m_fregues_em_servico.quantidade_elementos_fila2();
 
-                        m_resultados.fila2.N += m_fregues_em_servico.quantidade_elementos_sistema2();
-                        m_resultados.fila2.N_quad += m_fregues_em_servico.quantidade_elementos_sistema2() *
-                                        m_fregues_em_servico.quantidade_elementos_sistema2();
+                            m_resultados.fila2.N += m_fregues_em_servico.quantidade_elementos_sistema2();
+                            m_resultados.fila2.N_quad += m_fregues_em_servico.quantidade_elementos_sistema2() *
+                                            m_fregues_em_servico.quantidade_elementos_sistema2();
+                        }
+
+                        if (m_verbose)
+                        {
+                            printf("[Evento] Fregues tipico da fila2 terminou o servico no servidor.\n");
+                            printf("-- Tempo evento: %lf\n", m_tempo_atual);
+                            printf("-- tamanho fila 1: %d\n", (int) m_fila1.size());
+                            printf("-- tamanho fila 2: %d\n", (int) m_fila2.size());
+                            if (m_servidor_ocupado == false) printf("-- servidor vazio\n\n");
+                            else printf("-- fregues no servidor pertence a fila %d\n\n", m_fregues_em_servico.fila_pertencente());
+                        }
+
+                        clientes_servidos++;
                     }
-
-                    if (m_verbose)
-                    {
-                        printf("[Evento] Fregues tipico da fila2 terminou o servico no servidor.\n");
-                        printf("-- Tempo evento: %lf\n", m_tempo_atual);
-                        printf("-- tamanho fila 1: %d\n", (int) m_fila1.size());
-                        printf("-- tamanho fila 2: %d\n", (int) m_fila2.size());
-                        if (m_servidor_ocupado == false) printf("-- servidor vazio\n\n");
-                        else printf("-- fregues no servidor pertence a fila %d\n\n", m_fregues_em_servico.fila_pertencente());
-                    }
-
-                    clientes_servidos++;
                 }
 
                 m_servidor_ocupado = false;
@@ -318,6 +323,11 @@ namespace TrabalhoAD
     {
         m_chegada->determistico(ativado);
         m_servico->determistico(ativado);
+    }
+
+    void Simulador::define_ativacao_metodo_execucao(bool ativado)
+    {
+        m_novo = ativado;
     }
 
 }

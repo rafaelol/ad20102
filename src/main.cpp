@@ -28,6 +28,7 @@ using namespace TrabalhoAD;
 bool verbose = false;
 bool modo_benchmark = false;
 bool modo_deterministico = false;
+bool modo_novo = false;
 int verb;
 int modo = -1;
 int n_rodadas = -1;
@@ -129,12 +130,13 @@ int main(int argc, char *argv[])
         {"tx_mi",                       required_argument,      0, 'u'},
         {"seed_gerador_chegadas",       optional_argument,      0, 'c'},
         {"seed_gerador_tempo_servicos", optional_argument,      0, 'x'},
+        {"modo_novo",                   no_argument,            0, '0'},
         {0, 0, 0, 0}
         };
 
         int option_index = 0;
 
-        opcao = getopt_long (argc, argv, "badsv:m:n:r:t:1:2:l:u:c:x:", long_options, &option_index);
+        opcao = getopt_long (argc, argv, "0badsv:m:n:r:t:1:2:l:u:c:x:", long_options, &option_index);
 
         //printf("OPCAO = %c -- %d\n", opcao, opcao);
 
@@ -250,8 +252,13 @@ int main(int argc, char *argv[])
         case 'x':
             seed_gerador_tempo_servico = atoi(optarg);
             break;
+        case '0':
+            modo_novo = true;
+            break;
         }
     }
+
+    printf("modo_novo = %d\n", modo_novo);
 
     //printf("DEBUG: \nmodo = %d \nn_rodada = %d \nt_rodada = %d \nt_transiente = %d\n", modo, n_rodadas, t_rodada, t_transiente);
     //printf("fila1 = %d\nfila2 = %d\ntx_lambda = %d\ntx_mi = %d\n", fila1, fila2, tx_lambda, tx_mi);
@@ -444,12 +451,12 @@ void modobatch(void)
 
     sim->geradores_deterministicos(modo_deterministico);
     sim->define_verbose(verbose);
-
+    sim->define_ativacao_metodo_execucao(modo_novo);
     //Executando fase transiente
 
     if (verb == 2) printf("[INICIO] Executando fase transiente\n");
 
-    sim->executa(t_transiente, false);
+    sim->executa(t_transiente, false, -1);
 
     if (verb == 2) printf("[FIM] Termino fase transiente\n");
 
@@ -459,7 +466,7 @@ void modobatch(void)
         if (verb == 2) printf("[INICIO] Executando rodada %d\n", i);
 
         //Executando a rodada i
-        result = sim->executa(t_rodada, true);
+        result = sim->executa(t_rodada, true, i);
 
         if (verb == 2) printf("[FIM] Termino da rodada %d\n\n", i);
 
@@ -500,6 +507,7 @@ void modoreplicativo(void)
 
     sim->geradores_deterministicos(modo_deterministico);
     sim->define_verbose(verbose);
+    sim->define_ativacao_metodo_execucao(modo_novo);
 
     for (int i = 0; i < n_rodadas; i++)
     {
@@ -508,14 +516,14 @@ void modoreplicativo(void)
 
         if (verb == 2) printf("[INICIO] Executando fase transiente\n");
 
-        sim->executa(t_transiente, false);
+        sim->executa(t_transiente, false, -1);
 
         if (verb == 2) printf("[FIM] Termino fase transiente\n");
 
         if (verb == 2) printf("[INICIO] Executando rodada %d\n", i);
 
         //Executando a rodada
-        result = sim->executa(t_rodada, true);
+        result = sim->executa(t_rodada, true, i);
 
         if (verb == 2) printf("[FIM] Termino da rodada %d\n\n", i);
 
@@ -897,12 +905,13 @@ void roda_benchmark(void)
 
     sim->geradores_deterministicos(modo_deterministico);
     sim->define_verbose(verbose);
+    sim->define_ativacao_metodo_execucao(modo_novo);
 
     if(verb >= 1) printf("Iniciando o benchmark...");
 
     for(int j = 0; j < quantidade; j++)
     {
-      result = sim->executa(passo, true);
+      result = sim->executa(passo, true, j);
 
       dados.push_back(result);
     }
