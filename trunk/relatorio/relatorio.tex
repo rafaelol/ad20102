@@ -142,9 +142,9 @@ ele é movido para a fila 2 (sempre respeitando a disciplina de atendimento). Se
 
     Todo o código do simulador está comentado e foi documentado utilizando a ferramenta \emph{DoxyGen}, estando a documentação gerada anexa. Nesta seção, faremos uma breve análise da implementação e estruturas utilizadas.
 
-    Todas as estruturas do simulador estão no namespace \emph{TrabalhoAD}, permitindo não só maior organização do código do próprio trabalho mas também caso eventualmente este seja tilizado juntamente a outras aplicações. Nele há as classes \emph{Evento, DistExponencial, Fregues} e \emph{Simulador}, as structs \emph{AmostragemFila} e \emph{ResultadosConsolidados}, além dos operadores sobrecarregados \emph{\>} e \emph{\>\=} e das enumerações \emph{ETipo} e \enum{TipoFila}.
+    Todas as estruturas do simulador estão no namespace \emph{TrabalhoAD} permitindo não só maior organização do código do próprio trabalho mas também caso eventualmente este seja tilizado juntamente a outras aplicações. Nele há as classes \emph{Evento, DistExponencial, Fregues} e \emph{Simulador}, as structs \emph{AmostragemFila} e \emph{ResultadosConsolidados}, além dos operadores sobrecarregados \emph{$>$} e \emph{$>=$} e das enumerações \emph{ETipo} e \emph{TipoFila}.
 
-    Os operadores sobrecarregados são responsáveis por comparar dois eventos do simulador, sendo o maior aquele com o tempo em que ocorreu de valor mais alto. Os enums \emph{ETipo} e \enum{TipoFila} listam, respectivamente, os tipos de evento possíveis (se um novo freguês chegou ao sistema, ou se seu serviço terminou de ser executado) e o regime de serviço das filas (FCFS ou LCFS).
+    Os operadores sobrecarregados são responsáveis por comparar dois eventos do simulador, sendo o maior aquele com o tempo em que ocorreu de valor mais alto. Os enums \emph{ETipo} e \emph{TipoFila} listam, respectivamente, os tipos de evento possíveis (se um novo freguês chegou ao sistema, ou se seu serviço terminou de ser executado) e o regime de serviço das filas (FCFS ou LCFS).
 
     Descrição breve das classes:
 
@@ -166,7 +166,7 @@ ele é movido para a fila 2 (sempre respeitando a disciplina de atendimento). Se
 \item \textbf{struct ResultadosConsolidados:} reúne todos os dados coletados das \emph{duas} filas (através de duas \emph{AmostragemFila}) e da quantidade de amostras analisadas.
 \end {itemize}
 
-    Um detalhe importante sobre a implementação do simulador é a utilização de geradores de números pseudo-aleatórios diferentes do padrão (como citado na seção "Linguagem de Programação Utilizada"): \emph{drand48\_r\(\)} e \emph{srand48\_r\(\)}. Esta escolha foi feita pois além de retornarem um número pseudo-aleatório uniformemente distribuído entre [0.0, 1.0), estas funções são re-entrantes, o que evita problemas nos casos em que temos mais de um classe deste tipo gerando tempos de chegada concomitantemente. 
+    Um detalhe importante sobre a implementação do simulador é a utilização de geradores de números pseudo-aleatórios diferentes do padrão (como citado na seção "Linguagem de Programação Utilizada"): \emph{drand48\_r\(\)} e \emph{srand48\_r\(\)}. Esta escolha foi feita pois além de retornarem um número pseudo-aleatório uniformemente distribuído entre [0.0, 1.0), estas funções são re-entrantes, o que evita problemas nos casos em que temos mais de um classe deste tipo gerando tempos de chegada concomitantemente.
 
 
 % Aqui comentamos sobre as classes do projeto, e alguns detalhes, como a utilização do rand do linux, ou de
@@ -177,7 +177,7 @@ ele é movido para a fila 2 (sempre respeitando a disciplina de atendimento). Se
 \subsection{Coleta de Estatísticas}
 % Falamos sobre a coleta de estatísticas e cálculo delas(Variância e IC).
 \subsection{Método de análise}
-   
+
     O simulador foi construído para funcionar de maneira genérica, sendo assim, a única parte fixa é o formato das filas do sistema (fila 1 prioritária sobre fila 2, ambas sendo servidas por um mesmo servidor), enquanto as disciplinas de serviço podem ser escolhidas pelo usuário. Com isso, também foi planejado para aceitar ambos os métodos de análise: Batch e Replicativo.
 
     No método Batch, diversas rodadas são executadas a partir de uma mesma semente. Desta forma, precisamos estimar a fase transiente apenas uma vez, utilizando apenas um sistema de \emph{"coloração"} para definir quais dados devem ser coletados. Os clientes gerados em uma determinada rodada possuem um identificador da mesma e, quando saem do sistema, apenas são considerados para as estatísticas aqueles pertencentes à rodada atual de simulação. Caso a rodada acabe e ainda haja fregueses na fila, estes permanecem fazendo parte da simulação, mas seus dados não são contados na rodada seguinte.

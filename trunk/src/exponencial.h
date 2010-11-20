@@ -9,15 +9,14 @@ namespace TrabalhoAD
     {
 
     /**
-     * A classe DistExponencial representa um gerador pseudo-aleatório
-     * de tempos entre chegadas exponencialmente distribuídas.
+     * \brief A classe DistExponencial representa um gerador pseudo-aleatório de tempos entre chegadas exponencialmente distribuídas.
      *
      * A semente que inicalizou a classe ficará sempre guardada. Desta forma,
      * será possível recupera-la e repetir os testes de forma precisa para verificar
-     * o funcionamento do simulador.
+     * o funcionamento do simulador. \n
      *
      * A geração é feita através da função inversa da PDF da distribuição
-     * exponencial.
+     * exponencial. \n
      *
      * \warning Esta classe não utiliza métodos tradicionais como srand() e rand()
      * para a geração de números pseudo-aleatórios e sim as funções
@@ -45,8 +44,8 @@ namespace TrabalhoAD
 
     public:
     /**
-     * Construtor da classe DistExponencial.
-     * Este construtor irá inicializar o gerador de números pseudo-aleatórios com o valor de gettimeofday().
+     * Construtor da classe DistExponencial. \n
+     * Este construtor irá inicializar o gerador de números pseudo-aleatórios com o valor de gettimeofday(). \n
      *
      * \param taxa Taxa lambda da distribuição exponencial.
      */
