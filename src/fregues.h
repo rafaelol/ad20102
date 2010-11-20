@@ -19,7 +19,7 @@ namespace TrabalhoAD
     {
         private:
         int m_id; /**< Identificador único do freguês no sistema */
-        int m_rodada; /**< Em qual rodada o freguês está. */
+        int m_rodada; /**< Em qual rodada o freguês entrou no sistema. */
 
         int m_fila; /**< Em qual fila o freguês está */
 

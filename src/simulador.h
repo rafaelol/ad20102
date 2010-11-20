@@ -78,7 +78,6 @@ namespace TrabalhoAD
 
         ResultadosConsolidados m_resultados; /**< Armazena os dados coletados por esta instância do simulador. */
         bool m_verbose; /**< Indica se o Simulador deve imprimir informações sobre sua execução (modo verborrágico). Padrão: FALSO. */
-        bool m_novo; /**< Indica se o simulador deve executar a simulação do modo novo. Padrão: FALSO. */
 
         /**
          * Função interna para inicializar as variáveis internas do simulador.
@@ -161,14 +160,6 @@ namespace TrabalhoAD
          * \param ativado TRUE para ativar o modo deterministico nos geradores de chegagas, FALSE para desativar.
          */
         void geradores_deterministicos(bool ativado);
-
-        /**
-         * Ativa ou desativa o modo novo de execucao do simulador.
-         *
-         * \param ativado TRUE para ativar o modo novo de execução, FALSE para desativar.
-         */
-        void define_ativacao_metodo_execucao(bool ativado);
-
 
     };
 

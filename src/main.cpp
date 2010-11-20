@@ -28,7 +28,7 @@ using namespace TrabalhoAD;
 bool verbose = false;
 bool modo_benchmark = false;
 bool modo_deterministico = false;
-bool modo_novo = false;
+bool modo_coloracao = false;
 int verb;
 int modo = -1;
 int n_rodadas = -1;
@@ -92,6 +92,7 @@ void roda_benchmark(void);
  * "--seed_gerador_tempo_servico": \n
  * "--benchmark": Neste modo o simulador executará um benchmark para os valores do tamanho da fase transiente. Este modo irá interromper a execução do simulador após retornar os dados. \n
  * "--deterministico": Indica ao simulador que os geradores de chegada e de servico devem atuar em modo deterministico, para fins de verificação. \n
+ * "--modo_coloracao\"(-o): Neste modo os fregueses sao marcados por rodadas e apenas contabilizados se sairem na mesma rodada em que entraram no sistema. \n
  * Forma 2: \n
  * Ao executar o simulador, a primeira coisa que é feita é verificar se os parâmetros foram passados. Se algum não foi passado, ele pedirá que se passe antes de começar a simulação. \n
  *
@@ -115,6 +116,7 @@ int main(int argc, char *argv[])
 
         static struct option long_options[] =
         {
+        {"modo_coloracao",              no_argument,            0, 'o'},          
         {"benchmark",                   no_argument,            0, 'b'},
         {"ajuda",                       no_argument,            0, 'a'},
         {"deterministico",              no_argument,            0, 'd'},
@@ -130,13 +132,12 @@ int main(int argc, char *argv[])
         {"tx_mi",                       required_argument,      0, 'u'},
         {"seed_gerador_chegadas",       optional_argument,      0, 'c'},
         {"seed_gerador_tempo_servicos", optional_argument,      0, 'x'},
-        {"modo_novo",                   no_argument,            0, '0'},
         {0, 0, 0, 0}
         };
 
         int option_index = 0;
 
-        opcao = getopt_long (argc, argv, "0badsv:m:n:r:t:1:2:l:u:c:x:", long_options, &option_index);
+        opcao = getopt_long (argc, argv, "obadsv:m:n:r:t:1:2:l:u:c:x:", long_options, &option_index);
 
         //printf("OPCAO = %c -- %d\n", opcao, opcao);
 
@@ -177,6 +178,7 @@ int main(int argc, char *argv[])
             printf("\"--sobre\"(-s): Sobre o projeto.\n");
             printf("\"--benchmark\"(-b): Neste modo o simulador executara um benchmark para diversos valores de tamanho para a fase transiente.\n");
             printf("\"--deterministico\"(-d): Indica ao simulador que os geradores de chegada e de servico devem atuar em modo deterministico, para fins de verificacao\n");
+            printf("\"--modo_coloracao\"(-o): Neste modo os fregueses sao marcados por rodadas e apenas contabilizados se sairem na mesma rodada em que entraram no sistema.\n");
             printf("\"--verbose\"(-v): Execucao do programa em modo verborragico.\n");
             printf("Ao ser executado, o programa verifica os parâmetros usados, e perguntara iterativamente os parametros obrigatorios que faltam.\n");
             printf("Os seeds geradores somente sao passados atraves de parametros. Eles nao serao perguntados, pois sao opcionais.\n");
@@ -252,13 +254,11 @@ int main(int argc, char *argv[])
         case 'x':
             seed_gerador_tempo_servico = atoi(optarg);
             break;
-        case '0':
-            modo_novo = true;
+        case 'o':
+            modo_coloracao = true;
             break;
         }
     }
-
-    printf("modo_novo = %d\n", modo_novo);
 
     //printf("DEBUG: \nmodo = %d \nn_rodada = %d \nt_rodada = %d \nt_transiente = %d\n", modo, n_rodadas, t_rodada, t_transiente);
     //printf("fila1 = %d\nfila2 = %d\ntx_lambda = %d\ntx_mi = %d\n", fila1, fila2, tx_lambda, tx_mi);
@@ -451,7 +451,6 @@ void modobatch(void)
 
     sim->geradores_deterministicos(modo_deterministico);
     sim->define_verbose(verbose);
-    sim->define_ativacao_metodo_execucao(modo_novo);
     //Executando fase transiente
 
     if (verb == 2) printf("[INICIO] Executando fase transiente\n");
@@ -466,7 +465,8 @@ void modobatch(void)
         if (verb == 2) printf("[INICIO] Executando rodada %d\n", i);
 
         //Executando a rodada i
-        result = sim->executa(t_rodada, true, i);
+        if(modo_coloracao) result = sim->executa(t_rodada, true, i);
+        else result = sim->executa(t_rodada, true, -1);
 
         if (verb == 2) printf("[FIM] Termino da rodada %d\n\n", i);
 
@@ -507,8 +507,7 @@ void modoreplicativo(void)
 
     sim->geradores_deterministicos(modo_deterministico);
     sim->define_verbose(verbose);
-    sim->define_ativacao_metodo_execucao(modo_novo);
-
+    
     for (int i = 0; i < n_rodadas; i++)
     {
 
@@ -523,7 +522,8 @@ void modoreplicativo(void)
         if (verb == 2) printf("[INICIO] Executando rodada %d\n", i);
 
         //Executando a rodada
-        result = sim->executa(t_rodada, true, i);
+        if(modo_coloracao) result = sim->executa(t_rodada, true, i);
+        else result = sim->executa(t_rodada, true, -1);
 
         if (verb == 2) printf("[FIM] Termino da rodada %d\n\n", i);
 
@@ -569,6 +569,7 @@ void imprime_parametros_execucao(void)
     }
 
     if(modo_deterministico == true) printf("-d ");
+    if(modo_coloracao) printf("-o ");
 
     printf("-1 ");
     if (fila1 == FIFO)
@@ -905,13 +906,12 @@ void roda_benchmark(void)
 
     sim->geradores_deterministicos(modo_deterministico);
     sim->define_verbose(verbose);
-    sim->define_ativacao_metodo_execucao(modo_novo);
 
     if(verb >= 1) printf("Iniciando o benchmark...");
 
     for(int j = 0; j < quantidade; j++)
     {
-      result = sim->executa(passo, true, j);
+      result = sim->executa(passo, true, -1);
 
       dados.push_back(result);
     }

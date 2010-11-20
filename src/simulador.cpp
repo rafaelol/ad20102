@@ -36,7 +36,6 @@ namespace TrabalhoAD
         m_servico = new DistExponencial(taxa_servico);
 
         m_verbose = false;
-        m_novo = false;
 
         setup();
     }
@@ -51,8 +50,7 @@ namespace TrabalhoAD
         m_servico = new DistExponencial(taxa_servico, semente_servico);
 
         m_verbose = false;
-        m_novo = false;
-
+        
         setup();
     }
 
@@ -186,7 +184,7 @@ namespace TrabalhoAD
                 {
                     m_fregues_em_servico.terminou_servico2(m_tempo_atual);
 
-                    if (((m_fregues_em_servico.rodada_pertencente() == rodada ) && (m_novo == true)) || (m_novo == false))
+                    if (m_fregues_em_servico.rodada_pertencente() == rodada)
                     {
                         if(coleta) //Devemos coletar os dados do cliente antes de remove-lo do sistema.
                         {
@@ -324,10 +322,4 @@ namespace TrabalhoAD
         m_chegada->determistico(ativado);
         m_servico->determistico(ativado);
     }
-
-    void Simulador::define_ativacao_metodo_execucao(bool ativado)
-    {
-        m_novo = ativado;
-    }
-
 }
