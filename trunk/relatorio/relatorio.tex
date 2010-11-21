@@ -200,7 +200,108 @@ ele é movido para a fila 2 (sempre respeitando a disciplina de atendimento). Se
 \pagebreak
 
 \section{Estimativa da fase transiente}
-% Benchmark do Buss
+    Para calcular o valor necessário de fregueses na fase transiente para que a simulação fique estabilizada, foi implementada uma função de benchmark no programa.
+
+    Esta função executa uma simulação em modo batch sem fase transiente, onde cada passo tem execução de tamanho da rodada igual a 250 fregueses. Chamamos cada rodada de \emph{passo}. A simulação se encerra quando atendemos 100 mil fregueses, ou seja, na rodada de número 400.
+
+    Em cada \emph{passo} calculamos o valor médio para cada amostra. Como temos $quantidade\_passos * 250$ fregueses, o valor médio será o valor recebido neste ponto, dividido por $quantidade\_passos * 250$. Para as variâncias, o cálculo é diferente, mas segue o mesmo padrão.
+
+    São feitas cinco amostragens na forma explicitada nos parágrafos anteriores, com sementes diferentes. Com todos os valores calculados, um gráfico é gerado para cada variável aleatória, de forma que possamos comparar o momento em que as 5 amostras começam a ter valores próximos e estáveis(não mudam muito seu valor conforme aumenta a quantidade de fregueses atendidos).
+
+    A primeira conclusão que podemos tomar é que a estabilização da fase transiente independe da semente geradora. Analisando os gráficos que estão nesta seção, verificamos que o ponto em que os valores médios deixam de apresentar uma variação muito grande são aproximadamente os mesmos, independentemente da semente, e que as sementes tendem a convergir todas para um valor de média.
+
+    Para determinar a fase transiente ideal, geramos gráficos com os resultados para cada variável aleatória, e analisamos em cada caso qual seria o valor ideal para fase transiente. Esta etapa é mostrada nas páginas a seguir, com o valor de $lambda$ igual a 0.45 e $mu$ igual a 1.0.
+
+\pagebreak
+
+\begin{figure}
+\includegraphics[scale = 0.2]{./graficos_transiente_1/FCFS/01.png}
+\end{figure}
+\begin{figure}
+\includegraphics[scale = 0.2]{./graficos_transiente_1/FCFS/02.png}
+\end{figure}
+\begin{figure}
+\includegraphics[scale = 0.2]{./graficos_transiente_1/FCFS/03.png}
+\end{figure}
+
+\pagebreak
+
+\begin{figure}
+\includegraphics[scale = 0.2]{./graficos_transiente_1/FCFS/04.png}
+\end{figure}
+\begin{figure}
+\includegraphics[scale = 0.2]{./graficos_transiente_1/FCFS/05.png}
+\end{figure}
+\begin{figure}
+\includegraphics[scale = 0.2]{./graficos_transiente_1/FCFS/06.png}
+\end{figure}
+
+\pagebreak
+
+\begin{figure}
+\includegraphics[scale = 0.2]{./graficos_transiente_1/FCFS/07.png}
+\end{figure}
+\begin{figure}
+\includegraphics[scale = 0.2]{./graficos_transiente_1/FCFS/08.png}
+\end{figure}
+\begin{figure}
+\includegraphics[scale = 0.2]{./graficos_transiente_1/FCFS/09.png}
+\end{figure}
+
+\pagebreak
+
+\begin{figure}
+\includegraphics[scale = 0.2]{./graficos_transiente_1/FCFS/10.png}
+\end{figure}
+
+    Para o caso em que $lambda$ é igual a 0.45, $mu$ é igual a 1.0, e temos as filas como FCFS, consideramos a fase transiente de acordo com a seguinte tabela, baseada em cada variável aleatória.
+
+\begin{center}
+\begin{tabular} { | l | l | }
+    \hline
+    E [ $N_1$ ]  & 10 mil \\ \hline
+    E [ $N_2$ ] & 10 mil \\ \hline
+    E [ $Nq_1$ ] & 10 mil \\ \hline
+    E [ $Nq_2$ ]	& 10 mil \\ \hline
+    E [ $T_1$ ] & 10 mil \\ \hline
+    E [ $T_2$ ] & 10 mil \\ \hline
+    E [ $W_1$ ] & 10 mil \\ \hline
+    E [ $W_2$ ] & 10 mil \\ \hline
+    Var ( $W_1$ ) & 10 mil \\ \hline
+    Var ( $W_2$ ) & 10 mil \\ \hline
+    \hline
+\end{tabular}
+\end{center}
+
+    A tabela indica que 10 mil é um valor bom para a escolha da fase transiente, pois a partir de 10 mil fregueses atendidos já temos a média da variável aleatória estável, sem grandes saltos.
+
+%agora deveriam vir as figuras do LCFS
+
+    Para o caso em que $lambda$ é igual a 0.45, $mu$ é igual a 1.0, e temos as filas como LCFS, consideramos a fase transiente de acordo com a seguinte tabela, baseada em cada variável aleatória.
+
+\begin{center}
+\begin{tabular} { | l | l | }
+    \hline
+    E [ $N_1$ ]  & 10 mil \\ \hline
+    E [ $N_2$ ] & 10 mil \\ \hline
+    E [ $Nq_1$ ] & 10 mil \\ \hline
+    E [ $Nq_2$ ]	& 10 mil \\ \hline
+    E [ $T_1$ ] & 10 mil \\ \hline
+    E [ $T_2$ ] & 10 mil \\ \hline
+    E [ $W_1$ ] & 10 mil \\ \hline
+    E [ $W_2$ ] & 10 mil \\ \hline
+    Var ( $W_1$ ) & 10 mil \\ \hline
+    Var ( $W_2$ ) & 20 mil \\ \hline
+    \hline
+\end{tabular}
+\end{center}
+
+    A tabela indica que 10 mil é um valor bom para a escolha da fase transiente, pois a partir de 10 mil fregueses atendidos já temos a média da variável aleatória estável, sem grandes saltos.
+
+    Nestes gráficos, podemos ver que a Variância de $W_2$ ....
+
+
+
 \pagebreak
 
 \section{Tabelas com resultados e comentários pertinentes}
@@ -208,7 +309,7 @@ ele é movido para a fila 2 (sempre respeitando a disciplina de atendimento). Se
 \pagebreak
 
 \section{Otimização}
-% O que falar exatamente aqui?
+% Calculo do fator minimo
 \pagebreak
 
 \section{Conclusão}
