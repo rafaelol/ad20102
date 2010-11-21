@@ -8,8 +8,8 @@ use Chart::Clicker::Renderer::Line;
 use List::MoreUtils qw (apply);
 #use Data::Dumper::Simple;
 
-my $passo = 250;
-my $quantidade_amostras = 100000/$passo;
+my $passo = 100;
+my $quantidade_amostras = 3000/$passo;
 
 #Gráficos a serem gerados:
 gera_graficos({
