@@ -296,7 +296,6 @@ namespace TrabalhoAD
                 }
             }
 
-
         }
 
         return m_resultados;
