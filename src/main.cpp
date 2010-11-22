@@ -264,6 +264,7 @@ int main(int argc, char *argv[])
     //printf("fila1 = %d\nfila2 = %d\ntx_lambda = %d\ntx_mi = %d\n", fila1, fila2, tx_lambda, tx_mi);
     //printf("seed__gerador_chegadas = %ld\nseed_gerador_tempo_servico = %ld\n", seed_gerador_chegadas, seed_gerador_tempo_servico);
 
+
     if ((modo != 1) && (modo != 2) && modo_benchmark == false)
     {
         printf("Escolha o tipo de simulacao deseja fazer:\n");
