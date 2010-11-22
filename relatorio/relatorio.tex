@@ -112,7 +112,7 @@ Professor: Paulo Henrique de Aguiar Rodrigues\\
 
 \item \textbf{Ajuda:} imprime todos os comandos possíveis e suas descrições. Na linha de comando: \emph{--ajuda} ou \emph{-a}. Não recebe parâmetros;
 
-\item \textbf{Modo verborrágico:} roda o simulador imprimindo diferentes níveis de detalhe sobre as operações sendo executadas internamente. Na linha de comando: \emph{--verbose} ou \emph{-v} Opções: 0,1 ou 2;
+\item \textbf{Modo verborrágico:} roda o simulador imprimindo diferentes níveis de detalhe sobre as operações sendo executadas internamente. Na linha de comando: \emph{--verbose} ou \emph{-v} Opções: 0(apresena apenas os intervalos de confiança), 1(modo 0 mais dados finais de cada rodada) ou 2(modo 1 mais dados de cada evento que ocorre na rodada);
 \end {itemize}
 
     Após a entrada de parâmetros, o simulador se inicia. Este utiliza eventos discretos, mas tempo contínuo, logo, os eventos acontecem em instantes de tempo com valores numéricos reais. A cada rodada, o simulador fica em loop aguardando eventos acontecerem. O loop se encerra quando a quantidade de fregueses determinada pelo parâmetro \emph{"tamanho da rodada"} for servida. Os eventos que acontecem são:
@@ -200,61 +200,30 @@ ele é movido para a fila 2 (sempre respeitando a disciplina de atendimento). Se
 \pagebreak
 
 \section{Estimativa da fase transiente}
-    Para calcular o valor necessário de fregueses na fase transiente para que a simulação fique estabilizada, foi implementada uma função de benchmark no programa.
+    Para calcular o valor necessário de fregueses na fase transiente para que a simulação fique estabilizada, foi implementada uma função de benchmark no
+programa.
 
-    Esta função executa uma simulação em modo batch sem fase transiente, onde cada passo tem execução de tamanho da rodada igual a 250 fregueses. Chamamos cada rodada de \emph{passo}. A simulação se encerra quando atendemos 100 mil fregueses, ou seja, na rodada de número 400.
+    Esta função executa uma simulação em modo batch sem fase transiente, onde cada passo tem execução de tamanho da rodada igual a 250 fregueses.
+Chamamos cada rodada de \emph{passo}. A simulação se encerra quando atendemos 100 mil fregueses, ou seja, na rodada de número 400.
 
-    Em cada \emph{passo} calculamos o valor médio para cada amostra. Como temos $quantidade\_passos * 250$ fregueses, o valor médio será o valor recebido neste ponto, dividido por $quantidade\_passos * 250$. Para as variâncias, o cálculo é diferente, mas segue o mesmo padrão.
+    Em cada \emph{passo} calculamos o valor médio para cada amostra. Como temos $quantidade\_passos * 250$ fregueses, o valor médio será o valor recebido
+neste ponto, dividido por $quantidade\_passos * 250$. Para as variâncias, o cálculo é diferente, mas segue o mesmo padrão.
 
-    São feitas cinco amostragens na forma explicitada nos parágrafos anteriores, com sementes diferentes. Com todos os valores calculados, um gráfico é gerado para cada variável aleatória, de forma que possamos comparar o momento em que as 5 amostras começam a ter valores próximos e estáveis(não mudam muito seu valor conforme aumenta a quantidade de fregueses atendidos).
+    São feitas cinco amostragens na forma explicitada nos parágrafos anteriores, com sementes diferentes. Com todos os valores calculados, um gráfico é
+gerado para cada variável aleatória, de forma que possamos comparar o momento em que as 5 amostras começam a ter valores próximos e estáveis(não mudam
+muito seu valor conforme aumenta a quantidade de fregueses atendidos).
 
-    A primeira conclusão que podemos tomar é que a estabilização da fase transiente independe da semente geradora. Analisando os gráficos que estão nesta seção, verificamos que o ponto em que os valores médios deixam de apresentar uma variação muito grande são aproximadamente os mesmos, independentemente da semente, e que as sementes tendem a convergir todas para um valor de média.
+    A primeira conclusão que podemos tomar é que a estabilização da fase transiente independe da semente geradora. Analisando os gráficos que estão
+nesta seção, verificamos que o ponto em que os valores médios deixam de apresentar uma variação muito grande são aproximadamente os mesmos,
+independentemente da semente, e que as sementes tendem a convergir todas para um valor de média.
 
-    Para determinar a fase transiente ideal, geramos gráficos com os resultados para cada variável aleatória, e analisamos em cada caso qual seria o valor ideal para fase transiente. Esta etapa é mostrada nas páginas a seguir, com o valor de $lambda$ igual a 0.45 e $mu$ igual a 1.0.
+    Para determinar a fase transiente ideal, geramos gráficos com os resultados para cada variável aleatória, e analisamos em cada caso qual
+seria o valor ideal para fase transiente. Foram avaliados casos em que $mu$ sempre tinha valor 1.0, e $lambda$ possuia valores 0.1, 0.2, 0.3, 0.4 e 0.45. Para
+todos esses casos, testamos com ambas as filas sendo FCFS e LCFS. Os casos críticos, que demoraram mais a se estabilizar foram as filas FCFS com $lambda$ 0.45 e
+filas LCFS com $lambda$ 0.45.
 
-\pagebreak
-
-\begin{figure}
-\includegraphics[scale = 0.2]{./graficos_transiente_1/FCFS/01.png}
-\end{figure}
-\begin{figure}
-\includegraphics[scale = 0.2]{./graficos_transiente_1/FCFS/02.png}
-\end{figure}
-\begin{figure}
-\includegraphics[scale = 0.2]{./graficos_transiente_1/FCFS/03.png}
-\end{figure}
-
-\pagebreak
-
-\begin{figure}
-\includegraphics[scale = 0.2]{./graficos_transiente_1/FCFS/04.png}
-\end{figure}
-\begin{figure}
-\includegraphics[scale = 0.2]{./graficos_transiente_1/FCFS/05.png}
-\end{figure}
-\begin{figure}
-\includegraphics[scale = 0.2]{./graficos_transiente_1/FCFS/06.png}
-\end{figure}
-
-\pagebreak
-
-\begin{figure}
-\includegraphics[scale = 0.2]{./graficos_transiente_1/FCFS/07.png}
-\end{figure}
-\begin{figure}
-\includegraphics[scale = 0.2]{./graficos_transiente_1/FCFS/08.png}
-\end{figure}
-\begin{figure}
-\includegraphics[scale = 0.2]{./graficos_transiente_1/FCFS/09.png}
-\end{figure}
-
-\pagebreak
-
-\begin{figure}
-\includegraphics[scale = 0.2]{./graficos_transiente_1/FCFS/10.png}
-\end{figure}
-
-    Para o caso em que $lambda$ é igual a 0.45, $mu$ é igual a 1.0, e temos as filas como FCFS, consideramos a fase transiente de acordo com a seguinte tabela, baseada em cada variável aleatória.
+    Para o caso em que $lambda$ é igual a 0.45, $mu$ é igual a 1.0, e temos as filas como FCFS, consideramos a fase transiente de acordo com a
+seguinte tabela, baseada em cada variável aleatória.
 
 \begin{center}
 \begin{tabular} { | l | l | }
@@ -269,15 +238,14 @@ ele é movido para a fila 2 (sempre respeitando a disciplina de atendimento). Se
     E [ $W_2$ ] & 10 mil \\ \hline
     Var ( $W_1$ ) & 10 mil \\ \hline
     Var ( $W_2$ ) & 10 mil \\ \hline
-    \hline
 \end{tabular}
 \end{center}
 
-    A tabela indica que 10 mil é um valor bom para a escolha da fase transiente, pois a partir de 10 mil fregueses atendidos já temos a média da variável aleatória estável, sem grandes saltos.
+    A tabela indica que 10 mil é um valor bom para a escolha da fase transiente, pois a partir de 10 mil fregueses atendidos já temos a média da
+variável aleatória estável, sem grandes saltos.
 
-%agora deveriam vir as figuras do LCFS
-
-    Para o caso em que $lambda$ é igual a 0.45, $mu$ é igual a 1.0, e temos as filas como LCFS, consideramos a fase transiente de acordo com a seguinte tabela, baseada em cada variável aleatória.
+    Para o caso em que $lambda$ é igual a 0.45, $mu$ é igual a 1.0, e temos as filas como LCFS, consideramos a fase transiente de acordo com a seguinte
+tabela, baseada em cada variável aleatória.
 
 \begin{center}
 \begin{tabular} { | l | l | }
@@ -292,14 +260,123 @@ ele é movido para a fila 2 (sempre respeitando a disciplina de atendimento). Se
     E [ $W_2$ ] & 10 mil \\ \hline
     Var ( $W_1$ ) & 10 mil \\ \hline
     Var ( $W_2$ ) & 20 mil \\ \hline
-    \hline
 \end{tabular}
 \end{center}
 
-    A tabela indica que 10 mil é um valor bom para a escolha da fase transiente, pois a partir de 10 mil fregueses atendidos já temos a média da variável aleatória estável, sem grandes saltos.
+    A tabela indica que 10 mil é um valor bom para a escolha da fase transiente, pois a partir de 10 mil fregueses atendidos já temos a média da variável
+aleatória estável, sem grandes saltos.
 
-    Nestes gráficos, podemos ver que a Variância de $W_2$ ....
+    Se analisar o gráfico da Variância da fila 2 do tipo LCFS, verá que ela, apesar de estabilizada, possui um comportamento mais abrupto. Isso é explicado devido à
+natureza da fila, pois teremos fregueses entrando na fila e rapidamente saindo, pois esse fregues que chegou tem prioridade de atendimento caso a fila 1 esteja vazia,
+e ao mesmo tempo podemos ter fregueses entrando na fila 2 e demorando muito a ser atendidos, pois novos fregueses que entram na fila serão atendidos antes dele. Logo,
+a variância do tempo médio de atendimento será alto.
 
+    Para confirmar que 10 mil é um bom valor para a fase transiente, executamos simulações com 1000 rodadas, um tamanho de rodada de 100 mil elementos, filas do tipo LCFS,
+modo de simulação Batch, $lambda$ = 0.45 e tamanho de fase transiente que variava entre 10 mil e 40 mil. O tamanho dos Intervalos de Confiança para cada Variável Aleatória está condensado na
+tabela abaixo:
+
+\begin{center}
+\begin{tabular} { | l | l | l | l | l | }
+    \hline
+    Fase Transiente & 10 mil     & 20 mil     & 30 mil     & 40 mil \\ \hline
+    E [ $N_1$ ]     & 0.143608\% & 0.137585\% & 0.137273\% & 0.140593\% \\ \hline
+    E [ $N_2$ ]     & 0.823262\% & 0.787415\% & 0.810789\% & 0.789747\% \\ \hline
+    E [ $Nq_1$ ]    & 0.199177\% & 0.191484\% & 0.192003\% & 0.194381\% \\ \hline
+    E [ $Nq_2$ ]    & 0.856671\% & 0.819240\% & 0.843412\% & 0.821582\% \\ \hline
+    E [ $T_1$ ]     & 0.100458\% & 0.095310\% & 0.095581\% & 0.096510\% \\ \hline
+    E [ $T_2$ ]     & 0.774806\% & 0.739993\% & 0.759869\% & 0.742618\% \\ \hline
+    E [ $W_1$ ]     & 0.147686\% & 0.139654\% & 0.140487\% & 0.141282\% \\ \hline
+    E [ $W_2$ ]     & 0.807038\% & 0.770683\% & 0.791389\% & 0.773448\% \\ \hline
+    Var ( $W_1$ )   & 0.491216\% & 0.491795\% & 0.470687\% & 0.483800\% \\ \hline
+    Var ( $W_2$ )   & 3.061337\% & 3.067933\% & 3.130488\% & 2.928875\% \\ \hline
+\end{tabular}
+\end{center}
+
+    Uma outra rodada de simulações foi feita com as mesmas propriedades, exceto as filas, que agora são do tipo FCFS. O tamanho dos Intervalos de Confiança para cada Variável Aleatória está condensado na tabela a seguir.
+
+\begin{center}
+\begin{tabular} { | l | l | l | l | l | }
+    \hline
+    Fase Transiente & 10 mil     & 20 mil     & 30 mil     & 40 mil \\ \hline
+    E [ $N_1$ ]     & 0.136988\% & 0.143257\% & 0.142970\% & 0.132507\% \\ \hline
+    E [ $N_2$ ]     & 0.837223\% & 0.799592\% & 0.802728\% & 0.840716\% \\ \hline
+    E [ $Nq_1$ ]    & 0.188744\% & 0.200473\% & 0.197277\% & 0.183689\% \\ \hline
+    E [ $Nq_2$ ]    & 0.871204\% & 0.831898\% & 0.835200\% & 0.874601\% \\ \hline
+    E [ $T_1$ ]     & 0.096327\% & 0.098766\% & 0.098005\% & 0.092503\% \\ \hline
+    E [ $T_2$ ]     & 0.786062\% & 0.750495\% & 0.753297\% & 0.788535\% \\ \hline
+    E [ $W_1$ ]     & 0.147686\% & 0.366598\% & 0.143694\% & 0.135192\% \\ \hline
+    E [ $W_2$ ]     & 0.818783\% & 0.781668\% & 0.784661\% & 0.821137\% \\ \hline
+    Var ( $W_1$ )   & 0.357175\% & 0.366598\% & 0.347842\% & 0.344376\% \\ \hline
+    Var ( $W_2$ )   & 2.613589\% & 2.596032\% & 2.401716\% & 2.501379\% \\ \hline
+\end{tabular}
+\end{center}
+
+    Ambas as tabelas mostram que os intervalos de confiança pouco variam quando o tamanho do intervalo de confiança é superior a 10 mil, o que confirma mais
+uma vez que o intervalo é um valor inferior a 10 mil.
+
+    Analisando os gráficos mais uma vez verificamos que o momento de estabilização das médias das Variáveis Aleatórias, além da variância do tempo total de
+execução, se encontra anterior a 5 mil. Fazendo uma rodada de simulações com as mesmas características que anteriormente(e filas do tipo FCFS), agora com
+valores da fase transiente entre 1 mil e 5 mil, chegamos na seguinte tabela:
+
+\begin{center}
+\begin{tabular} { | l | l | l | l | l | l | }
+    \hline
+    Fase Transiente & 1 mil      & 2 mil      & 3 mil      & 4 mil      & 5 mil     \\ \hline
+    E [ $N_1$ ]     & 0.138952\% & 0.141264\% & 0.144105\% & 0.140410\% & 0.141329\% \\ \hline
+    E [ $N_2$ ]     & 0.820173\% & 0.846008\% & 0.819985\% & 0.827929\% & 0.814426\% \\ \hline
+    E [ $Nq_1$ ]    & 0.193756\% & 0.195948\% & 0.199681\% & 0.195673\% & 0.198579\% \\ \hline
+    E [ $Nq_2$ ]    & 0.853286\% & 0.880216\% & 0.853189\% & 0.861295\% & 0.847253\% \\ \hline
+    E [ $T_1$ ]     & 0.094595\% & 0.097390\% & 0.098882\% & 0.096134\% & 0.095413\% \\ \hline
+    E [ $T_2$ ]     & 0.768172\% & 0.792977\% & 0.771591\% & 0.775727\% & 0.763203\% \\ \hline
+    E [ $W_1$ ]     & 0.138946\% & 0.143545\% & 0.145213\% & 0.141459\% & 0.140967\% \\ \hline
+    E [ $W_2$ ]     & 0.800047\% & 0.825887\% & 0.803725\% & 0.807906\% & 0.794875\% \\ \hline
+    Var ( $W_1$ )   & 0.362087\% & 0.359142\% & 0.349739\% & 0.348255\% & 0.350015\% \\ \hline
+    Var ( $W_2$ )   & 2.377553\% & 2.564774\% & 2.704894\% & 2.463302\% & 2.435772\% \\ \hline
+\end{tabular}
+\end{center}
+
+    Tal tabela indica que 1 mil elementos é um bom valor para o tamanho da fase transiente. As figuras de número XX a XX indicam alguns gráficos gerados no
+benchmark alterado para testar entre 1 mil e 10 mil, com passos de 100 fregueses, em filas do tipo LCFS. Tais gráficos são das Variáveis Aleatórias que mais
+demoraram a se estabilizar.
+
+\pagebreak
+
+\begin{figure}
+\includegraphics[scale = 0.2]{./graficos_transiente_1/FCFS/01.png}
+\end{figure}
+\begin{figure}
+\includegraphics[scale = 0.2]{./graficos_transiente_1/FCFS/02.png}
+\end{figure}
+\begin{figure}
+\includegraphics[scale = 0.2]{./graficos_transiente_1/FCFS/03.png}
+\end{figure}
+
+\begin{figure}
+\includegraphics[scale = 0.2]{./graficos_transiente_1/FCFS/04.png}
+\end{figure}
+\begin{figure}
+\includegraphics[scale = 0.2]{./graficos_transiente_1/FCFS/05.png}
+\end{figure}
+\begin{figure}
+\includegraphics[scale = 0.2]{./graficos_transiente_1/FCFS/06.png}
+\end{figure}
+
+\begin{figure}
+\includegraphics[scale = 0.2]{./graficos_transiente_1/FCFS/07.png}
+\end{figure}
+\begin{figure}
+\includegraphics[scale = 0.2]{./graficos_transiente_1/FCFS/08.png}
+\end{figure}
+\begin{figure}
+\includegraphics[scale = 0.2]{./graficos_transiente_1/FCFS/09.png}
+\end{figure}
+
+\begin{figure}
+\includegraphics[scale = 0.2]{./graficos_transiente_1/FCFS/10.png}
+\end{figure}
+
+
+%agora deveriam vir as figuras do LCFS
 
 
 \pagebreak
