@@ -218,11 +218,11 @@ nesta seção, verificamos que o ponto em que os valores médios deixam de apres
 independentemente da semente, e que as sementes tendem a convergir todas para um valor de média.
 
     Para determinar a fase transiente ideal, geramos gráficos com os resultados para cada variável aleatória, e analisamos em cada caso qual
-seria o valor ideal para fase transiente. Foram avaliados casos em que $mu$ sempre tinha valor 1.0, e $lambda$ possuia valores 0.1, 0.2, 0.3, 0.4 e 0.45. Para
-todos esses casos, testamos com ambas as filas sendo FCFS e LCFS. Os casos críticos, que demoraram mais a se estabilizar foram as filas FCFS com $lambda$ 0.45 e
-filas LCFS com $lambda$ 0.45.
+seria o valor ideal para fase transiente. Foram avaliados casos em que $\mu$ sempre tinha valor 1.0, e $\lambda$ possuia valores 0.1, 0.2, 0.3, 0.4 e 0.45. Para
+todos esses casos, testamos com ambas as filas sendo FCFS e LCFS. Os casos críticos, que demoraram mais a se estabilizar foram as filas FCFS com $\lambda$ 0.45 e
+filas LCFS com $\lambda$ 0.45.
 
-    Para o caso em que $lambda$ é igual a 0.45, $mu$ é igual a 1.0, e temos as filas como FCFS, consideramos a fase transiente de acordo com a
+    Para o caso em que $\lambda$ é igual a 0.45, $\mu$ é igual a 1.0, e temos as filas como FCFS, consideramos a fase transiente de acordo com a
 seguinte tabela, baseada em cada variável aleatória.
 
 \begin{center}
@@ -244,7 +244,7 @@ seguinte tabela, baseada em cada variável aleatória.
     A tabela indica que 10 mil é um valor bom para a escolha da fase transiente, pois a partir de 10 mil fregueses atendidos já temos a média da
 variável aleatória estável, sem grandes saltos.
 
-    Para o caso em que $lambda$ é igual a 0.45, $mu$ é igual a 1.0, e temos as filas como LCFS, consideramos a fase transiente de acordo com a seguinte
+    Para o caso em que $\lambda$ é igual a 0.45, $\mu$ é igual a 1.0, e temos as filas como LCFS, consideramos a fase transiente de acordo com a seguinte
 tabela, baseada em cada variável aleatória.
 
 \begin{center}
@@ -272,7 +272,7 @@ e ao mesmo tempo podemos ter fregueses entrando na fila 2 e demorando muito a se
 a variância do tempo médio de atendimento será alto.
 
     Para confirmar que 10 mil é um bom valor para a fase transiente, executamos simulações com 1000 rodadas, um tamanho de rodada de 100 mil elementos, filas do tipo LCFS,
-modo de simulação Batch, $lambda$ = 0.45 e tamanho de fase transiente que variava entre 10 mil e 40 mil. O tamanho dos Intervalos de Confiança para cada Variável Aleatória está condensado na
+modo de simulação Batch, $\lambda$ = 0.45 e tamanho de fase transiente que variava entre 10 mil e 40 mil. O tamanho dos Intervalos de Confiança para cada Variável Aleatória está condensado na
 tabela abaixo:
 
 \begin{center}
@@ -341,6 +341,7 @@ demoraram a se estabilizar.
 
 \pagebreak
 
+% figuras do FCFS
 \begin{figure}
 \includegraphics[scale = 0.2]{./graficos_transiente_1/FCFS/01.png}
 \end{figure}
@@ -376,7 +377,55 @@ demoraram a se estabilizar.
 \end{figure}
 
 
-%agora deveriam vir as figuras do LCFS
+%figuras do LCFS
+%\begin{figure}
+%\includegraphics[scale = 0.2]{./graficos_transiente_1/LCFS/01.png}
+%\end{figure}
+%\begin{figure}
+%\includegraphics[scale = 0.2]{./graficos_transiente_1/LCFS/02.png}
+%\end{figure}
+%\begin{figure}
+%\includegraphics[scale = 0.2]{./graficos_transiente_1/LCFS/03.png}
+%\end{figure}
+
+%\begin{figure}
+%\includegraphics[scale = 0.2]{./graficos_transiente_1/LCFS/04.png}
+%\end{figure}
+%\begin{figure}
+%\includegraphics[scale = 0.2]{./graficos_transiente_1/LCFS/05.png}
+%\end{figure}
+%\begin{figure}
+%\includegraphics[scale = 0.2]{./graficos_transiente_1/LCFS/06.png}
+%\end{figure}
+
+%\begin{figure}
+%\includegraphics[scale = 0.2]{./graficos_transiente_1/LCFS/07.png}
+%\end{figure}
+%\begin{figure}
+%\includegraphics[scale = 0.2]{./graficos_transiente_1/LCFS/08.png}
+%\end{figure}
+%\begin{figure}
+%\includegraphics[scale = 0.2]{./graficos_transiente_1/LCFS/09.png}
+%\end{figure}
+
+%\begin{figure}
+%\includegraphics[scale = 0.2]{./graficos_transiente_1/LCFS/10.png}
+%\end{figure}
+
+%figuras do benchmark com 3k
+%\begin{figure}
+%\includegraphics[scale = 0.2]{./graficos_transiente_2/01.png}
+%\end{figure}
+%\begin{figure}
+%\includegraphics[scale = 0.2]{./graficos_transiente_2/02.png}
+%\end{figure}
+%\begin{figure}
+%\includegraphics[scale = 0.2]{./graficos_transiente_2/03.png}
+%\end{figure}
+
+%\begin{figure}
+%\includegraphics[scale = 0.2]{./graficos_transiente_2/04.png}
+%\end{figure}
 
 
 \pagebreak
