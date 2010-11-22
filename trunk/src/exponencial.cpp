@@ -17,7 +17,6 @@ namespace TrabalhoAD
 
         m_semente = tempo.tv_usec;
         srand48_r(m_semente, &m_estado_prng);
-
     }
 
     DistExponencial::DistExponencial(double taxa, long int semente)

@@ -159,6 +159,16 @@ namespace TrabalhoAD
             {
                 if(m_fregues_em_servico.fila_pertencente() == 1) //Se o fregues veio da Fila1, envia ele para a fila 2.
                 {
+                    if (m_verbose)
+                    {
+                        printf("[Evento] Fregues tipico da fila1 terminou o servico no servidor.\n");
+                        printf("-- Tempo evento: %lf\n", m_tempo_atual);
+                        printf("-- tamanho fila 1: %d\n", (int) m_fila1.size());
+                        printf("-- tamanho fila 2: %d\n", (int) m_fila2.size());
+                        if (m_servidor_ocupado == false) printf("-- servidor vazio\n\n");
+                        else printf("-- fregues no servidor pertence a fila %d\n\n", m_fregues_em_servico.fila_pertencente());
+                    }
+
                     m_fregues_em_servico.terminou_servico1(m_tempo_atual);
 
                     if(m_tipo_fila2 == FIFO)
@@ -169,19 +179,20 @@ namespace TrabalhoAD
                     {
                         m_fila2.push_front(m_fregues_em_servico);
                     }
+                }
+                else if(m_fregues_em_servico.fila_pertencente() == 2) //Se o fregues veio da Fila2, coleta todos os dados e remove do sistema.
+                {
 
                     if (m_verbose)
                     {
-                        printf("[Evento] Fregues tipico da fila1 terminou o servico no servidor.\n");
+                        printf("[Evento] Fregues tipico da fila2 terminou o servico no servidor.\n");
                         printf("-- Tempo evento: %lf\n", m_tempo_atual);
                         printf("-- tamanho fila 1: %d\n", (int) m_fila1.size());
                         printf("-- tamanho fila 2: %d\n", (int) m_fila2.size());
                         if (m_servidor_ocupado == false) printf("-- servidor vazio\n\n");
                         else printf("-- fregues no servidor pertence a fila %d\n\n", m_fregues_em_servico.fila_pertencente());
                     }
-                }
-                else if(m_fregues_em_servico.fila_pertencente() == 2) //Se o fregues veio da Fila2, coleta todos os dados e remove do sistema.
-                {
+
                     m_fregues_em_servico.terminou_servico2(m_tempo_atual);
 
                     if (m_fregues_em_servico.rodada_pertencente() == rodada)
@@ -226,16 +237,6 @@ namespace TrabalhoAD
                             m_resultados.fila2.N += m_fregues_em_servico.quantidade_elementos_sistema2();
                             m_resultados.fila2.N_quad += m_fregues_em_servico.quantidade_elementos_sistema2() *
                                             m_fregues_em_servico.quantidade_elementos_sistema2();
-                        }
-
-                        if (m_verbose)
-                        {
-                            printf("[Evento] Fregues tipico da fila2 terminou o servico no servidor.\n");
-                            printf("-- Tempo evento: %lf\n", m_tempo_atual);
-                            printf("-- tamanho fila 1: %d\n", (int) m_fila1.size());
-                            printf("-- tamanho fila 2: %d\n", (int) m_fila2.size());
-                            if (m_servidor_ocupado == false) printf("-- servidor vazio\n\n");
-                            else printf("-- fregues no servidor pertence a fila %d\n\n", m_fregues_em_servico.fila_pertencente());
                         }
 
                         clientes_servidos++;
