@@ -112,7 +112,7 @@ Professor: Paulo Henrique de Aguiar Rodrigues\\
 
 \item \textbf{Ajuda:} imprime todos os comandos possíveis e suas descrições. Na linha de comando: \emph{--ajuda} ou \emph{-a}. Não recebe parâmetros;
 
-\item \textbf{Modo verborrágico:} roda o simulador imprimindo diferentes níveis de detalhe sobre as operações sendo executadas internamente. Na linha de comando: \emph{--verbose} ou \emph{-v} Opções: 0(apresena apenas os intervalos de confiança), 1(modo 0 mais dados finais de cada rodada) ou 2(modo 1 mais dados de cada evento que ocorre na rodada);
+\item \textbf{Modo verborrágico:} roda o simulador imprimindo diferentes níveis de detalhe sobre as operações sendo executadas internamente. Na linha de comando: \emph{--verbose} ou \emph{-v} Opções: 0 (apresenta apenas os intervalos de confiança), 1 (o mesmo que o anterior, mais os dados finais de cada rodada) ou 2 (modo 1 mais dados de cada evento que ocorre na rodada);
 \end {itemize}
 
     Após a entrada de parâmetros, o simulador se inicia. Este utiliza eventos discretos, mas tempo contínuo, logo, os eventos acontecem em instantes de tempo com valores numéricos reais. A cada rodada, o simulador fica em loop aguardando eventos acontecerem. O loop se encerra quando a quantidade de fregueses determinada pelo parâmetro \emph{"tamanho da rodada"} for servida. Os eventos que acontecem são:
@@ -200,30 +200,18 @@ ele é movido para a fila 2 (sempre respeitando a disciplina de atendimento). Se
 \pagebreak
 
 \section{Estimativa da fase transiente}
-    Para calcular o valor necessário de fregueses na fase transiente para que a simulação fique estabilizada, foi implementada uma função de benchmark no
-programa.
 
-    Esta função executa uma simulação em modo batch sem fase transiente, onde cada passo tem execução de tamanho da rodada igual a 250 fregueses.
-Chamamos cada rodada de \emph{passo}. A simulação se encerra quando atendemos 100 mil fregueses, ou seja, na rodada de número 400.
+    Calcular a fase transiente é parte chave na análise dos resultados de uma simulação. Para definirmos a quantidade de fregueses servidos que seriam considerados pertencentes a essa fase, foi implementada uma função de benchmark no programa. Esta função executa uma simulação em modo Batch, sem distinção de fase transiente, onde cada passo tem tamanho da rodada igual a 250 fregueses. A simulação é encerrada quando atendemos 100 mil fregueses, ou seja, na rodada de número 400. No código, cada rodada é denominada \emph{"passo"}.
 
-    Em cada \emph{passo} calculamos o valor médio para cada amostra. Como temos $quantidade\_passos * 250$ fregueses, o valor médio será o valor recebido
-neste ponto, dividido por $quantidade\_passos * 250$. Para as variâncias, o cálculo é diferente, mas segue o mesmo padrão.
+    Em cada rodada, calculamos o valor médio para cada amostra. Como temos $quantidade\_passos * 250$ fregueses, o valor médio será o valor recebido neste ponto, dividido por $quantidade\_passos * 250$. Para as variâncias, o cálculo é análogo.
 
-    São feitas cinco amostragens na forma explicitada nos parágrafos anteriores, com sementes diferentes. Com todos os valores calculados, um gráfico é
-gerado para cada variável aleatória, de forma que possamos comparar o momento em que as 5 amostras começam a ter valores próximos e estáveis(não mudam
-muito seu valor conforme aumenta a quantidade de fregueses atendidos).
+    São feitas cinco amostragens da forma explicitada nos parágrafos anteriores, com sementes diferentes. Com todos os valores calculados, um gráfico é gerado para cada variável aleatória, de forma que possamos comparar o momento em que as 5 amostras começam a ter valores próximos e estáveis(variando visivelmente pouco seus valores para quantidades cada vez maiores de fregueses).
 
-    A primeira conclusão que podemos tomar é que a estabilização da fase transiente independe da semente geradora. Analisando os gráficos que estão
-nesta seção, verificamos que o ponto em que os valores médios deixam de apresentar uma variação muito grande são aproximadamente os mesmos,
-independentemente da semente, e que as sementes tendem a convergir todas para um valor de média.
+    Analisando os gráficos gerados em anexo verificamos que os pontos em que os valores médios deixam de apresentar uma variação muito grande são aproximadamente os mesmos, mesmo com sementes diferentes. Assim, podemos concluir que a estabilização da fase transiente independe da semente geradora.
 
-    Para determinar a fase transiente ideal, geramos gráficos com os resultados para cada variável aleatória, e analisamos em cada caso qual
-seria o valor ideal para fase transiente. Foram avaliados casos em que $\mu$ sempre tinha valor 1.0, e $\lambda$ possuia valores 0.1, 0.2, 0.3, 0.4 e 0.45. Para
-todos esses casos, testamos com ambas as filas sendo FCFS e LCFS. Os casos críticos, que demoraram mais a se estabilizar foram as filas FCFS com $\lambda$ 0.45 e
-filas LCFS com $\lambda$ 0.45.
+    Para determinar a fase transiente ideal, geramos gráficos com os resultados para cada variável aleatória, analisando em cada caso qual seria seu valor ideal. Foram avaliados casos em que $\mu$ sempre tinha valor 1.0, e $\lambda$ possuia valores 0.1, 0.2, 0.3, 0.4 e 0.45. Para todos esses casos, testamos com ambas as filas sendo FCFS e LCFS. Os casos críticos, que demoraram mais a se estabilizar foram as filas FCFS com $\lambda$ 0.45 e filas LCFS com $\lambda$ 0.45.
 
-    Para o caso em que $\lambda$ é igual a 0.45, $\mu$ é igual a 1.0, e temos as filas como FCFS, consideramos a fase transiente de acordo com a
-seguinte tabela, baseada em cada variável aleatória.
+    Para o caso em que $\lambda$ é igual a 0.45, $\mu$ é igual a 1.0 e temos as filas como FCFS, consideramos a fase transiente de acordo com a seguinte tabela, baseada em cada variável aleatória.
 
 \begin{center}
 \begin{tabular} { | l | l | }
@@ -241,11 +229,9 @@ seguinte tabela, baseada em cada variável aleatória.
 \end{tabular}
 \end{center}
 
-    A tabela indica que 10 mil é um valor bom para a escolha da fase transiente, pois a partir de 10 mil fregueses atendidos já temos a média da
-variável aleatória estável, sem grandes saltos.
+    A tabela indica que 10 mil é um valor bom para a escolha da fase transiente, pois a partir daí já temos a média da variável aleatória estável, sem grandes saltos.
 
-    Para o caso em que $\lambda$ é igual a 0.45, $\mu$ é igual a 1.0, e temos as filas como LCFS, consideramos a fase transiente de acordo com a seguinte
-tabela, baseada em cada variável aleatória.
+    Analogamente, para o caso em que $\lambda$ é igual a 0.45, $\mu$ é igual a 1.0 e temos as filas como LCFS, temos os seguintes dados tabelados:
 
 \begin{center}
 \begin{tabular} { | l | l | }
@@ -263,17 +249,12 @@ tabela, baseada em cada variável aleatória.
 \end{tabular}
 \end{center}
 
-    A tabela indica que 10 mil é um valor bom para a escolha da fase transiente, pois a partir de 10 mil fregueses atendidos já temos a média da variável
-aleatória estável, sem grandes saltos.
+    Mais uma vez, temos indícios que 10 mil é um valor bom para a escolha da fase transiente.
+%%CONC: falar que FCFS e LCFS sao iguais na conclusao%%
 
-    Se analisar o gráfico da Variância da fila 2 do tipo LCFS, verá que ela, apesar de estabilizada, possui um comportamento mais abrupto. Isso é explicado devido à
-natureza da fila, pois teremos fregueses entrando na fila e rapidamente saindo, pois esse fregues que chegou tem prioridade de atendimento caso a fila 1 esteja vazia,
-e ao mesmo tempo podemos ter fregueses entrando na fila 2 e demorando muito a ser atendidos, pois novos fregueses que entram na fila serão atendidos antes dele. Logo,
-a variância do tempo médio de atendimento será alto.
+    Analisando o gráfico da variância da fila 2 simulada em LCFS vemos que, apesar de estabilizada, possui um comportamento mais abrupto. Isso é explicado devido à natureza de seu modo de serviço: temos fregueses entrando e rapidamente saindo, pois aquele que acaba de chegar tem prioridade de atendimento caso a fila 1 esteja vazia e, ao mesmo tempo, podem demorar muito a serem atendidos, pois quaisquer chegadas acumuladas posteriormente à dele têm prioridade, caso ainda haja fregueses a serem servidos na fila 1.
 
-    Para confirmar que 10 mil é um bom valor para a fase transiente, executamos simulações com 1000 rodadas, um tamanho de rodada de 100 mil elementos, filas do tipo LCFS,
-modo de simulação Batch, $\lambda$ = 0.45 e tamanho de fase transiente que variava entre 10 mil e 40 mil. O tamanho dos Intervalos de Confiança para cada Variável Aleatória está condensado na
-tabela abaixo:
+    Para confirmar que 10 mil é um bom valor para a fase transiente, executamos simulações com 1000 rodadas, um tamanho de rodada de 100 mil elementos, filas do tipo LCFS, modo de simulação Batch, $\lambda$ = 0.45 e tamanho de fase transiente variando entre 10 mil e 40 mil. Os tamanhos dos intervalos de confiança para cada variável aleatória estão condensado na tabela abaixo:
 
 \begin{center}
 \begin{tabular} { | l | l | l | l | l | }
@@ -292,7 +273,7 @@ tabela abaixo:
 \end{tabular}
 \end{center}
 
-    Uma outra rodada de simulações foi feita com as mesmas propriedades, exceto as filas, que agora são do tipo FCFS. O tamanho dos Intervalos de Confiança para cada Variável Aleatória está condensado na tabela a seguir.
+    Uma outra rodada de simulações foi feita com as mesmas propriedades, exceto as filas, que eram do tipo FCFS. Mais uma vez, o tamanho dos intervalos de confiança para cada variável aleatória foi tabelado:
 
 \begin{center}
 \begin{tabular} { | l | l | l | l | l | }
@@ -311,12 +292,9 @@ tabela abaixo:
 \end{tabular}
 \end{center}
 
-    Ambas as tabelas mostram que os intervalos de confiança pouco variam quando o tamanho do intervalo de confiança é superior a 10 mil, o que confirma mais
-uma vez que o intervalo é um valor inferior a 10 mil.
+    Ambas as tabelas mostram que os intervalos de confiança pouco variam quando o tamanho da fase transiente é superior a 10 mil, confirmando mais uma vez que o intervalo acontece em um valor inferior a este.
 
-    Analisando os gráficos mais uma vez verificamos que o momento de estabilização das médias das Variáveis Aleatórias, além da variância do tempo total de
-execução, se encontra anterior a 5 mil. Fazendo uma rodada de simulações com as mesmas características que anteriormente(e filas do tipo FCFS), agora com
-valores da fase transiente entre 1 mil e 5 mil, chegamos na seguinte tabela:
+    Analisando os gráficos mais uma vez verificamos que o momento de estabilização das médias das variáveis aleatórias, além da variância do tempo total de execução, se encontra anterior a 5 mil. Fazendo uma rodada de simulações com as mesmas características que anteriormente (e filas do tipo FCFS), agora com valores da fase transiente entre 1 mil e 5 mil, chegamos na seguinte tabela:
 
 \begin{center}
 \begin{tabular} { | l | l | l | l | l | l | }
@@ -335,9 +313,8 @@ valores da fase transiente entre 1 mil e 5 mil, chegamos na seguinte tabela:
 \end{tabular}
 \end{center}
 
-    Tal tabela indica que 1 mil elementos é um bom valor para o tamanho da fase transiente. As figuras de número XX a XX indicam alguns gráficos gerados no
-benchmark alterado para testar entre 1 mil e 10 mil, com passos de 100 fregueses, em filas do tipo LCFS. Tais gráficos são das Variáveis Aleatórias que mais
-demoraram a se estabilizar.
+    Tal tabela indica que mil elementos é um bom valor para o tamanho da fase transiente. As figuras de número XX a XX indicam alguns gráficos gerados no benchmark alterado para testar entre 1 mil e 10 mil, com passos de 100 fregueses, em filas do tipo LCFS. Tais gráficos são das variáveis aleatórias que mais demoraram a se estabilizar (pelos motivos citados anteriormente, relacionados ao regime de serviço da fila).
+%%TODO XX a XX devem ser numeros%%
 
 \pagebreak
 
@@ -439,7 +416,7 @@ demoraram a se estabilizar.
 \pagebreak
 
 \section{Conclusão}
-
+%%Olhar coisas com a tag CONC%%
 \pagebreak
 
 \end{document}
