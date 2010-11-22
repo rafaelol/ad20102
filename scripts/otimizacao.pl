@@ -21,7 +21,7 @@ my $stress_qty = 10;
 
 #O tamanho dos ICs devem ser menores ou iguais a 9.5%
 #Não utilizar 10, para permitir uma "folga" na variação estatística normal.
-my $limite_ic = 9.5;
+my $limite_ic = 8.5;
 
 my @lambdas = ("0.1", "0.2", "0.3", "0.4", "0.45");
 my @disciplinas = ("FCFS", "LCFS");
