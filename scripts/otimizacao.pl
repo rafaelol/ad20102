@@ -15,7 +15,7 @@ my $tam_rodadas;
 my $passo_nro_rodadas = 10;
 my $passo_tam_rodadas = 1000;
 
-my $t_transiente = 1000;
+my $t_transiente = 10000;
 
 my $stress_qty = 10;
 
