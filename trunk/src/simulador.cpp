@@ -144,7 +144,7 @@ namespace TrabalhoAD
                 // Impressoes do modo verborragico
                 if (m_verbose)
                 {
-                    printf("[Evento] Fregues tipico chega no sistema.\n");
+                    printf("[Evento] Fregues de id %d chega no sistema.\n", m_fregues_em_servico.id_fregues());
                     printf("-- Tempo evento: %lf\n", m_tempo_atual);
                     printf("-- tamanho fila 1: %d\n", (int) m_fila1.size());
                     printf("-- tamanho fila 2: %d\n", (int) m_fila2.size());
@@ -161,7 +161,7 @@ namespace TrabalhoAD
                 {
                     if (m_verbose)
                     {
-                        printf("[Evento] Fregues tipico da fila1 terminou o servico no servidor.\n");
+                        printf("[Evento] Fregues de id %d da fila1 terminou o servico no servidor.\n", m_fregues_em_servico.id_fregues());
                         printf("-- Tempo evento: %lf\n", m_tempo_atual);
                         printf("-- tamanho fila 1: %d\n", (int) m_fila1.size());
                         printf("-- tamanho fila 2: %d\n", (int) m_fila2.size());
@@ -185,7 +185,7 @@ namespace TrabalhoAD
 
                     if (m_verbose)
                     {
-                        printf("[Evento] Fregues tipico da fila2 terminou o servico no servidor.\n");
+                        printf("[Evento] Fregues de id %d da fila2 terminou o servico no servidor.\n",m_fregues_em_servico.id_fregues());
                         printf("-- Tempo evento: %lf\n", m_tempo_atual);
                         printf("-- tamanho fila 1: %d\n", (int) m_fila1.size());
                         printf("-- tamanho fila 2: %d\n", (int) m_fila2.size());
@@ -263,7 +263,7 @@ namespace TrabalhoAD
 
                     if (m_verbose)
                     {
-                        printf("[Evento] Fregues tipico da fila 1 entra no servidor.\n");
+                        printf("[Evento] Fregues de id %d da fila 1 entra no servidor.\n", m_fregues_em_servico.id_fregues());
                         printf("-- Tempo evento: %lf\n", m_tempo_atual);
                         printf("-- tamanho fila 1: %d\n", (int) m_fila1.size());
                         printf("-- tamanho fila 2: %d\n", (int) m_fila2.size());
@@ -285,7 +285,7 @@ namespace TrabalhoAD
 
                     if (m_verbose)
                     {
-                        printf("[Evento] Fregues tipico da fila 2 entra no servidor.\n");
+                        printf("[Evento] Fregues de id %d da fila 2 entra no servidor.\n",m_fregues_em_servico.id_fregues());
                         printf("-- Tempo evento: %lf\n", m_tempo_atual);
                         printf("-- tamanho fila 1: %d\n", (int) m_fila1.size());
                         printf("-- tamanho fila 2: %d\n", (int) m_fila2.size());
