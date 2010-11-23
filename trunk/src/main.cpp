@@ -92,7 +92,7 @@ void roda_benchmark(void);
  * "--seed_gerador_tempo_servico": \n
  * "--benchmark": Neste modo o simulador executará um benchmark para os valores do tamanho da fase transiente. Este modo irá interromper a execução do simulador após retornar os dados. \n
  * "--deterministico": Indica ao simulador que os geradores de chegada e de servico devem atuar em modo deterministico, para fins de verificação. \n
- * "--modo_coloracao\"(-o): Neste modo os fregueses sao marcados por rodadas e apenas contabilizados se sairem na mesma rodada em que entraram no sistema. \n
+ * "--modo_coloracao": Neste modo os fregueses sao marcados por rodadas e apenas contabilizados se sairem na mesma rodada em que entraram no sistema. \n
  * Forma 2: \n
  * Ao executar o simulador, a primeira coisa que é feita é verificar se os parâmetros foram passados. Se algum não foi passado, ele pedirá que se passe antes de começar a simulação. \n
  *
