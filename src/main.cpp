@@ -271,7 +271,7 @@ int main(int argc, char *argv[])
         printf("1 - Batch\n");
         printf("2 - Replicativo\n");
         printf("Escolha o numero: ");
-        scanf("%d",&modo);
+        if(scanf("%d",&modo) != 1) exit(1);
     }
     else if(modo_benchmark == false)
     {
@@ -291,7 +291,7 @@ int main(int argc, char *argv[])
         if (n_rodadas <= -1)
         {
             printf("Escolha a quantidade de rodadas: ");
-            scanf("%d",&n_rodadas);
+            if(scanf("%d",&n_rodadas) != 1) exit(1);
         }
         // Depois verifica se ele é menor que dez.
         if (n_rodadas < 10)
@@ -300,7 +300,7 @@ int main(int argc, char *argv[])
             {
                 printf("Voce nao determinou ou escolheu um valor menor que 10 para a quantidade de rodadas, valor onde t-student nao e assintotico.\n");
                 printf("Escolha a quantidade de rodadas: ");
-                scanf("%d",&n_rodadas);
+                if(scanf("%d",&n_rodadas) != 1) exit(1);
             } while (n_rodadas < 10);
         }
         else
@@ -313,7 +313,7 @@ int main(int argc, char *argv[])
             do
             {
                 printf("Escolha o tamanho de cada rodada: ");
-                scanf("%d",&t_rodada);
+                if(scanf("%d",&t_rodada) != 1) exit(1);
             } while (t_rodada <= -1);
         }
         else
@@ -326,7 +326,7 @@ int main(int argc, char *argv[])
             do
             {
                 printf("Escolha o tamanho da fase transiente: ");
-                scanf("%d",&t_transiente);
+                if(scanf("%d",&t_transiente) != 1) exit(1);
             } while (t_transiente <= -1);
         }
         else
@@ -345,7 +345,7 @@ int main(int argc, char *argv[])
             printf("1 - FCFS\n");
             printf("2 - LCFS\n");
             printf("Escolha o numero: ");
-            scanf("%d",&op);
+            if(scanf("%d",&op) != 1) exit(1);
             if (op == 1) fila1 = FIFO;
             else if (op == 2) fila1 = LIFO;
             else printf("Opcao invalida.\n");
@@ -368,7 +368,9 @@ int main(int argc, char *argv[])
             printf("1 - FCFS\n");
             printf("2 - LCFS\n");
             printf("Escolha o numero: ");
-            scanf("%d",&op);
+            
+            if(scanf("%d",&op) != 1) exit(1);
+            
             if (op == 1) fila2 = FIFO;
             else if (op == 2) fila2 = LIFO;
             else printf("Opcao invalida.\n");
@@ -386,7 +388,7 @@ int main(int argc, char *argv[])
         if (tx_lambda < 0.0)
         {
             printf("Escolha o valor da taxa lambda: ");
-            scanf("%lf",&tx_lambda);
+            if(scanf("%lf",&tx_lambda) != 1) exit(1);
         }
         else
         {
@@ -396,7 +398,7 @@ int main(int argc, char *argv[])
         if (tx_mi < 0.0)
         {
             printf("Escolha o valor da taxa mi: ");
-            scanf("%lf",&tx_mi);
+            if(scanf("%lf",&tx_mi) != 1) exit(1);
         }
         else
         {
