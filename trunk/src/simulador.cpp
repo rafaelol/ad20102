@@ -144,7 +144,7 @@ namespace TrabalhoAD
                 // Impressoes do modo verborragico
                 if (m_verbose)
                 {
-                    printf("[Evento] Fregues de id %d chega no sistema.\n", m_fregues_em_servico.id_fregues());
+                    printf("[Evento] Fregues de id %d chega no sistema.\n", novoFregues.id_fregues());
                     printf("-- Tempo evento: %lf\n", m_tempo_atual);
                     printf("-- tamanho fila 1: %d\n", (int) m_fila1.size());
                     printf("-- tamanho fila 2: %d\n", (int) m_fila2.size());
