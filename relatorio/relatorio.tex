@@ -195,6 +195,14 @@ ele é movido para a fila 2 (sempre respeitando a disciplina de atendimento). Se
 \pagebreak
 
 \section{Teste de Correção}
+
+    Para garantirmos a consistência da simulação e dos dados estatísticos coletados, precisamos analisar a corretude dos dados gerados. A abordagem escolhida foi criar um modo determinístico (ativado com a opção \emph{--deterministico} na linha de comando) e, a partir dos resultados gerados por este, fazer as análises que nos mostrariam se o simulador faz a geração de dados corretamente ou não.
+
+    Nossa abordagem envolveu acompanhar fregueses-padrão em diversas situações limítrofes, como por exemplo com apenas uma chegada no sistema, com diversas, com um $\rho$ próximo a 1, maior que 1 etc. para, a partir dos dados gerados por ele, confirmar se seu comportamento era o esperado.
+
+    
+
+
 % Aqui temos que provar que está correto.
 % Para fazer isso, devemos comparar os resultados da execução determinística com os resultados da execução exponencial.
 \pagebreak
