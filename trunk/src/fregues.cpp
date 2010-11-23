@@ -126,6 +126,11 @@ namespace TrabalhoAD {
         return m_rodada;
     }
 
+    int Fregues::id_fregues()
+    {
+        return m_id;
+    }
+
     void Fregues::print()
     {
         printf("*************************\n");

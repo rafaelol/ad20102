@@ -145,6 +145,11 @@ namespace TrabalhoAD
         int rodada_pertencente();
 
         /**
+         * O id do fregues
+         */
+        int id_fregues();
+
+        /**
          * Imprime as informações do freguês.
          */
         void print();
