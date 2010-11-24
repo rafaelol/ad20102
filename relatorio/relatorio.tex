@@ -686,7 +686,44 @@ Você já escolheu o valor da taxa mi: 1.000000
 \pagebreak
 
 \section{Otimização}
-% Calculo do fator minimo
+
+Para o calculo dos fatores otimizados, o tamanho da fase transiente foi mantido o mesmo das simulações acima ou seja, 10 mil para $\lambda = \{0.1, 0.2, 0.3, 0.4 \}$ e 50 mil para $\lambda = 0.45$. Como o modo de simulação escolhido para os testes foi o \emph{batch}, a fase transiente acrescenta apenas uma valor constante a soma total.
+
+Para o calculo do melhor fator possível, mas que ainda atendesse a restrição do tamanho dos intervalos de confiança, foi utilizado um programa adicional em Perl (também desenvolvido pelo grupo) que utiliza busas binárias para encontrar o melhor fator entre o número de rodadas e o tamanho de cada rodada. O código fonte do programa está em anexo a este relatório.
+
+A metodologia para encontrar a fase transiente era:
+\begin{enumerate}
+	\item Encontrar um possível candidato.
+	\item Realizar uma bateria de testes para garantir que os resultados do valor candidato sejam independentes da semente utilizada para inicializar os geradores do programa.
+\end{enumerate}
+
+O grupo preferiu optar por uma margem segura, aceitando apenas candidatos nos quais todos os intervalo de confiança eram de tamanho menor ou igual a $8.5\%$ em relação a média da medida analisada. Talvez seria possível conseguir fatores menores ao utilizar margens menores como $9.0\%$ ou $9.5\%$, mas o grupo decidiu depois de muitos testes que estas margens não eram confiáveis o suficiente para garantir os resultados independentes das sementes utilizadas.
+
+Cada resultado foi depois testado posteriormente com 10 mil sementes diferentes, em uma espécie de teste de "stress" e em todos os testes nenhum intervalo de confiança teve tamanho maior ou igual a que $9.8\%$ da média estimada.
+
+Os resultados obtidos foram:
+
+\begin{center}
+\begin{tabular} { | c | c | c | c | c | c | }
+    \hline
+    Filas & $\lambda$  & Fase transiente  & Número de rodadas & Tamanho das rodadas  & FATOR \\ \hline
+    FCFS     & $0.1$   & 10000 & 490     & 720      & 362800       \\ \hline
+    FCFS     & $0.2$   & 10000 & xxxx   & xxxx    & xxx             \\ \hline
+    FCFS     & $0.3$   & 10000 & xxxx   & xxxx    & xxx             \\ \hline
+    FCFS     & $0.4$   & 10000 & xxxx   & xxxx    & xxx             \\ \hline
+    FCFS     & $0.45$ & 50000 & xxxx   & xxxx    & xxx             \\ \hline
+    LCFS     & $0.1$   & 10000 & xxxx   & xxxx    & xxx             \\ \hline
+    LCFS     & $0.2$   & 10000 & xxxx   & xxxx    & xxx             \\ \hline
+    LCFS     & $0.3$   & 10000 & xxxx   & xxxx    & xxx             \\ \hline
+    LCFS     & $0.4$   & 10000 & xxxx   & xxxx    & xxx             \\ \hline
+    LCFS     & $0.45$ & 50000 & xxxx   & xxxx    & xxx             \\ \hline
+\end{tabular}
+\end{center}
+
+Podemos observar que devido a alta variância do tempo de espera na fila 2 quando esta opera em LCFS e com uma alta chegada no sistema($\lambda = 0.45$), o que era esperado, o número necessário de amostras para um bom intervalo de confiança é bastante alto.
+
+O tempo necessário para a execução do programa para o calculo dos fatores otimizados para todos os casos foi de 2 horas e 30 minutos.
+
 \pagebreak
 
 \section{Conclusão}
