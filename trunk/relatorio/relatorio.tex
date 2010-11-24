@@ -200,13 +200,16 @@ ele é movido para a fila 2 (sempre respeitando a disciplina de atendimento). Se
 
     Nossa abordagem envolveu acompanhar fregueses-padrão em diversas situações limítrofes, como por exemplo com apenas uma chegada no sistema, com diversas, com um $\rho$ próximo a 1, maior que 1 etc. para, a partir dos dados gerados por ele, confirmar se seu comportamento era o esperado. Abaixo, seguem estas análises.
 
-\textbf{MODO BATCH:}
+\textbf{\emph{MODO BATCH}, filas FCFS}
 
 \emph{Teste:} $\lambda$ = 0.1, $\mu$ = 1
+
 \emph{Linha de comando:}
-     ./cmulator -m batch -n 2 -t 0 -r 3 -1 FCFS -2 FCFS -l 0.1 -u 1.0 -d -v 2 -o
+
+./cmulator -m batch -n 2 -t 0 -r 3 -1 FCFS -2 FCFS -l 0.1 -u 1.0 -d -v 2 -o
 
 \emph{Resultados:}
+
 
 Você já escolheu o modo de simulação: Batch
 Você já escolheu a quantidade de rodadas: 2
@@ -225,13 +228,11 @@ A segunda chegada no sitema acontece no tempo 44.65s, exatamente 10 segundos dep
 
 O próximo freguês a chegar segue o mesmo padrão de comportamento do outros dois, mantendo-se dentro das expectativas de tempo de chegada e execução.
 
-Como a taxa de chegada é muit
-
--------------------------------------------------
-
 \emph{Teste:} $\lambda$ = 0.45, $\mu$ = 1
+
 \emph{Linha de comando:}
-     ./cmulator -m batch -n 2 -t 0 -r 3 -1 FCFS -2 FCFS -l 0.45 -u 1.0 -d -v 2 -o
+
+./cmulator -m batch -n 2 -t 0 -r 3 -1 FCFS -2 FCFS -l 0.45 -u 1.0 -d -v 2 -o
 
 \emph{Resultados:}
 
@@ -250,8 +251,10 @@ Você já escolheu o valor da taxa mi: 1.000000
 
 
 \emph{Teste:} $\lambda$ = 0.6, $\mu$ = 1
+
 \emph{Linha de comando:}
-     ./cmulator -m batch -n 2 -t 0 -r 3 -1 FCFS -2 FCFS -l 0.6 -u 1.0 -d -v 2 -o
+
+./cmulator -m batch -n 2 -t 0 -r 3 -1 FCFS -2 FCFS -l 0.6 -u 1.0 -d -v 2 -o
 
 \emph{Resultados:}
 
@@ -264,19 +267,83 @@ Você já escolheu o tipo da fila 2: FCFS
 Você já escolheu o valor da taxa lambda: 0.600000
 Você já escolheu o valor da taxa mi: 1.000000
 
-PAREI AQUI AMSJKGJJSJFKJSCHMIDT
 
+    Aqui, o primeiro freguês chega ao sistema no tempo 2.27s e passa por ele normalmente, terminando sua execução em 3.27s e entrando na fila 2. Logo ele é executado, levando mais 1 segundo e só saindo do servidor, e assim do sistema, no tempo 4.27s.
 
-    Aqui, o primeiro freguês chega ao sistema no tempo 2.27s e passa por ele normalmente, terminando sua execução em 3.27s e entrando na fila 2. Logo, ele é executado, levando mais 1 segundo e só saindo do servidor, e assim do sistema, no tempo 4.27s.
+    O segundo freguês chega ao sistema no tempo 3.93, enquanto o primeiro ainda está sendo servido. Logo, ele tem que esperar na fila 1 0.34 segundos até que o servidor esteja livre, no tempo 4.27s. Em seguida, é executado durante o proximo segundo, entrando na fila 2 no tempo 5.27s. Durante essa execução, um terceiro freguês entra no sistema (no tempo 5.6s), esperando na fila 1 a liberação do servidor.
 
-    O segundo fregues chega ao sistema no tempo 3.93, enquanto o primeiro cliente ainda está sendo servido. Logo, ele tem que esperar na fila 1 0.34 segundos até que o servidor esteja livre, no tempo 4.27. Em seguida ele é executado durante o proximo segundo, entrando na fila 2 no tempo 5.27. Durante essa execução entra um terceiro fregues no sistema (no tempo 5.6) e esse fregues fica na fila 1 esperando o servidor ser liberado.
+    Posteriormente, este terceiro freguês sai da fila 1 e entra no servidor para ser executado (tempo 6.27s). Enquanto isso, chega um quarto freguês e é entra na fila 1, sendo executado quando o terceiro freguês terminar de ser servido e entrar na fila 2, 1 segundo depois de sua entrada. Duarante a execução deste quarto freguês , um quinto chega no sistema. Nesta hora, tirando uma fotografia do sistema, temos o seguinte: o quinto fregues na fila 1, o quarto sendo servido e o terceiro esperando na fila 2 para ser executado. Como o tamanho da rodada foi setado em 3, ela terminará no momento em que esse terceiro freguês terminar de ser servido, aos 9.27 segundos.
 
-Depois disso, este terceiro fregues sai da fila 1 e entra no servidor para ser executado (tempo 6.27). Enquanto isso chega um quarto fregues e é entra na fila 1, e só vai ser executado quando o terceiro fregues terminar de ser servido e entrar na fila 2, um segundo depois de sua entrada. Duarante a execução deste quarto fregues , um quinto chega no sistema. Nesta hora, tirando uma fotografia do sistema temos o seguinte: o quinto fregues na fila 1, o quarto sendo servido e o terceiro esperando na fila 2 para ser executado. Como o tamanho da rodada foi setado em três, ela terminará no momento em que esse terceiro fregues terminar de ser servido, aos 9.27 segundos.
+    Estamos executando em modo batch e, portanto, no começo da segunda rodada temos o sistema da mesma forma que ele estava ao términio da anterior. Isto é, temos o quinto freguês (que estava na fila 1 no momento em que a rodada anterior terminou) sendo agora executado. O quarto freguês, que estava no servidor, agora encontra-se na fila 2.
 
-Estamos executando em modo batch, então no começo da segunda rodada temos o sistema da mesma forma que ele estava ao términio da anterior. Isto é, temos o quinto fregues que estava na fila 1 no momento em que a rodada anterior terminou agora sendo executado. O quarto fregues, que estava no servidor agora se encontra na fila 2.
+    O primeiro evento desta rodada será a saída do quinto freguês, que chegou no sistema na rodada anterior, aos 10.27 segundos. A partir daí, mais chegadas acontecerão e o sistema vai começar a engargalar, o que já era esperado, pois $\rho$ para esses parâmetros de execução é maior que 1.
 
-O primeiro evento desta rodada vai ser a saída do quinto fregues que chegou no sistema durante toda a execução terminar de ser servido, aos 10.27 segundos. A partir daí, mais chegadas vão acontecer e o sistema vai começar a engargalar pois rô para esses parametros de execução é maior que 1.
+\textbf{\emph{MODO BATCH}, filas LCFS}
 
+\emph{Teste:} $\lambda$ = 0.1, $\mu$ = 1
+
+\emph{Linha de comando:}
+
+./cmulator -m batch -n 2 -t 0 -r 3 -1 LCFS -2 LCFS -l 0.1 -u 1.0 -d -v 2 -o
+
+\emph{Resultados:}
+
+Você já escolheu o modo de simulacao: Batch
+Você já escolheu a quantidade de rodadas: 2
+Você já escolheu o tamanho de cada rodada: 3
+Você já escolheu o tamanho da fase transiente: 0
+Você já escolheu o tipo da fila 1: LCFS
+Você já escolheu o tipo da fila 2: LCFS
+Você já escolheu o valor da taxa lambda: 0.100000
+Você já escolheu o valor da taxa mi: 1.000000
+
+    O primeiro freguês chega ao sistema aos 5.4 segundos de execução, entra na primeira fila e vai direto para o servidor. Durante o proximo segundo ele fica em execução. Logo após ele vai para a fila 2 e entra direto no servidor, ficando por mais 1 segundo e finalmente saindo do sistema. Isso acontece aos 7.4 segundos.
+
+    O segundo freguês chega ao sistema aos 15.4s e passa pelo mesmo processo. Como a taxa lambda é muito pequena, todo freguês que chegar no sistema terá o exato mesmo comportamento, não encontrando nenhum impedimento, seja este no servidor ou por causa de alguma outra chegada sendo priorizada em seu detrimento por causa da política LCFS.
+
+\emph{Teste:} $\lambda$ = 0.45, $\mu$ = 1
+
+\emph{Linha de comando:}
+
+./cmulator -m batch -n 2 -t 0 -r 3 -1 LCFS -2 LCFS -l 0.45 -u 1.0 -d -v 2 -o
+
+\emph{Resultados:}
+
+Você já escolheu o modo de simulacao: Batch
+Você já escolheu a quantidade de rodadas: 2
+Você já escolheu o tamanho de cada rodada: 3
+Você já escolheu o tamanho da fase transiente: 0
+Você já escolheu o tipo da fila 1: LCFS
+Você já escolheu o tipo da fila 2: LCFS
+Você já escolheu o valor da taxa lambda: 0.450000
+Você já escolheu o valor da taxa mi: 1.000000
+
+    A esta taxa, temos uma situação parecida com a anterior; o tempo entre chegadas é grande o suficiente para que os fregueses não atrapalhem uns aos outros. O fim da rodada acontece com as filas vazias e o começo da próxima rodada não tem nenhum freguês residual que possa diferenciá-la por mais que o processamento seja batch.
+
+\emph{Teste:} $\lambda$ = 0.6, $\mu$ = 1
+
+\emph{Linha de comando:}
+
+./cmulator -m batch -n 2 -t 0 -r 3 -1 LCFS -2 LCFS -l 0.6 -u 1.0 -d -v 2 -o
+
+\emph{Resultados:}
+
+Você já escolheu o modo de simulacao: Batch
+Você já escolheu a quantidade de rodadas: 2
+Você já escolheu o tamanho de cada rodada: 3
+Você já escolheu o tamanho da fase transiente: 0
+Você já escolheu o tipo da fila 1: LCFS
+Você já escolheu o tipo da fila 2: LCFS
+Você já escolheu o valor da taxa lambda: 0.600000
+Você já escolheu o valor da taxa mi: 1.000000
+
+    O primeiro freguês chega no sistema aos 2.2 segundos de execução e logo é servido. Este freguês leva 1 segundo no servidor sendo executado e, ao final deste tempo é colocado na fila 2. Como o servidor está vazio, ele é atendido novamente pelo servidor, só saindo do sistema no tempo aos 4.2 segundos. 
+
+    Um novo freguês chega pouco antes disso, aos 3.9s, e espera o servidor desocupar. Ele é executado aos 4.2 segundos, sendo colocado na fila 2 no tempo 5.2s. Logo chega um terceiro freguês, 0.3 segundos depois, esperando pelo servidor vagar.
+
+    Esta execução será semelhante à execução do sistema $FCFS/FCFS$ durante os primeiros 12 segundos pois, até então, o tamanho máximo das filas não passou de 1 freguês, impedindo que as características da política LCFS que diferencia o sistema se aplique. Neste momento, se tirarmos uma fotografia do sistema temos o seguinte: aos 12.24 segundos, temos um freguês na fila 1, um freguês na fila 2 e um freguês sendo servido.
+
+    Quando o freguês que está no servidor sai, ele é colocado na frente da fila 2, e o freguês da fila 1 colocado no servidor. 12.246
 
 
 
