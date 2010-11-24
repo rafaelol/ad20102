@@ -214,8 +214,8 @@ ele é movido para a fila 2 (sempre respeitando a disciplina de atendimento). Se
 % Aqui comentamos sobre as classes do projeto, e alguns detalhes, como a utilização do rand do linux, ou de
 \subsection{Implementação da Lista de Eventos}
 
-	Para a implementação da lista de eventos, foi utilizada uma heap de mínimo. Como o simulador é orientado a eventos, assim
-	podemos inserir novos eventos em \emph{O(log n)} e identificar o próximo evento a ser tratado em \emph{O(1)}.
+	Para a implementação da lista de eventos, foi utilizada uma heap de mínimo. Como o simulador é orientado a eventos, utilizando esta estrutura
+	de dados podemos inserir novos eventos em \emph{O(log n)} e identificar o próximo evento a ser tratado em \emph{O(1)}.
 
 	Existem dois tipos de eventos no sistema:
 	\begin{itemize}
@@ -232,14 +232,14 @@ ele é movido para a fila 2 (sempre respeitando a disciplina de atendimento). Se
 	Estas duas invariantes são garatidas da seguinte forma:
 	\begin{itemize}
 		\item Quando um evento do tipo "Nova chegada" é tratado e removido da fila, outro evento é inserido imediatamente, agendando a próxima chegada ao sistema.
-		\item Quando um evento do tipo "Término de serviço" é tratado, caso ainda exista alguém no sistema, fila 1 ou fila 2, respeitando as respectivas prioridades, então um freguês é movido ao servidor e então uma novo evento do tipo "Término de serviço" é gerado e adicionado na lista de eventos.
+		\item Quando um evento do tipo "Término de serviço" é tratado, caso ainda exista alguém no sistema, fila 1 ou fila 2, respeitando as respectivas prioridades, então um freguês é movido ao servidor e um novo evento do tipo "Término de serviço" é gerado e adicionado à lista de eventos.
     \end{itemize}
 
 \subsection{Geração das Variáveis Aleatórias}
 % Aqui dizemos as variáveis aleatórias que temos, e como elas são calculadas(mencionar a inversa da exponencial etc)
 % Buss falará aqui também da srand.
 
-	Para gerar o tempo de execução das variáveis aleatórias, nós utilizamos a função inversa da CDF da exponencial. A transformação foi feita da seguinte forma:
+	Para gerar o tempo de execução das variáveis aleatórias, utilizamos a função inversa da CDF da exponencial. A transformação foi feita da seguinte forma:
 
     $ y = 1 - e^{-\lambda x} $
 
@@ -251,14 +251,12 @@ ele é movido para a fila 2 (sempre respeitando a disciplina de atendimento). Se
 
 	Portanto a inversa da CDF da exponencial é $ x = -{log(1 - y)} / \lambda $, onde y é a probabilidade do evento acontecer.
 
-	Cada evento tem uma determinada probabilidade, escolhida de forma aleatória. No momento em que um evento é gerado, é indicada uma probabilidade e a taxa $\lambda$. Assim sabemos o tempo em que tal evento ocorre.
+	Cada evento tem uma determinada probabilidade, escolhida de forma aleatória. No momento em que um evento é gerado, é indicada uma probabilidade e a taxa $\lambda$. Assim, sabemos o tempo em que tal evento ocorre.
 
 \subsection{Coleta de Estatísticas}
 % Falamos sobre a coleta de estatísticas e cálculo delas(Variância e IC).
 
-    A coleta de estatísticas é feita sempre quando o freguês, vindo da fila 2, termina seu atendimento no servidor. No momento em que sai do servidor, é verificado se o freguês pertence à rodada atual.
-Caso ele não pertença seus dados são ignorados, mas caso pertença à rodada atual, suas estatísticas são coletadas: seu tempo de execução após estar na primeira e segunda fila,
-seu tempo de espera na primeira e segunda fila(por consequência temos o tempo total na fila 1 e o tempo total na fila 2), a quantidade de pessoas que já estavam na fila no momento em que chega na fila, e a quantidade de pessoas no sistema quando chega na fila.
+    A coleta de estatísticas é feita sempre quando o freguês, advindo da fila 2, termina seu atendimento no servidor. Neste momento, é verificado se o freguês pertence à rodada atual. Caso ele não pertença, seus dados são ignorados mas, caso pertença à rodada atual, suas estatísticas são coletadas: seu tempo de execução após estar na primeira e segunda fila, seu tempo de espera na primeira e segunda fila (por consequência, temos o tempo total na fila 1 e o tempo total na fila 2), a quantidade de pessoas que já estavam na fila e a quantidade de pessoas no sistema quando ele chega.
 
     Além de coletar estes dados, no momento em que o freguês que pertence à rodada atual sai do sistema, a quantidade de fregueses executados é incrementada em um, para controlar o fim da rodada em execução.
 
@@ -445,9 +443,25 @@ Você já escolheu o valor da taxa mi: 1.000000
 
     Esta execução será semelhante à execução do sistema $FCFS/FCFS$ durante os primeiros 12 segundos pois, até então, o tamanho máximo das filas não passou de 1 freguês, impedindo que as características da política LCFS que diferencia o sistema se aplique. Neste momento, se tirarmos uma fotografia do sistema temos o seguinte: aos 12.24 segundos, temos um freguês na fila 1, um freguês na fila 2 e um freguês sendo servido.
 
-    Quando o freguês que está no servidor sai, ele é colocado na frente da fila 2, e o freguês da fila 1 colocado no servidor. 12.246
+    Quando o freguês que está no servidor sai, ele é colocado na frente da fila 2, e o freguês da fila 1 colocado no servidor. Durante o próximo segundo este freguês vai ser servido, e mais ninguém entra no sistema. Logo após ser servido, este freguês segue imediatamente para a fila 2 e retorna ao servidor, já que a fila 1 continua vazia. Neste momento, temos os dois fregueses que estavam esperando na fila 2 ainda na fila, e o fregues mais recente sendo servido e logo deixando o sistema. Instantes antes disto acontecer, chega o oitavo freguês desde o começo da simulação no sistema, que fica esperando na fila 1 para ser servido. A situação vai se repetir mantendo os dois fregueses na fila 2 em espera.
+
+    Logo em seguida o número de fregueses atendidos que deixou o servidor se igualou ao tamanho da rodada pré estabelhecido e a simulação acaba. Podemos observar o começo da situação na qual o sistema se encontra engargalado, com uma concentração de fregueses esperando para serem servidos na segunda fila.
 
 
+MODO REPLICATIVO
+
+
+    Rodamos os exatos mesmos testes, apenas mudando o parâmetro do tipo de simulação para "Replicativo". Todas as situações foram análogas ao modo batch, como de esperado. A diferença entre as análises no modo replicativo e as anteriores é que, no começo de cada rodada, não temos nenhum freguês residual no sistema em hipótese alguma, já que neste modo, as condições no inicio da simulação de cada rodada são exatamente as mesmas. Isso ocorre, nesse caso, porque a fase transiente utilizada nos testes determinísticos foi 0 e, mesmo caso não tivesse esse valor, vale lembrar que a fase transiente é reiniciada a cada rodada da simulação.
+
+    Essa diferença entre o modo batch e replicativo sempre acontece. Entretanto, com uma taxa de chegada de 0.1 pessoas por unidade de tempo não é possível observá-la. Sendo assim, os cenários onde $\lambda$ não é suficiente para que os fregueses encontrem o servidor ocupado ao chegarem a uma das filas nos dão as mesmas informações do modo Batch. Isto já era previsto e acontece porque, nesses casos, o fim das rodadas é marcado pelo sistema vazio, logo, começar a próxima rodada a partir deste estado ou replicar a condição inicial não faz diferença, causando os modelos a apresentarem resultados semelhantes.
+
+    Para os cenários onde os fregueses encontram impedimento e de fato começam a popular as filas esperando pelo serviço, a análise pode ser feita da mesma forma que foi feita para o modo Batch, com pouca variação de comportamento dos fregueses. 
+
+    No modo Batch, entretanto, ao mudar para a próxima rodada temos os fregueses que continuavam nas filas ainda no sistema concorrendo pelos seus recursos os que ainda estão por chegar. Assim, quando a política das filas é FCFS, estes fregueses da rodada atual encontram a fila cheia e são obrigados a esperar a execução dos fregueses residuais da rodada anterior, demorando mais tempo a deixar o sistema. 
+
+    Isto não acontece, porém, quando a política é LCFS. Neste caso, os fregueses chegam e são logo atendidos pelo servidor, independente de quantas pessoas estão na frente da fila 1. Os fregueses residuais da rodada anterior atrapalham os novos fregueses da seguinte forma: quando os fregueses atuais são servidos e colocados na frente da fila 2, temos ainda os fregueses da rodada anterior na fila 1 para serem servidos e, como esta fila é prioritária,  eles têm acesso ao servidor antes. Além disso, ao terminarem seu primeiro serviço, são colocados no começo da segunda fila para serem servidos novamente, antes dos fregueses da rodada atual que estejam na fila 2.
+
+    O modo replicativo evita as duas situações acima tratando as rodadas de forma independente uma da outra. Assim, nas situações onde o sistema se encontra próximo do seu limite, o modo replicativo tem uma pequena vantagem no começo das rodadas por não tratar os fregueses residuais da rodada anterior. Independente da forma com que as filas são tratadas ou da taxa de chegada, as informações que extraímos do modo Replicativo se assemelham às informações do modo Batch, com exceção do começo das rodadas quando os fregueses residuais deixam de existir. Assim, podemos afirmar a corretude do sistema também em modo Replicativo.
 
 
 % Aqui temos que provar que está correto.
