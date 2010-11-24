@@ -3,6 +3,9 @@ use strict;
 use warnings;
 use ProgressBar::Stack;
 
+my @seedsfalhos = ();
+my $maior_ic = "0";
+
 testa({
 	nro 		=> 490,
 	tam 		=> 720,
@@ -83,7 +86,6 @@ testa({
 	lambda 		=> '0.45'
 });
 
-
 sub testa
 {
 	my $params = shift;
@@ -113,17 +115,28 @@ sub testa
 	
 		$sucessos++ if(intervalos_ok() == 1);
 		
-		update_progress ((($round/10000) * 100), "$round de 10000 ($sucessos ok)");
+		update_progress ((($round/10000) * 100), "$round de 10000 ($sucessos ok) (maior falha = $maior_ic%)");
 	}
 	
 	my $porc = ($sucessos/10000) * 100;
 	
-	print "$porc% testes com sucesso.\n\n";
+	print "$porc% testes com sucesso.\n";
+	print scalar(@seedsfalhos) . "testes falharam, com as seguintes seeds:\n";
+	foreach my $s (@seedsfalhos)
+	{
+		print "\t-c $s->{chegada} -x $s->{servico} (ic alto = $s->{ic}%)\n";
+	}
+	
+	print "\n\n";
 }
 sub intervalos_ok
 {
 	my $file;
 	my $limite_ic = 9.8;
+
+	my $ops = 0;
+	my $c;
+	my $x;
 	
 	open($file, "<", "output") or return 0;
 	
@@ -131,11 +144,24 @@ sub intervalos_ok
 	{
 		if(/\[(\d+\.\d+)%\]$/)
 		{
-			return 0 if($1 > $limite_ic);
+			$ops = $1 if ($1 > $limite_ic and $1 > $ops);
+		}
+		
+		if(/-c (\d+) -x (\d+)$/)
+		{
+			$c = $1;
+			$x = $2;
 		}
 	}
 
 	close($file);
+
+	if($ops > $limite_ic)
+	{
+		$maior_ic = $ops if($ops > $maior_ic);
+		push @seedsfalhos, {chegada => $c, servico => $x, ic => $ops};
+		return 0;
+	}
 	
 	return 1;
 }
