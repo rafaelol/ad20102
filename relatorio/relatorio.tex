@@ -699,8 +699,6 @@ A metodologia para encontrar a fase transiente era:
 
 O grupo preferiu optar por uma margem segura, aceitando apenas candidatos nos quais todos os intervalo de confiança eram de tamanho menor ou igual a $8.5\%$ em relação a média da medida analisada. Talvez seria possível conseguir fatores menores ao utilizar margens menores como $9.0\%$ ou $9.5\%$, mas o grupo decidiu depois de muitos testes que estas margens não eram confiáveis o suficiente para garantir os resultados independentes das sementes utilizadas.
 
-Cada resultado foi depois testado posteriormente com 10 mil sementes diferentes, em uma espécie de teste de "stress" e em todos os testes nenhum intervalo de confiança teve tamanho maior ou igual a que $9.8\%$ da média estimada.
-
 Os resultados obtidos foram:
 
 \begin{center}
@@ -720,6 +718,10 @@ Os resultados obtidos foram:
 \end{tabular}
 \end{center}
 
+Cada resultado foi depois testado posteriormente com 10 mil sementes diferentes, em uma espécie de teste de "stress" e em todos os testes nenhum intervalo de confiança teve tamanho maior ou igual a que $9.8\%$ da média estimada.
+
+
+
 Podemos observar que devido a alta variância do tempo de espera na fila 2 quando esta opera em LCFS e com uma alta chegada no sistema($\lambda = 0.45$), o que era esperado, o número necessário de amostras para um bom intervalo de confiança é bastante alto.
 
 O tempo necessário para a execução do programa para o calculo dos fatores otimizados para todos os casos foi de 2 horas e 30 minutos.
@@ -728,6 +730,17 @@ O tempo necessário para a execução do programa para o calculo dos fatores oti
 
 \section{Conclusão}
 %%Olhar coisas com a tag CONC%%
+
+Durante a realização do trabalho o grupo se deparou com alguns problemas, a maioria deles relacionados a parte não-determinística da simulação, pois ao utilizar uma semente inicial "ruim" para o(s) gerador(es) de números pseudo-aleatórios, os resultados do simulador algumas vezes geravam certa confusão, requerendo que o grupo implementasse uma grande e extensiva bateria de testes para ter mais confiança nos resultados obtidos.
+
+Outra dificuldade foi a demonstração da corretudo do simulador, mesmo em um sistema pequeno como este, pois normalmente não há uma abordagem clara e única para proceder.
+
+Sobre o software simulador implementado pelo grupo, consideramos que ele está muito bom. Com uma boa velocidade e pequeno consumo de memória (devido a cuidados tomados no gerenciamento de memória, que em C/C++ deve ser feito pelo próprio programador), o programa apresenta uma ótima performance.
+
+Uma parte que poderia ser melhorada seria a inclusão da capacidade de multi-threading para o modo replicativo e para os programas em Perl que executam a bateria de testes. Porem devido as dificuldades já encontradas com o programa em single-thread, o grupo preferiu manter o código do simulador o mais simples possível.
+
+Mesmo com um modo interativo, onde o software pergunta os parâmetros da simulação, uma interface gráfica para a utilização também seria interessante (apesar de não ser necessária). Outras idéias para a interface gráfica seria a geração de gráficos simples em tempo real de execução do simulador, assim o usuário poderia acompanhar as medições feitas durante o processo de simulação.
+
 \pagebreak
 
 \end{document}
