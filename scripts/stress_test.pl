@@ -4,7 +4,7 @@ use warnings;
 use ProgressBar::Stack;
 
 my @seedsfalhos = ();
-my $maior_ic = "0";
+my $maior_ic = 0;
 
 testa({
 	nro 		=> 490,
@@ -93,6 +93,9 @@ sub testa
 	my $sucessos = 0;
 	my $fator = $params->{transiente} + ($params->{nro} * $params->{tam});
 	
+	@seedsfalhos = ();
+	$maior_ic = 0;
+	
 	print "Stress Test para $params->{filas}, lambda = $params->{lambda}\n";
 	print "\tNumero de rodadas: $params->{nro}\n";
 	print "\tTamanho das rodadas: $params->{tam}\n";
@@ -101,7 +104,7 @@ sub testa
 	
 	init_progress;
 	
-	foreach my $round (1..10000)
+	foreach my $round (1..1000)
 	{
 		executa_simulador({
 			nrod => $params->{nro},
@@ -115,13 +118,13 @@ sub testa
 	
 		$sucessos++ if(intervalos_ok() == 1);
 		
-		update_progress ((($round/10000) * 100), "$round de 10000 ($sucessos ok) (maior falha = $maior_ic%)");
+		update_progress ((($round/1000) * 100), "$round de 1000 ($sucessos ok) (maior falha = $maior_ic%)");
 	}
 	
-	my $porc = ($sucessos/10000) * 100;
+	my $porc = ($sucessos/1000) * 100;
 	
-	print "$porc% testes com sucesso.\n";
-	print scalar(@seedsfalhos) . "testes falharam, com as seguintes seeds:\n";
+	print "\n$porc% testes com sucesso.\n";
+	print "Falha mais crítica com as seguintes seeds:\n";
 	foreach my $s (@seedsfalhos)
 	{
 		print "\t-c $s->{chegada} -x $s->{servico} (ic alto = $s->{ic}%)\n";
@@ -132,7 +135,7 @@ sub testa
 sub intervalos_ok
 {
 	my $file;
-	my $limite_ic = 9.8;
+	my $limite_ic = 10.0;
 
 	my $ops = 0;
 	my $c;
@@ -158,8 +161,13 @@ sub intervalos_ok
 
 	if($ops > $limite_ic)
 	{
-		$maior_ic = $ops if($ops > $maior_ic);
-		push @seedsfalhos, {chegada => $c, servico => $x, ic => $ops};
+		if($ops > $maior_ic)
+		{
+			$maior_ic = $ops;
+			@seedsfalhos = ();
+			push @seedsfalhos, {chegada => $c, servico => $x, ic => $ops};
+		}
+		
 		return 0;
 	}
 	
