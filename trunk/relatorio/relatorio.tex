@@ -213,11 +213,56 @@ ele é movido para a fila 2 (sempre respeitando a disciplina de atendimento). Se
 
 % Aqui comentamos sobre as classes do projeto, e alguns detalhes, como a utilização do rand do linux, ou de
 \subsection{Implementação da Lista de Eventos}
-% Creio que essa seção pode morrer, pois a lista de eventos já foi mencionada antes. Talvez possamos desenvolver melhor a parte de eventos lá.
+
+	Para a implementação da lista de eventos, foi utilizada uma heap de mínimo. Como o simulador é orientado a eventos, assim
+	podemos inserir novos eventos em \emph{O(log n)} e identificar o próximo evento a ser tratado em \emph{O(1)}.
+
+	Existem dois tipos de eventos no sistema:
+	\begin{itemize}
+		\item Nova chegada
+		\item Término de serviço
+	\end{itemize}
+
+	Durante todo o funcionamento do simulador, existem duas invariantes:
+	\begin{itemize}
+		\item Sempre existe um evento do tipo "Nova chegada" na fila de eventos.
+		\item Sempre que existir ao menos um freguês no sistema, existe um evento do tipo "Término de serviço" na fila de eventos.
+	\end{itemize}
+
+	Estas duas invariantes são garatidas da seguinte forma:
+	\begin{itemize}
+		\item Quando um evento do tipo "Nova chegada" é tratado e removido da fila, outro evento é inserido imediatamente, agendando a próxima chegada ao sistema.
+		\item Quando um evento do tipo "Término de serviço" é tratado, caso ainda exista alguém no sistema, fila 1 ou fila 2, respeitando as respectivas prioridades, então um freguês é movido ao servidor e então uma novo evento do tipo "Término de serviço" é gerado e adicionado na lista de eventos.
+    \end{itemize}
+
 \subsection{Geração das Variáveis Aleatórias}
 % Aqui dizemos as variáveis aleatórias que temos, e como elas são calculadas(mencionar a inversa da exponencial etc)
+% Buss falará aqui também da srand.
+
+	Para gerar o tempo de execução das variáveis aleatórias, nós utilizamos a função inversa da CDF da exponencial. A transformação foi feita da seguinte forma:
+
+    $ y = 1 - e^{-\lambda x} $
+
+    $ 1 - y  = e^{-\lambda x} $
+
+    $ -\lambda x = log (1 - y) $
+
+    $ x = -{log(1 - y)} / \lambda $
+
+	Portanto a inversa da CDF da exponencial é $ x = -{log(1 - y)} / \lambda $, onde y é a probabilidade do evento acontecer.
+
+	Cada evento tem uma determinada probabilidade, escolhida de forma aleatória. No momento em que um evento é gerado, é indicada uma probabilidade e a taxa $\lambda$. Assim sabemos o tempo em que tal evento ocorre.
+
 \subsection{Coleta de Estatísticas}
 % Falamos sobre a coleta de estatísticas e cálculo delas(Variância e IC).
+
+    A coleta de estatísticas é feita sempre quando o freguês, vindo da fila 2, termina seu atendimento no servidor. No momento em que sai do servidor, é verificado se o freguês pertence à rodada atual.
+Caso ele não pertença seus dados são ignorados, mas caso pertença à rodada atual, suas estatísticas são coletadas: seu tempo de execução após estar na primeira e segunda fila,
+seu tempo de espera na primeira e segunda fila(por consequência temos o tempo total na fila 1 e o tempo total na fila 2), a quantidade de pessoas que já estavam na fila no momento em que chega na fila, e a quantidade de pessoas no sistema quando chega na fila.
+
+    Além de coletar estes dados, no momento em que o freguês que pertence à rodada atual sai do sistema, a quantidade de fregueses executados é incrementada em um, para controlar o fim da rodada em execução.
+
+%falar ainda do calculo das estatisticas
 \subsection{Método de análise}
 
     O simulador foi construído para funcionar de maneira genérica, sendo assim, a única parte fixa é o formato das filas do sistema (fila 1 prioritária sobre fila 2, ambas sendo servidas por um mesmo servidor), enquanto as disciplinas de serviço podem ser escolhidas pelo usuário. Com isso, também foi planejado para aceitar ambos os métodos de análise: Batch e Replicativo.
@@ -267,7 +312,7 @@ Você já escolheu o valor da taxa mi: 1.000000
 \end{verbatim}
 Para uma instância de execução com estes parametros temos o seguinte:
 
-O primeiro freguês chega no sistema no tempo 34.65s, entrando direto na fila 1, que se encontra vazia. Seguindo para o servidor, ele é executado em exatamete 1 segundo, como já previsto: como estamos executando o simulador com $\mu$ = 1, todos os fregueses devem executar em tempo 1/$\mu$, ou seja, 1 segundo. Logo após disso, o freguês segue para a fila 2 e, ao ser servido, leva novamente 1 segundo no servidor. 
+O primeiro freguês chega no sistema no tempo 34.65s, entrando direto na fila 1, que se encontra vazia. Seguindo para o servidor, ele é executado em exatamete 1 segundo, como já previsto: como estamos executando o simulador com $\mu$ = 1, todos os fregueses devem executar em tempo 1/$\mu$, ou seja, 1 segundo. Logo após disso, o freguês segue para a fila 2 e, ao ser servido, leva novamente 1 segundo no servidor.
 
 A segunda chegada no sitema acontece no tempo 44.65s, exatamente 10 segundos depois da primeira chegada. De forma análoga, como estamos no modo determinístico e definimos $\lambda$ em 0.01 esperavamos este resultado. Da mesma forma que o anterior, este freguês leva 1 segundo para ser executado em ambas as vezes, posteriormente saindo do sistema.
 
@@ -394,7 +439,7 @@ Você já escolheu o valor da taxa lambda: 0.600000
 Você já escolheu o valor da taxa mi: 1.000000
 \end{verbatim}
 
-    O primeiro freguês chega no sistema aos 2.2 segundos de execução e logo é servido. Este freguês leva 1 segundo no servidor sendo executado e, ao final deste tempo é colocado na fila 2. Como o servidor está vazio, ele é atendido novamente pelo servidor, só saindo do sistema no tempo aos 4.2 segundos. 
+    O primeiro freguês chega no sistema aos 2.2 segundos de execução e logo é servido. Este freguês leva 1 segundo no servidor sendo executado e, ao final deste tempo é colocado na fila 2. Como o servidor está vazio, ele é atendido novamente pelo servidor, só saindo do sistema no tempo aos 4.2 segundos.
 
     Um novo freguês chega pouco antes disso, aos 3.9s, e espera o servidor desocupar. Ele é executado aos 4.2 segundos, sendo colocado na fila 2 no tempo 5.2s. Logo chega um terceiro freguês, 0.3 segundos depois, esperando pelo servidor vagar.
 
