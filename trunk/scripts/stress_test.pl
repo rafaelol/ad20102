@@ -1,6 +1,7 @@
 #!/usr/bin/perl
 use strict;
 use warnings;
+use ProgressBar::Stack;
 
 testa({
 	nro 		=> 490,
@@ -96,7 +97,9 @@ sub testa
 	print "\tFase transiente: $params->{transiente}\n";
 	print "\tFATOR = $fator\n\n";
 	
-	foreach (1..10000)
+	init_progress;
+	
+	foreach my $round (1..10000)
 	{
 		executa_simulador({
 			nrod => $params->{nro},
@@ -109,9 +112,13 @@ sub testa
 		});
 	
 		$sucessos++ if(intervalos_ok() == 1);
+		
+		update_progress ((($round/10000) * 100), "$round de 10000 ($sucessos ok)");
 	}
 	
-	print "$sucessos de 10000 testes com sucesso.\n\n";
+	my $porc = ($sucessos/10000) * 100;
+	
+	print "$porc% testes com sucesso.\n\n";
 }
 sub intervalos_ok
 {
