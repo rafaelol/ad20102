@@ -5,14 +5,20 @@ use DateTime;
 use DateTime::Format::Duration;
 
 my $nro_rodadas_inicial = 10;
-my $nro_rodadas_max = 1500;
+my $nro_rodadas_max = 1260;
 my $nro_rodadas;
 
 my $tam_rodadas_inicial = 100;
 my $tam_rodadas_max = 20000;
 my $tam_rodadas;
 
-my $t_transiente = 10000;
+my $t_transiente;
+
+my %h_transiente = ("0.1"  => "10000",
+		    "0.2"  => "10000",
+		    "0.3"  => "10000",
+		    "0.4"  => "10000",
+		    "0.45" => "50000");
 
 my $stress_qty = 10;
 
@@ -30,6 +36,8 @@ foreach my $disciplina (@disciplinas)
 {
 	foreach my $lambda (@lambdas)
 	{
+		$t_transiente = $h_transiente{$lambda};
+		
 		otimiza({
 			filas => $disciplina,
 			lambda => $lambda,
@@ -145,7 +153,7 @@ sub otimiza
 			last;
 		}
 		
-		print "$minimo, $resultados[0]->{nro}, $resultados[0]->{tam}.\n";
+		#print "$minimo, $resultados[0]->{nro}, $resultados[0]->{tam}.\n";
 	}
 	
 	print "Valor otimizado, FATOR = $minimo.\n";
