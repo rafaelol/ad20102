@@ -8,6 +8,9 @@
 \usepackage{indentfirst}
 \usepackage{url}
 
+\usepackage{float}
+\floatstyle{boxed}
+\restylefloat{figure}
 
 \begin{document}
 
@@ -36,27 +39,21 @@ Trabalho de Simulaçao: Implementação e análise de um simulador.
 
 \large
 
-\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\\
-Bruno C. Buss\\(Implementação, documentação do código e relatório final)\\
+Bruno C. Buss
 
 \vspace{0.5cm}
 
-\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\\
-Felipe P. Martinez\\(Implementação, documentação do código e relatório final)\\
+Felipe P. Martinez
 
 \vspace{0.5cm}
 
-\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\\
-Rafael O. Lopes\\(Implementação, documentação do código e relatório final)\\
+Rafael O. Lopes
 
 \vspace{0.5cm}
 
-\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\\
-Yanko G. Oliveira\\(Implementação, documentação do código e relatório final)\\
+Yanko G. Oliveira
 
-\vspace{0.5cm}
-
-\vspace{1cm}
+\vspace{1.5cm}
 
 Relatório gerado em \today
 
@@ -76,7 +73,52 @@ Professor: Paulo Henrique de Aguiar Rodrigues\\
 
 \pagebreak
 
+
+\begin{center}
+\vspace{1cm}
+
+\large
+
+\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\\
+Bruno C. Buss
+
+\vspace{0.5cm}
+
+\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\\
+Felipe P. Martinez
+
+\vspace{0.5cm}
+
+\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\\
+Rafael O. Lopes
+
+\vspace{0.5cm}
+
+\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\\
+Yanko G. Oliveira
+
+\vspace{0.5cm}
+
+\vspace{1cm}
+
+\normalsize
+\end{center}
+
+Os membros do grupo aqui atestam que tiveram participação ativa e direta em todas as fases do trabalho:
+\begin{itemize}
+	\item Projeto, construção e documentação do simulador.
+	\item Análise dos resultados e elaboração do relatório.
+\end{itemize}
+
+
+\pagebreak
+
+
+
 \tableofcontents
+\pagebreak
+
+\listoffigures
 \pagebreak
 
 \section{Introdução}
@@ -473,91 +515,156 @@ Você já escolheu o valor da taxa mi: 1.000000
 
 % figuras do FCFS
 \begin{figure}
-\includegraphics[scale = 0.2]{./graficos_transiente_1/FCFS/01.png}
-\end{figure}
-\begin{figure}
-\includegraphics[scale = 0.2]{./graficos_transiente_1/FCFS/02.png}
-\end{figure}
-\begin{figure}
-\includegraphics[scale = 0.2]{./graficos_transiente_1/FCFS/03.png}
+	\caption{Legenda da Figura}
+	\label{figTransienteFCFSfila1N}
+	\includegraphics[scale = 0.2]{./graficos_transiente_1/FCFS/01.png}
 \end{figure}
 
 \begin{figure}
-\includegraphics[scale = 0.2]{./graficos_transiente_1/FCFS/04.png}
-\end{figure}
-\begin{figure}
-\includegraphics[scale = 0.2]{./graficos_transiente_1/FCFS/05.png}
-\end{figure}
-\begin{figure}
-\includegraphics[scale = 0.2]{./graficos_transiente_1/FCFS/06.png}
+	\caption{Legenda da Figura}
+	\label{figTransienteFCFSfila2N}
+	\includegraphics[scale = 0.2]{./graficos_transiente_1/FCFS/02.png}
 \end{figure}
 
 \begin{figure}
-\includegraphics[scale = 0.2]{./graficos_transiente_1/FCFS/07.png}
-\end{figure}
-\begin{figure}
-\includegraphics[scale = 0.2]{./graficos_transiente_1/FCFS/08.png}
-\end{figure}
-\begin{figure}
-\includegraphics[scale = 0.2]{./graficos_transiente_1/FCFS/09.png}
+	\caption{Legenda da Figura}
+	\label{figTransienteFCFSfila1Nq}
+	\includegraphics[scale = 0.2]{./graficos_transiente_1/FCFS/03.png}
 \end{figure}
 
 \begin{figure}
-\includegraphics[scale = 0.2]{./graficos_transiente_1/FCFS/10.png}
+	\caption{Legenda da Figura}
+	\label{figTransienteFCFSfila2Nq}
+	\includegraphics[scale = 0.2]{./graficos_transiente_1/FCFS/04.png}
 \end{figure}
 
+\begin{figure}
+	\caption{Legenda da Figura}
+	\label{figTransienteFCFSfila1T}
+	\includegraphics[scale = 0.2]{./graficos_transiente_1/FCFS/05.png}
+\end{figure}
+
+\begin{figure}
+	\caption{Legenda da Figura}
+	\label{figTransienteFCFSfila2T}
+	\includegraphics[scale = 0.2]{./graficos_transiente_1/FCFS/06.png}
+\end{figure}
+
+\begin{figure}
+	\caption{Legenda da Figura}
+	\label{figTransienteFCFSfila1W}
+	\includegraphics[scale = 0.2]{./graficos_transiente_1/FCFS/07.png}
+\end{figure}
+
+\begin{figure}
+	\caption{Legenda da Figura}
+	\label{figTransienteFCFSfila2W}
+	\includegraphics[scale = 0.2]{./graficos_transiente_1/FCFS/08.png}
+\end{figure}
+
+\begin{figure}
+	\caption{Legenda da Figura}
+	\label{figTransienteFCFSfila1VarW}
+	\includegraphics[scale = 0.2]{./graficos_transiente_1/FCFS/09.png}
+\end{figure}
+
+\begin{figure}
+	\caption{Legenda da Figura}
+	\label{figTransienteFCFSfila2VarW}
+	\includegraphics[scale = 0.2]{./graficos_transiente_1/FCFS/10.png}
+\end{figure}
+
+\clearpage
 
 %figuras do LCFS
-%\begin{figure}
-%\includegraphics[scale = 0.2]{./graficos_transiente_1/LCFS/01.png}
-%\end{figure}
-%\begin{figure}
-%\includegraphics[scale = 0.2]{./graficos_transiente_1/LCFS/02.png}
-%\end{figure}
-%\begin{figure}
-%\includegraphics[scale = 0.2]{./graficos_transiente_1/LCFS/03.png}
-%\end{figure}
+\begin{figure}
+	\caption{Legenda da Figura}
+	\label{figTransienteLCFSfila1N}
+	\includegraphics[scale = 0.2]{./graficos_transiente_1/LCFS/01.png}
+\end{figure}
 
-%\begin{figure}
-%\includegraphics[scale = 0.2]{./graficos_transiente_1/LCFS/04.png}
-%\end{figure}
-%\begin{figure}
-%\includegraphics[scale = 0.2]{./graficos_transiente_1/LCFS/05.png}
-%\end{figure}
-%\begin{figure}
-%\includegraphics[scale = 0.2]{./graficos_transiente_1/LCFS/06.png}
-%\end{figure}
+\begin{figure}
+	\caption{Legenda da Figura}
+	\label{figTransienteLCFSfila2N}
+	\includegraphics[scale = 0.2]{./graficos_transiente_1/LCFS/02.png}
+\end{figure}
 
-%\begin{figure}
-%\includegraphics[scale = 0.2]{./graficos_transiente_1/LCFS/07.png}
-%\end{figure}
-%\begin{figure}
-%\includegraphics[scale = 0.2]{./graficos_transiente_1/LCFS/08.png}
-%\end{figure}
-%\begin{figure}
-%\includegraphics[scale = 0.2]{./graficos_transiente_1/LCFS/09.png}
-%\end{figure}
+\begin{figure}
+	\caption{Legenda da Figura}
+	\label{figTransienteLCFSfila1Nq}
+	\includegraphics[scale = 0.2]{./graficos_transiente_1/LCFS/03.png}
+\end{figure}
 
-%\begin{figure}
-%\includegraphics[scale = 0.2]{./graficos_transiente_1/LCFS/10.png}
-%\end{figure}
+\begin{figure}
+	\caption{Legenda da Figura}
+	\label{figTransienteLCFSfila2Nq}
+	\includegraphics[scale = 0.2]{./graficos_transiente_1/LCFS/04.png}
+\end{figure}
+
+\begin{figure}
+	\caption{Legenda da Figura}
+	\label{figTransienteLCFSfila1T}
+	\includegraphics[scale = 0.2]{./graficos_transiente_1/LCFS/05.png}
+\end{figure}
+
+\begin{figure}
+	\caption{Legenda da Figura}
+	\label{figTransienteLCFSfila2T}
+	\includegraphics[scale = 0.2]{./graficos_transiente_1/LCFS/06.png}
+\end{figure}
+
+\begin{figure}
+	\caption{Legenda da Figura}
+	\label{figTransienteLCFSfila1W}
+	\includegraphics[scale = 0.2]{./graficos_transiente_1/LCFS/07.png}
+\end{figure}
+
+\begin{figure}
+	\caption{Legenda da Figura}
+	\label{figTransienteLCFSfila2W}
+	\includegraphics[scale = 0.2]{./graficos_transiente_1/LCFS/08.png}
+\end{figure}
+
+\begin{figure}
+	\caption{Legenda da Figura}
+	\label{figTransienteLCFSfila1VarW}
+	\includegraphics[scale = 0.2]{./graficos_transiente_1/LCFS/09.png}
+\end{figure}
+
+\begin{figure}
+	\caption{Legenda da Figura}
+	\label{figTransienteLCFSfila2VarW}
+	\includegraphics[scale = 0.2]{./graficos_transiente_1/LCFS/10.png}
+\end{figure}
+
+\clearpage
 
 %figuras do benchmark com 3k
-%\begin{figure}
-%\includegraphics[scale = 0.2]{./graficos_transiente_2/01.png}
-%\end{figure}
-%\begin{figure}
-%\includegraphics[scale = 0.2]{./graficos_transiente_2/02.png}
-%\end{figure}
-%\begin{figure}
-%\includegraphics[scale = 0.2]{./graficos_transiente_2/03.png}
-%\end{figure}
+\begin{figure}
+	\caption{Legenda da Figura}
+	\label{figTransiente3kfila2T}
+	\includegraphics[scale = 0.2]{./graficos_transiente_2/01.png}
+\end{figure}
 
-%\begin{figure}
-%\includegraphics[scale = 0.2]{./graficos_transiente_2/04.png}
-%\end{figure}
+\begin{figure}
+	\caption{Legenda da Figura}
+	\label{figTransiente3kfila2W}
+	\includegraphics[scale = 0.2]{./graficos_transiente_2/02.png}
+\end{figure}
 
+\begin{figure}
+	\caption{Legenda da Figura}
+	\label{figTransiente3kfila2VarW}
+	\includegraphics[scale = 0.2]{./graficos_transiente_2/03.png}
+\end{figure}
 
+\begin{figure}
+	\caption{Legenda da Figura}
+	\label{figTransiente3kfila1VarW}
+	\includegraphics[scale = 0.2]{./graficos_transiente_2/04.png}
+\end{figure}
+
+\clearpage
 \pagebreak
 
 \section{Tabelas com resultados e comentários pertinentes}
