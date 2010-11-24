@@ -1,4 +1,5 @@
 #!/usr/bin/perl
+# Programa para calculo da otimização do FATOR (número de rodadas X tamanho das rodadas)
 use strict;
 use warnings;
 use DateTime;
