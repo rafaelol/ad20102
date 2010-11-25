@@ -2,9 +2,9 @@ Trabalho da disciplina MAB515: Avaliação e Desempenho 2010/2
 
 Grupo:
 Bruno C. Buss <bruno dot buss at gmail dot com>
-Felipe
+Felipe <felipepmartinez at gmail dot com>
 Rafael <rafaoliveiralopes at gmail dot com>
-Yanko
+Yanko <yanko dot oliveira at gmail dot com>
 
 Página do projeto:
 http://code.google.com/p/ad20102/
