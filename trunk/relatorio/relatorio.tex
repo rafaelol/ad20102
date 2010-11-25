@@ -774,7 +774,7 @@ ao mesmo tempo, podem demorar muito a serem atendidos, pois quaisquer chegadas a
 
     Para o cálculo dos fatores otimizados, o tamanho da fase transiente foi mantido o mesmo das simulações acima, ou seja, 10 mil para $\lambda = \{0.1, 0.2, 0.3, 0.4 \}$ e 50 mil para $\lambda = 0.45$. Como o modo de simulação escolhido para os testes foi o \emph{Batch}, a fase transiente acrescenta apenas uma valor constante à soma total.
 
-    Para o cálculo do melhor fator possível, mas que ainda atendesse a restrição do tamanho dos intervalos de confiança, foi utilizado um programa adicional em Perl (também desenvolvido pelo grupo) que utiliza busas binárias para encontrar a melhor combinação entre o número de rodadas e o tamanho de cada rodada. O código fonte do programa também está em anexo a este relatório.
+Para o calculo do melhor fator possível, mas que ainda atendesse a restrição do tamanho dos intervalos de confiança, foi utilizado um programa adicional em Perl (também desenvolvido pelo grupo) que utiliza buscas binárias para encontrar o melhor fator entre o número de rodadas e o tamanho de cada rodada. O código fonte do programa esta no diretório \emph{scripts} e se chama \emph{otimização\_bb.pl}.
 
 A metodologia para encontrar a fase transiente era:
 \begin{enumerate}
@@ -794,20 +794,23 @@ Os resultados obtidos foram:
     FCFS     & $0.2$   & 10000 & 640     & 770      & 502800       \\ \hline
     FCFS     & $0.3$   & 10000 & 950     & 940      & 903000       \\ \hline
     FCFS     & $0.4$   & 10000 & 640     & 4100    & 2634000     \\ \hline
-    FCFS     & $0.45$ & 50000 & xxxx   & xxxx    & xxx             \\ \hline
-    LCFS     & $0.1$   & 10000 & xxxx   & xxxx    & xxx             \\ \hline
-    LCFS     & $0.2$   & 10000 & xxxx   & xxxx    & xxx             \\ \hline
+    FCFS     & $0.45$ & 50000 & 1110   & 8360    & 9329600     \\ \hline
+    LCFS     & $0.1$   & 10000 & 320     & 1240    & 406800       \\ \hline
+    LCFS     & $0.2$   & 10000 & 640     & 960      & 624400       \\ \hline
     LCFS     & $0.3$   & 10000 & xxxx   & xxxx    & xxx             \\ \hline
     LCFS     & $0.4$   & 10000 & xxxx   & xxxx    & xxx             \\ \hline
     LCFS     & $0.45$ & 50000 & xxxx   & xxxx    & xxx             \\ \hline
 \end{tabular}
 \end{center}
 
-Cada resultado foi  posteriormente testado com mil sementes diferentes, em uma espécie de teste de $"stress"$, sendo o resultado aprovado caso em $99.0\%$ ou mais das vezes nenhum intervalo de confiança fosse maior que $10\%$. O grupo chegou à conclusão que, se em no máximo 10 de 1000 simulações o tamanho do intervalo de confiança fosse um pouco maior que $10.0\%$, não seria necessário aumentar o fator. Foi considerado que esta abordagem teria um custo benefício muito baixo, dado a grande quantidade dos testes que passam dentro do limite com folga, pois a verificação inicial era de $8.5\%$ (relembrando: um fator candidato só era aprovado caso tivesse passado em 10 testes seguidos com todos os intervalos de confiança com tamanho menor ou igual a $8.5\%$).
+
+Cada resultado foi  posteriormente testado com mil sementes diferentes, em uma espécie de teste de estresse, sendo o resultado aprovado caso em $99.0\%$ ou mais das vezes nenhum intervalo de confiança fosse maior que $10\%$. O grupo chegou à conclusão que, se em no máximo 10 de 1000 simulações o tamanho do intervalo de confiança fosse um pouco maior que $10.0\%$, não seria necessário aumentar o fator. Foi considerado que esta abordagem teria um custo benefício muito baixo, dado a grande quantidade dos testes que passam dentro do limite com folga, pois a verificação inicial era de $8.5\%$ (relembrando: um fator candidato só era aprovado caso tivesse passado em 10 testes seguidos com todos os intervalos de confiança com tamanho menor ou igual a $8.5\%$).
 
 Pudemos observar que devido à alta variância do tempo de espera na fila 2 quando esta opera em LCFS e com uma alta chegada no sistema($\lambda = 0.45$), o número necessário de amostras para um bom intervalo de confiança é bastante alto, o que já era esperado.
 
 O tempo necessário para a execução do programa para o cálculo dos fatores otimizados para todos os casos foi de 2 horas e 30 minutos.
+
+O tempo necessário para o teste de estresse foi por volta de 5 horas.
 
 \pagebreak
 
