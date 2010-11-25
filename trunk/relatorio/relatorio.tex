@@ -787,7 +787,7 @@ A metodologia para encontrar a fase transiente era:
 Os resultados obtidos foram:
 
 \begin{center}
-\begin{tabular} { | c | c | c | c | c | c | }
+\begin{tabular} { | c | c | c | c | c | r | }
     \hline
     Filas & $\lambda$  & Fase transiente  & Número de rodadas & Tamanho das rodadas  & FATOR \\ \hline
     FCFS     & $0.1$   & 10000 & 490     & 720      & 362800       \\ \hline
@@ -797,9 +797,9 @@ Os resultados obtidos foram:
     FCFS     & $0.45$ & 50000 & 1110   & 8360    & 9329600     \\ \hline
     LCFS     & $0.1$   & 10000 & 320     & 1240    & 406800       \\ \hline
     LCFS     & $0.2$   & 10000 & 640     & 960      & 624400       \\ \hline
-    LCFS     & $0.3$   & 10000 & xxxx   & xxxx    & xxx             \\ \hline
-    LCFS     & $0.4$   & 10000 & xxxx   & xxxx    & xxx             \\ \hline
-    LCFS     & $0.45$ & 50000 & xxxx   & xxxx    & xxx             \\ \hline
+    LCFS     & $0.3$   & 10000 & 950     & 1260    & 1207000     \\ \hline
+    LCFS     & $0.4$   & 10000 & 640     & 7300    & 4682000     \\ \hline
+    LCFS     & $0.45$ & 50000 & 950     & 18700  & 17815000   \\ \hline
 \end{tabular}
 \end{center}
 
@@ -807,6 +807,8 @@ Os resultados obtidos foram:
 Cada resultado foi  posteriormente testado com mil sementes diferentes, em uma espécie de teste de estresse, sendo o resultado aprovado caso em $99.0\%$ ou mais das vezes nenhum intervalo de confiança fosse maior que $10\%$. O grupo chegou à conclusão que, se em no máximo 10 de 1000 simulações o tamanho do intervalo de confiança fosse um pouco maior que $10.0\%$, não seria necessário aumentar o fator. Foi considerado que esta abordagem teria um custo benefício muito baixo, dado a grande quantidade dos testes que passam dentro do limite com folga, pois a verificação inicial era de $8.5\%$ (relembrando: um fator candidato só era aprovado caso tivesse passado em 10 testes seguidos com todos os intervalos de confiança com tamanho menor ou igual a $8.5\%$).
 
 Pudemos observar que devido à alta variância do tempo de espera na fila 2 quando esta opera em LCFS e com uma alta chegada no sistema($\lambda = 0.45$), o número necessário de amostras para um bom intervalo de confiança é bastante alto, o que já era esperado.
+
+Uma curiosidade, foi que o otimizador ao trabalhar com $\lambda = 0.3$ sempre preferiu aumentar o número de rodadas do que aumentar o tamanho das mesmas. Ao prosseguir para $\lambda = 0.4$, o melhor fator foi encontrado reduzindo novamente o número de rodadas mas aumentando o tamanho de cada uma.
 
 O tempo necessário para a execução do programa para o cálculo dos fatores otimizados para todos os casos foi de 2 horas e 30 minutos.
 
