@@ -465,11 +465,11 @@ Você já escolheu o valor da taxa mi: 1.000000
     Quando o freguês que está no servidor sai, ele é colocado na frente da fila 2, e o freguês da fila 1 colocado no servidor. Durante o próximo segundo este freguês vai ser servido, e mais ninguém entra no sistema. Logo após ser servido, este freguês segue imediatamente para a fila 2 e retorna ao servidor, já que a fila 1 continua vazia. Neste momento, temos os dois fregueses que estavam esperando na fila 2 ainda na fila, e o fregues mais recente sendo servido e logo deixando o sistema. Instantes antes disto acontecer, chega o oitavo freguês desde o começo da simulação no sistema, que fica esperando na fila 1 para ser servido. A situação vai se repetir mantendo os dois fregueses na fila 2 em espera.
 
     Logo em seguida o número de fregueses atendidos que deixou o servidor se igualou ao tamanho da rodada pré estabelecido e a simulação acaba. Podemos observar o começo da situação na qual o sistema se encontra engargalado, com uma concentração de fregueses esperando para serem servidos na segunda fila.
-
-
-MODO REPLICATIVO
-
-
+\\
+\\
+\textbf{\emph{MODO REPLICATIVO}}
+\\
+\\
     Rodamos os exatos mesmos testes, apenas mudando o parâmetro do tipo de simulação para "Replicativo". Todas as situações foram análogas ao modo batch, como de esperado. A diferença entre as análises no modo replicativo e as anteriores é que, no começo de cada rodada, não temos nenhum freguês residual no sistema em hipótese alguma, já que neste modo, as condições no inicio da simulação de cada rodada são exatamente as mesmas. Isso ocorre, nesse caso, porque a fase transiente utilizada nos testes determinísticos foi 0 e, mesmo caso não tivesse esse valor, vale lembrar que a fase transiente é reiniciada a cada rodada da simulação.
 
     Essa diferença entre o modo batch e replicativo sempre acontece. Entretanto, com uma taxa de chegada de 0.1 pessoas por unidade de tempo não é possível observá-la. Sendo assim, os cenários onde $\lambda$ não é suficiente para que os fregueses encontrem o servidor ocupado ao chegarem a uma das filas nos dão as mesmas informações do modo Batch. Isto já era previsto e acontece porque, nesses casos, o fim das rodadas é marcado pelo sistema vazio, logo, começar a próxima rodada a partir deste estado ou replicar a condição inicial não faz diferença, causando os modelos a apresentarem resultados semelhantes.
