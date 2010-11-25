@@ -123,6 +123,7 @@ Os membros do grupo aqui atestam que tiveram participação ativa e direta em to
 
 \section{Introdução}
 \subsection{Funcionamento Geral do Simulador}
+
     O simulador é executado por linha de comando (comando padrão: "./cmulator"). Este aguarda diversos parâmetros que podem ser passados pela linha de comando ou, caso isso não seja feito, são pedidos em tempo de execução. Tais parâmetros são:
 
 \begin {itemize}
@@ -143,7 +144,7 @@ Os membros do grupo aqui atestam que tiveram participação ativa e direta em to
 \item \textbf{Taxa $\mu$:} Determina a taxa de serviço de fregueses no sistema. Na linha de comando: \emph{--tx\_mi} ou \emph{-m}. Opções possíveis: números reais.
 \end {itemize}
 
-    Além desses parâmetros, que são obrigatoriamente pedidos, existem outros parâmetros opcionais para o simulador, a serem passados pela linha de comando:
+    Além desses parâmetros que são obrigatórios para a execução do simulador, existem outros parâmetros opcionais, a serem passados pela linha de comando:
 
 \begin {itemize}
 \item \textbf{Semente para gerador de chegadas:} semente utilizada para o gerador de números pseudo-aleatórios responsável por gerar os tempos de chegada. Na linha de comando: \emph{--seed\_gerador\_chegadas} ou \emph{-c}. Opções possíveis: números reais;
@@ -174,11 +175,11 @@ ele é movido para a fila 2 (sempre respeitando a disciplina de atendimento). Se
 
     Foi utilizada a linguagem de programação C++. O compilador utilizado para desenvolver o sistema foi o GCC 4.4, presente em qualquer distribuição atualizada do Linux, de forma que o sistema pode ser compilado em qualquer ambiente que possua o GCC 4.4 ou superior instalado.
 
-\emph{Nota: o GCC padrão incluso no pacote MingW para compilação no ambiente Windows não possui algumas funções utilizadas pelo simulador (neste caso, as relacionadas à geração de números pseudo-aleatórios). Sendo assim, para que o mesmo seja compilado nesta plataforma, é necessário o uso de GCCs modificados e/ou ferramentas como o Cygwin.}
+\emph{Nota: O sistema utiliza algumas extensões da biblioteca padrão c que podem não estar presentes nos ambientes MinGW para plataformas Windows. Devido a isto o programa foi testado em sistemas Ubuntu de 32 e 64 bits.}
 
-    O principal fator para escolha da linguagem foi a possibilidade de lidar com orientação a objetos, tornando o código mais sucinto e de melhor entendimento. Um outro fator é o fato de que C++ é a linguagem com que os membros do grupo estão melhor familiarizados, proporcionando uma maior facilidade na hora da implementação.
+    Um dos principais fatores para escolha da linguagem foi a possibilidade de lidar com orientação a objetos, tornando o código mais claro e de melhor entendimento. Além disso como o simulador é um software de uso intensivo da CPU, uma linguagem compilada para assembly da máquina e sem camadas adicionais (como máquinas virtuais) era uma boa escolha para o desenvolvimento visando a performance. Um último fator foi o fato de que C++ é a linguagem com que os membros do grupo estão melhor familiarizados, proporcionando uma maior facilidade na hora da implementação.
 
-    O programa foi completamente desenvolvido e testado em ambiente Linux, não havendo garantias de seu funcionamento em ambiente Windows.
+    O programa foi completamente desenvolvido e testado em ambiente Linux.
 
 \subsection{Estruturas Internas Utilizadas}
 
@@ -208,14 +209,12 @@ ele é movido para a fila 2 (sempre respeitando a disciplina de atendimento). Se
 \item \textbf{struct ResultadosConsolidados:} reúne todos os dados coletados das \emph{duas} filas (através de duas \emph{AmostragemFila}) e da quantidade de amostras analisadas.
 \end {itemize}
 
-    Um detalhe importante sobre a implementação do simulador é a utilização de geradores de números pseudo-aleatórios diferentes do padrão (como citado na seção "Linguagem de Programação Utilizada"): \emph{drand48\_r\(\)} e \emph{srand48\_r\(\)}. Esta escolha foi feita pois além de retornarem um número pseudo-aleatório uniformemente distribuído entre [0.0, 1.0), estas funções são re-entrantes, o que evita problemas nos casos em que temos mais de um classe deste tipo gerando tempos de chegada concomitantemente.
-
 
 % Aqui comentamos sobre as classes do projeto, e alguns detalhes, como a utilização do rand do linux, ou de
 \subsection{Implementação da Lista de Eventos}
 
 	Para a implementação da lista de eventos, foi utilizada uma heap de mínimo. Como o simulador é orientado a eventos, utilizando esta estrutura
-	de dados podemos inserir novos eventos em \emph{O(log n)} e identificar o próximo evento a ser tratado em \emph{O(1)}.
+	de dados podemos inserir novos eventos em $O(log n)$ e identificar o próximo evento a ser tratado em $O(1)$.
 
 	Existem dois tipos de eventos no sistema:
 	\begin{itemize}
@@ -252,6 +251,19 @@ ele é movido para a fila 2 (sempre respeitando a disciplina de atendimento). Se
 	Portanto a inversa da CDF da exponencial é $ x = -{log(1 - y)} / \lambda $, onde y é a probabilidade do evento acontecer.
 
 	Cada evento tem uma determinada probabilidade, escolhida de forma aleatória. No momento em que um evento é gerado, é indicada uma probabilidade e a taxa $\lambda$. Assim, sabemos o tempo em que tal evento ocorre.
+
+	Um detalhe importante, é que foi utilizado um geradores de números pseudo-aleatórios diferentes do padrão \emph{rand} e \emph{srand} da biblioteca padrão C. Os geradores utilizados são considerados \emph{extensões GNU} e por isso estão presente em todos os sistema Linux modernos.
+
+	Os geradores utilizados foram os \emph{drand48\_r\(\)} e \emph{srand48\_r\(\)}, o gerador de números e o inicializador do gerador respectivamente.
+
+	Esta escolha foi feita principalmente por 3 razões técnicas:
+	\begin{itemize}
+	\item Este gerador de números aleatórios utiliza um estado de 48 bits e não 32 bits como o \emph{rand} padrão. Além disso, a entropia dos bits menos significativos é maior no \emph{drand48} do que no \emph{rand}. Para a maioria dos aplicativos, isto não faz muita diferença, mas como estamos trabalhando com amostragens é importante este aspecto.
+
+	\item O \emph{drand48} retorna um \emph{double} entre $0.0$ e $0.99...$ (ou seja, entre zero e um, aberto no um). Além de ser uma comodidade, pois precisamos de um número real neste intervalo para passarmos a inversa da CDF da exponencial existe um outro ponto matemático pouco conhecido. Ao pegar o número gerado pelo \emph{rand} e fazer módulo um número N e após isso dividir este resultado por N para obter um número entre zero e um (aberto no um), quebra-se a propriedade da distribuição uniforme do \emph{rand} e assim estragando a qualidade dos números gerados.
+
+	\item O item final é que o \emph{drand48} é uma função reentrante, o que permite que o código seja portável para multi-thread sem que um gerador altere o estado de outro gerador de outra thread. Isto é muito importante caso queiramos implementar capacidade de multi-threading no simulador.
+	\end{itemize}
 
 \subsection{Coleta de Estatísticas}
 % Falamos sobre a coleta de estatísticas e cálculo delas(Variância e IC).
@@ -773,7 +785,7 @@ A metodologia para encontrar a fase transiente era:
 	\item Realizar uma bateria de testes para garantir que os resultados do valor candidato sejam independentes da semente utilizada para inicializar os geradores do programa.
 \end{enumerate}
 
-O grupo preferiu optar por uma margem segura, aceitando apenas candidatos nos quais todos os intervalo de confiança eram de tamanho menor ou igual a $8.5\%$ em relação a média da medida analisada. Talvez seria possível conseguir fatores menores ao utilizar margens menores como $9.0\%$ ou $9.5\%$, mas o grupo decidiu depois de muitos testes que estas margens não eram confiáveis o suficiente para garantir os resultados independentes das sementes utilizadas.
+O grupo preferiu optar por uma margem segura, aceitando apenas candidatos nos quais todos os intervalo de confiança eram de tamanho menor ou igual a $8.5\%$ em relação a média da medida analisada. Talvez seja possível conseguir fatores menores ao utilizar margens menores como $9.0\%$ ou $9.5\%$, mas o grupo decidiu depois de muitos testes que estas margens não eram confiáveis o suficiente para garantir os resultados independentes das sementes utilizadas.
 
 Os resultados obtidos foram:
 
@@ -782,9 +794,9 @@ Os resultados obtidos foram:
     \hline
     Filas & $\lambda$  & Fase transiente  & Número de rodadas & Tamanho das rodadas  & FATOR \\ \hline
     FCFS     & $0.1$   & 10000 & 490     & 720      & 362800       \\ \hline
-    FCFS     & $0.2$   & 10000 & xxxx   & xxxx    & xxx             \\ \hline
-    FCFS     & $0.3$   & 10000 & xxxx   & xxxx    & xxx             \\ \hline
-    FCFS     & $0.4$   & 10000 & xxxx   & xxxx    & xxx             \\ \hline
+    FCFS     & $0.2$   & 10000 & 640     & 770      & 502800       \\ \hline
+    FCFS     & $0.3$   & 10000 & 950     & 940      & 903000       \\ \hline
+    FCFS     & $0.4$   & 10000 & 640     & 4100    & 2634000     \\ \hline
     FCFS     & $0.45$ & 50000 & xxxx   & xxxx    & xxx             \\ \hline
     LCFS     & $0.1$   & 10000 & xxxx   & xxxx    & xxx             \\ \hline
     LCFS     & $0.2$   & 10000 & xxxx   & xxxx    & xxx             \\ \hline
@@ -794,9 +806,7 @@ Os resultados obtidos foram:
 \end{tabular}
 \end{center}
 
-Cada resultado foi depois testado posteriormente com 10 mil sementes diferentes, em uma espécie de teste de "stress" e em todos os testes nenhum intervalo de confiança teve tamanho maior ou igual a que $9.8\%$ da média estimada.
-
-
+Cada resultado foi testado posteriormente com mil sementes diferentes, em uma espécie de teste de "stress" e o resultado era aprovado caso em $99.0\%$ ou mais das vezes nenhum intervalo de confiança fosse maior que $10\%$. O grupo chegou a conclusão que se no máximo 10 de 1000 simulações o tamanho do intervalo de confiança fosse um pouco maior que $10.0\%$, não seria necessário aumentar o fator, pois seria um custo benefício muito pouco, dado a grande quantidade dos testes que passam dentro do limite e com folga, ja que a verificação inicial era de $8.5\%$ (apenas relembrando, um fator candidato só era aprovado caso tivesse passado em 10 testes seguidos com todos os intervalos de confiança com tamanho menor ou igual a $8.5\%$).
 
 Podemos observar que devido a alta variância do tempo de espera na fila 2 quando esta opera em LCFS e com uma alta chegada no sistema($\lambda = 0.45$), o que era esperado, o número necessário de amostras para um bom intervalo de confiança é bastante alto.
 
@@ -813,7 +823,7 @@ Outra dificuldade foi a demonstração da corretudo do simulador, mesmo em um si
 
 Sobre o software simulador implementado pelo grupo, consideramos que ele está muito bom. Com uma boa velocidade e pequeno consumo de memória (devido a cuidados tomados no gerenciamento de memória, que em C/C++ deve ser feito pelo próprio programador), o programa apresenta uma ótima performance.
 
-Uma parte que poderia ser melhorada seria a inclusão da capacidade de multi-threading para o modo replicativo e para os programas em Perl que executam a bateria de testes. Porem devido as dificuldades já encontradas com o programa em single-thread, o grupo preferiu manter o código do simulador o mais simples possível.
+Uma parte que poderia ser melhorada seria a inclusão da capacidade de multi-threading para o modo replicativo e para os programas em Perl que executam a bateria de testes. Inclusive alguns cuidados ja foram tomados para facilitar a portabilidade do simulador para ambientes multi-thread como por exemplo a utilização da função \emph{drand48}, reentrante, como explicado na introdução deste relatório. Porem devido as dificuldades já encontradas com o programa em single-thread, o grupo preferiu manter o código do simulador o mais simples possível.
 
 Mesmo com um modo interativo, onde o software pergunta os parâmetros da simulação, uma interface gráfica para a utilização também seria interessante (apesar de não ser necessária). Outras idéias para a interface gráfica seria a geração de gráficos simples em tempo real de execução do simulador, assim o usuário poderia acompanhar as medições feitas durante o processo de simulação.
 
