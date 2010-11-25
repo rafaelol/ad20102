@@ -214,7 +214,7 @@ ele é movido para a fila 2 (sempre respeitando a disciplina de atendimento). Se
     Além destas, temos os structs:
 
 \begin {itemize}
-\item \textbf{struct AmostragemFila:} unifica todos os dados de uma determinada fila. Nela constam as quantidades de pessoas na fila, a soma dos tempo de espera, no servidor etc e seus quadrados, para posterior análise estatística;
+\item \textbf{struct AmostragemFila:} unifica todos os dados de uma determinada fila. Nela constam as quantidades de pessoas na fila, a soma dos tempo de espera, no servidor etc, e seus quadrados, para posterior análise estatística;
 
 \item \textbf{struct ResultadosConsolidados:} reúne todos os dados coletados das \emph{duas} filas (através de duas \emph{AmostragemFila}) e da quantidade de amostras analisadas.
 \end {itemize}
@@ -814,7 +814,7 @@ batch.
 
 	A escolha do tamanho da rodada se deu em relação a uma comparação com o tamanho da fase transiente. Como as fases transientes usadas nas simulações
 eram de 10 mil e 50 mil, o valor ideal seria algo entre esses dois valores. Assim, a escolha foi 20 mil fregueses. Para escolha da quantidade
-de rodadas, um outro argumento é levado em conta: como usamos o modo batch, caso o tamanho da fase transiente na Seção 3 fosse mal escolhido (a ponto de atrapalhar
+de rodadas, um outro argumento foi levado em conta: como usamos o modo batch, caso o tamanho da fase transiente na Seção 3 fosse mal escolhido (a ponto de atrapalhar
 as simulações desta seção), com uma quantidade grande de rodadas a fase transiente não exerceria tanta má influência no cálculo do Intervalo de Confiança, pois
 o sistema batch se torna menos dependente da mesma conforme as rodadas evoluem.
 
@@ -835,7 +835,10 @@ o sistema batch se torna menos dependente da mesma conforme as rodadas evoluem.
 
     Analisando ambas tabelas, podemos verificar que o valor analítico se encontra dentro do Intervalo de Confiança.
 
-\begin{center}
+\begin{centering}
+\begin{table}[htp]
+\makebox[\textwidth] 
+{
 \begin{tabular} {| c | c | c | c | c | c | c |}
     \hline
     \multicolumn{7}{| c |} {Disciplina de filas FCFS / FCFS} \\ \hline
@@ -870,10 +873,16 @@ o sistema batch se torna menos dependente da mesma conforme as rodadas evoluem.
     0.8    & 2.666666 & 2.668646 & 0.721615\% &  * & 155.758345 & 3.154056\% \\ \hline
     0.9    & 1.636363 & 1.636684 & 0.311025\% &  * & 766.766574 & 5.591093\% \\ \hline
 \end{tabular}
-\end{center}
+}
+\caption{Tabela com os resultados para filas tipo FCFS.}
+\label{TabelaFCFS}
+\end{table}
+\end{centering}
 
-
-\begin{center}
+\begin{centering}
+\begin{table}[htp]
+\makebox[\textwidth] 
+{
 \begin{tabular} {| c | c | c | c | c | c | c |}
     \hline
     \multicolumn{7}{| c |} {Disciplina de filas LCFS / LCFS} \\ \hline
@@ -908,7 +917,11 @@ o sistema batch se torna menos dependente da mesma conforme as rodadas evoluem.
     0.8    & 5.629629 & 5.602126 & 1.019873\% & * &764.760983 & 3.858510\%\\ \hline
     0.9    & 8.141247 & 8.180345 & 1.086783\% & * & 7294.355025 & 6.860098\% \\ \hline
 \end{tabular}
-\end{center}
+}
+\caption{Tabela com os resultados para filas tipo LCFS.}
+\label{TabelaLCFS}
+\end{table}
+\end{centering}
 
 \pagebreak
 
@@ -929,7 +942,10 @@ A metodologia para encontrar a fase transiente era:
 
 Os resultados obtidos foram:
 
-\begin{center}
+\begin{centering}
+\begin{table}[htp]
+\makebox[\textwidth] 
+{
 \begin{tabular} { | c | c | c | c | c | r | }
     \hline
     Filas & $\lambda$  & Fase transiente  & Número de rodadas & Tamanho das rodadas  & FATOR \\ \hline
@@ -944,7 +960,11 @@ Os resultados obtidos foram:
     LCFS     & $0.4$   & 10000 & 640     & 7300    & 4682000     \\ \hline
     LCFS     & $0.45$ & 50000 & 950     & 18700  & 17815000   \\ \hline
 \end{tabular}
-\end{center}
+}
+\caption{Fator Mínimo para cada simulação}
+\label{TabelaFinal}
+\end{table}
+\end{centering}
 
 
 Cada resultado foi  posteriormente testado com mil sementes diferentes, em uma espécie de teste de estresse, sendo o resultado aprovado caso em $99.0\%$ ou mais das vezes nenhum intervalo de confiança fosse maior que $10\%$. O grupo chegou à conclusão que, se em no máximo 10 de 1000 simulações o tamanho do intervalo de confiança fosse um pouco maior que $10.0\%$, não seria necessário aumentar o fator. Foi considerado que esta abordagem teria um custo benefício muito baixo, dado a grande quantidade dos testes que passam dentro do limite com folga, pois a verificação inicial era de $8.5\%$ (relembrando: um fator candidato só era aprovado caso tivesse passado em 10 testes seguidos com todos os intervalos de confiança com tamanho menor ou igual a $8.5\%$).
