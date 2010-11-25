@@ -107,6 +107,9 @@ Yanko G. Oliveira
 Os membros do grupo aqui atestam que tiveram participação ativa e direta em todas as fases do trabalho:
 \begin{itemize}
 	\item Projeto, construção e documentação do simulador.
+	\item Teste de corretude do Simulador.
+	\item Produção e análise de simulações, para utilização no relatório.
+	\item Cálculo analítico das simulações, para utilização no relatório.
 	\item Análise dos resultados e elaboração do relatório.
 \end{itemize}
 
@@ -290,11 +293,22 @@ ele é movido para a fila 2 (sempre respeitando a disciplina de atendimento). Se
 
 
 % Aqui mencionamos que decidimos testar os dois métodos: Batch e Replicativo. E também falar um pouco sobre eles.
-% Acredito que essa seção pode morrer.
-%\subsection{Parâmetros Utilizados}
-% Essa sub-seção eu peguei do relatório do Jonas. No projeto deles, eles determinaram um valor para alguns parâmetros que nós tomamos como fixos. Creio que isso pode morrer.
 \subsection{Tempo Gasto Para Simulação}
 
+    Foram utilizados dois computadores para serem feitas as simulações. Para calcular a fase transiente, foi utilizado um AMD Turion 2.2 GHz, com 1 GB de RAM
+e sistema operacional Ubuntu 10.10 32 bits.
+
+    O cálculo da fase transiente tomou aproximadamente 3 dias, pois diversas vezes percebia-se que o caminho estava errado, e  novas simulações deveriam ser
+feitas, até chegar na última, julgada correta pelo grupo. Independentemente, o tempo de execução das rodadas de simulações sempre foi muito parecido, durando
+aproximadamente 2 horas.
+
+    O computador utilizado nas simulações de otimização e no teste de estresse foi um notebook com processador Core i5 M430 de 2.27 GHz, 4 Gb de memória RAM
+e sistema operacional Kubuntu 10.04 64 bits.
+
+    O tempo necessário para a execução do programa para o cálculo dos fatores otimizados para todos os casos foi de 2 horas e 30 minutos, e o tempo necessário
+para o teste de estresse foi por volta de 7 horas.
+
+    Mais detalhes sobre as três simulações são dadas nas seções 3 e 4.
 
 \pagebreak
 
@@ -775,7 +789,130 @@ ao mesmo tempo, podem demorar muito a serem atendidos, pois quaisquer chegadas a
 
 \section{Tabelas com resultados e comentários pertinentes}
 % Tabelas, tabelas e tabelas. =)
+
+    Para calcular os valores estimados, determinamos simulações com 1 mil rodadas e 20 mil fregueses em cada rodada. O tamanho da fase transiente será o
+determinado pela seção 3: para valores de $\lambda$ iguais a 0.1, 0.2, 0.3 e 0.4, fase transiente de 10 mil elementos; para $\lambda$ igual a 0.45,
+fase transiente de 50 mil elementos.
+
+    Como os resultados das simulações em modo batch ou replicativo implicarão em resultados muito próximos, decidimos escolher apenas um dos modos de execução:
+batch.
+
+    Portanto, os cenários foram:
+
+    \begin{itemize}
+		\item Mil rodadas com 20 mil fregueses, com $\lambda$ = 0.1 e $\mu$ = 1.0. Fase transiente de 10 mil fregueses. Filas FCFS. Modo batch.
+        \item Mil rodadas com 20 mil fregueses, com $\lambda$ = 0.2 e $\mu$ = 1.0. Fase transiente de 10 mil fregueses. Filas FCFS. Modo batch.
+        \item Mil rodadas com 20 mil fregueses, com $\lambda$ = 0.3 e $\mu$ = 1.0. Fase transiente de 10 mil fregueses. Filas FCFS. Modo batch.
+        \item Mil rodadas com 20 mil fregueses, com $\lambda$ = 0.4 e $\mu$ = 1.0. Fase transiente de 10 mil fregueses. Filas FCFS. Modo batch.
+        \item Mil rodadas com 20 mil fregueses, com $\lambda$ = 0.45 e $\mu$ = 1.0. Fase transiente de 50 mil fregueses. Filas FCFS. Modo batch.
+        \item Mil rodadas com 20 mil fregueses, com $\lambda$ = 0.1 e $\mu$ = 1.0. Fase transiente de 10 mil fregueses. Filas LCFS. Modo batch.
+        \item Mil rodadas com 20 mil fregueses, com $\lambda$ = 0.2 e $\mu$ = 1.0. Fase transiente de 10 mil fregueses. Filas LCFS. Modo batch.
+        \item Mil rodadas com 20 mil fregueses, com $\lambda$ = 0.3 e $\mu$ = 1.0. Fase transiente de 10 mil fregueses. Filas LCFS. Modo batch.
+        \item Mil rodadas com 20 mil fregueses, com $\lambda$ = 0.4 e $\mu$ = 1.0. Fase transiente de 10 mil fregueses. Filas LCFS. Modo batch.
+        \item Mil rodadas com 20 mil fregueses, com $\lambda$ = 0.45 e $\mu$ = 1.0. Fase transiente de 50 mil fregueses. Filas LCFS. Modo batch.
+	\end{itemize}
+
+	A escolha do tamanho da rodada se deveu em relação a uma comparação com o tamanho da fase transiente. Como as fases transientes usadas nas simulações
+eram de 10 mil e 50 mil, o valor ideal seria algo próxima entre esses dois valores, por isso a escolha de 20 mil fregueses. Para escolha da quantidade
+de rodadas, um outro argumento é levado em conta: como usamos o modo batch, caso o tamanho da fase transiente na Seção 3 fosse mal escolhida, a ponto de atrapalhar
+as simulações desta seção, com uma quantidade grande de rodadas, a fase transiente não exerceria tanta influência no mau cálculo do Intervalo de Confiança, pois
+o sistema batch se torna menos dependente da fase transiente conforme as rodadas evoluem.
+
+    Para calcular o valor analítico, nos baseamos em cálculos feitos em sala de aula para os valores das Variáveis Aleatórias, além do dado no enunciado, e os
+expandimos, de forma que elas dependessem apenas de $\rho$, e pudessem ser calculadas analiticamente. Essas fórmulas expandidas são:
+    \begin{itemize}
+        \item $W_1 = \frac{2 \lambda}{1 - \lambda} $
+        \item $W_2 = \frac{2 \lambda ^2 + 2 \lambda}{1 - 3 \lambda + 2 \lambda ^2} $
+        \item $T_1 = \frac{\lambda + 1}{1 - \lambda} $
+        \item $T_2 = \frac{4 \lambda ^2 - \lambda + 1} {1 - 3 \lambda + 2 \lambda ^2} $
+        \item $Nq_1 = \frac{2 \lambda ^2}{1 - \lambda} $
+        \item $Nq_2 = \frac{2 \lambda ^3 + 2 \lambda ^2}{1 - 3 \lambda + 2 \lambda ^2} $
+        \item $Var(W_1) = \frac{4 \lambda - 4 \lambda ^2 + 4 \lambda ^3}{(1 - \lambda)^3} $ (com fila LCFS)
+        \item $Var(W_1) = \frac{8 \lambda}{2 - 2 \lambda} $ (com fila FCFS)
+    \end{itemize}
+
+    Os resultados das simulações e valores analíticos estão condensados nas tabelas a seguir. Para cada Variável Aleatória, utilizamos a seguinte ordem nos valores:
+<\emph{Valor Analítico calculado}>, <\emph{Valor médio estimado}>, <\emph{Tamanho do Intervalo de Confiança em \% relacionado a valor médio estimado}>.
+
+    Analisando ambas tabelas, podemos verificar que o valor analítico se encontra dentro do Intervalo de Confiança.
+
+\begin{center}
+\begin{tabular} {| c | c | c | c | c | c | c |}
+    \hline
+    \multicolumn{7}{| c |} {Disciplina de filas FCFS / FCFS} \\ \hline
+    $\rho$ & \multicolumn{3}{| c |} {E[$N_1$]} & \multicolumn{3}{| c |} {E[$N_2$]} \\ \hline
+    0.2    & 0.122222 & 0.122163 & 0.327147\% & 0.130555 & 0.130547 & 0.364959\% \\ \hline
+    0.4    & 0.300000 & 0.299955 & 0.274858\% & 0.400000 & 0.400201 & 0.425702\% \\ \hline
+    0.6    & 0.557142 & 0.556880 & 0.272681\% & 1.135714 & 1.134111 & 0.596507\% \\ \hline
+    0.8    & 0.933333 & 0.933944 & 0.298000\% & 4.133333 & 4.152430 & 1.073237\% \\ \hline
+    0.9    & 1.186363 & 1.186054 & 0.305925\% & 11.127272 & 11.109560 & 1.782143\% \\ \hline
+    $\rho$ & \multicolumn{3}{| c |} {E[$T_1$]} & \multicolumn{3}{| c |} {E[$T_2$]} \\ \hline
+    0.2    & 1.222222 & 1.221969 & 0.109806\% & 1.305555 & 1.305811 & 0.140610\% \\ \hline
+    0.4    & 1.500000 & 1.499429 & 0.130014\% & 2.000000 & 1.999831 & 0.257893\% \\ \hline
+    0.6    & 1.857142 & 1.857123 & 0.158578\% & 3.785714 & 3.781768 & 0.459179\% \\ \hline
+    0.8    & 2.333333 & 2.334485 & 0.197958\% & 10.333333 & 10.376995 & 0.949664\% \\ \hline
+    0.9    & 2.636363 & 2.637109 & 0.212261\% & 24.727272 & 24.694954 & 1.673795\% \\ \hline
+    $\rho$ & \multicolumn{3}{| c |} {E[$Nq_1$]} & \multicolumn{3}{| c |} {E[$Nq_2$]} \\ \hline
+    0.2    & 0.022222 & 0.022213 & 0.858331\% & 0.030555 & 0.030574 & 0.974772\% \\ \hline
+    0.4    & 0.100000 & 0.100000 & 0.525764\% & 0.200000 & 0.200141 & 0.735638\% \\ \hline
+    0.6    & 0.257142 & 0.256991 & 0.449560\% & 0.835714 & 0.834004 & 0.783502\% \\ \hline
+    0.8    & 0.533333 & 0.533870 & 0.429556\% & 3.733333 & 3.752179 & 1.179732\% \\ \hline
+    0.9    & 0.736363 & 0.736107 & 0.422865\% & 10.677273 & 10.659702 & 1.854684\% \\ \hline
+    $\rho$ & \multicolumn{3}{| c |} {E[$W_1$]} & \multicolumn{3}{| c |} {E[$W_2$]} \\ \hline
+    0.2    & 0.222222 & 0.222071 & 0.344969\% & 0.305555 & 0.305566 & 0.492116\% \\ \hline
+    0.4    & 0.500000 & 0.998319 & 0.291635\% & 1.000000 & 0.999928 & 0.488517\% \\ \hline
+    0.6    & 0.857142 & 0.856964 & 0.284672\% & 2.785714 & 2.781531 & 0.613724\% \\ \hline
+    0.8    & 1.333333 & 1.334583 & 0.307332\% & 9.333333 & 9.376762 & 1.048381\% \\ \hline
+    0.9    & 3.272727 & 3.272122 & 0.779393\% & 23.727272 & 23.695120 & 1.743523\% \\ \hline
+    $\rho$ & \multicolumn{3}{| c |} {Var($N_1$)} & \multicolumn{3}{| c |} {} \\ \hline
+    0.2    & 0.444444 & 0.443813 & 0.635946\% & \multicolumn{3}{| c |} {} \\ \hline
+    0.4    & 1.000000 & 0.998319 & 0.570485\% & \multicolumn{3}{| c |} {} \\ \hline
+    0.6    & 1.714285 & 1.711842 & 0.596272\% & \multicolumn{3}{| c |} {} \\ \hline
+    0.8    & 2.666666 & 2.668646 & 0.721615\% & \multicolumn{3}{| c |} {} \\ \hline
+    0.9    & 1.636363 & 1.636684 & 0.311025\% & \multicolumn{3}{| c |} {} \\ \hline
+\end{tabular}
+\end{center}
+
+
+\begin{center}
+\begin{tabular} {| c | c | c | c | c | c | c |}
+    \hline
+    \multicolumn{7}{| c |} {Disciplina de filas LCFS / LCFS} \\ \hline
+    $\rho$ & \multicolumn{3}{| c |} {E[$N_1$]} & \multicolumn{3}{| c |} {E[$N_2$]} \\ \hline
+    0.2    & 0.122222 & 0.122209 & 0.327379\% & 0.130555 & 0.130520 & 0.349649\% \\ \hline
+    0.4    & 0.300000 & 0.300080 & 0.293937\% & 0.400000 & 0.399768 & 0.419849\% \\ \hline
+    0.6    & 0.557142 & 0.557422 & 0.278057\% & 1.135714 & 1.366570 & 0.622754\% \\ \hline
+    0.8    & 0.933333 & 0.933567 & 0.308715\% & 4.133333 & 4.161423 & 1.084923\% \\ \hline
+    0.9    & 1.186363 & 1.137268 & 0.308647\% & 11.127273 & 11.123299 & 1.834879\% \\ \hline
+    $\rho$ & \multicolumn{3}{| c |} {E[$T_1$]} & \multicolumn{3}{| c |} {E[$T_2$]} \\ \hline
+    0.2    & 1.222222 & 1.222776 & 0.107053\% & 1.305555 &  1.305331  &0.135570\% \\ \hline
+    0.4    & 1.500000 & 1.500299 & 0.131120\% & 2.000000 &  1.999470  & 0.261403\% \\ \hline
+    0.6    & 1.857142 & 1.857815 & 0.160048\% & 3.785714 &  3.785865  & 0.474177\% \\ \hline
+    0.8    & 2.333333 & 2.331470 & 0.203800\% & 10.333330 &  10.325824  &0.958765\% \\ \hline
+    0.9    & 2.636363 & 2.637871 & 0.213274\% & 24.727270 &  24.572544  & 1.722773\% \\ \hline
+    $\rho$ & \multicolumn{3}{| c |} {E[$Nq_1$]} & \multicolumn{3}{| c |} {E[$Nq_2$]} \\ \hline
+    0.2    & 0.022222 & 0.022292 & 0.860535\% & 0.030555 &  0.030534  & 0.950377\% \\ \hline
+    0.4    & 0.100000 & 0.099949 & 0.545874\% & 0.200000 &  0.199749  & 0.754059\% \\ \hline
+    0.6    & 0.257142 & 0.257297 & 0.455794\% & 0.835714 &  0.836721  &0.819980\% \\ \hline
+    0.8    & 0.533333 & 0.532259 & 0.451626\% & 3.733333 &  3.739080  & 1.193477\% \\ \hline
+    0.9    & 0.736363 & 0.737409 & 0.430535\% & 10.677270 &  10.690607  & 1.908777\% \\ \hline
+    $\rho$ & \multicolumn{3}{| c |} {E[$W_1$]} & \multicolumn{3}{| c |} {E[$W_2$]} \\ \hline
+    0.2    & 0.222222 & 0.222398 & 0.343388\% & 0.305555 &  0.305365  & 0.471494\% \\ \hline
+    0.4    & 0.500000 & 0.500048 & 0.292772\% & 1.000000 &  0.999543  & 0.498376\% \\ \hline
+    0.6    & 0.857142 & 0.857556 & 0.288521\% & 2.785714 &  2.786149  & 0.637036\% \\ \hline
+    0.8    & 1.333333 & 1.331607 & 0.319270\% & 9.333333 &  9.325809  &  1.058922\% \\ \hline
+    0.9    & 1.636363 & 1.638299 & 0.313756\% & 23.727270 &  23.572894  & 1.794668\% \\ \hline
+    $\rho$ & \multicolumn{3}{| c |} {Var($N_1$)} & \multicolumn{3}{| c |} {} \\ \hline
+    0.2    & 0.499314 & 0.500264 & 0.737997\% & \multicolumn{3}{| c |} {} \\ \hline
+    0.4    & 1.312500 & 1.313204 & 0.720706\% & \multicolumn{3}{| c |} {} \\ \hline
+    0.6    & 2.763848 & 2.771231 & 0.821543\% & \multicolumn{3}{| c |} {} \\ \hline
+    0.8    & 5.629629 & 5.602126 & 1.019873\% & \multicolumn{3}{| c |} {} \\ \hline
+    0.9    & 8.141247 & 8.180345 & 1.086783\% & \multicolumn{3}{| c |} {} \\ \hline
+\end{tabular}
+\end{center}
+
 \pagebreak
+
 
 \section{Otimização}
 
@@ -817,11 +954,6 @@ Pudemos observar que devido à alta variância do tempo de espera na fila 2 quan
 
 Uma curiosidade, foi que o otimizador ao trabalhar com $\lambda = 0.3$ sempre preferiu aumentar o número de rodadas do que aumentar o tamanho das mesmas. Ao prosseguir para $\lambda = 0.4$, o melhor fator foi encontrado reduzindo novamente o número de rodadas mas aumentando o tamanho de cada uma.
 
-O tempo necessário para a execução do programa para o cálculo dos fatores otimizados para todos os casos foi de 2 horas e 30 minutos.
-
-O tempo necessário para o teste de estresse foi por volta de 7 horas.
-
-A máquina utilizada foi um notebook com processador Core i5 M430 de 2.27 GHz, 4 Gb de memória RAM e sistema operacional Kubuntu 10.04 64 bits.
 
 \pagebreak
 
@@ -830,14 +962,15 @@ A máquina utilizada foi um notebook com processador Core i5 M430 de 2.27 GHz, 4
 
     Durante a realização do trabalho o grupo se deparou com alguns problemas, a maioria deles relacionados a parte não-determinística da simulação pois, ao utilizar uma semente inicial "ruim" para o(s) gerador(es) de números pseudo-aleatórios, os resultados do simulador algumas vezes geravam certa confusão, requerendo que o grupo implementasse uma grande e extensiva bateria de testes para ter mais confiança nos resultados obtidos.
 
-Outra dificuldade foi a demonstração da corretude do simulador, mesmo em um sistema pequeno como este, pois normalmente não há uma abordagem clara e única para proceder.
+    Outra dificuldade foi a demonstração da corretude do simulador, mesmo em um sistema pequeno como este, pois normalmente não há uma abordagem clara e única para proceder.
 
     Sobre o software simulador implementado pelo grupo, consideramos que tem excelente nível, tanto em usabilidade quanto em implementação. Com uma boa velocidade e pequeno consumo de memória (devido a cuidados tomados no gerenciamento de memória, o que em C/C++ deve ser feito pelo próprio programador), o sistema apresenta uma ótima performance sendo possível, inclusive rodar nossos $stress tests$ em laptops com hardware já defasado para os padrões atuais.
-
 
     Uma melhora possível seria a inclusão da capacidade de \emph{multi-threading} para o modo Replicativo e para os programas em Perl que executam a bateria de testes. Pensando nisso, alguns cuidados foram tomados para facilitar a portabilidade do simulador para ambientes multi-thread como por exemplo a utilização da função \emph{drand48}, reentrante, como explicado na introdução deste relatório. Porém, devido as dificuldades já encontradas com o programa em single-thread, o grupo preferiu manter o código do simulador o mais simples possível, julgando que o tempo seria melhor gasto refinando o funcionamento e trabalhando na otimização do mesmo.
 
     Mesmo com um modo interativo, onde o software pergunta os parâmetros da simulação, uma interface gráfica para a utilização, apesar de não necessária, seria interessante. Outra idéia para a interface gráfica seriam a geração de gráficos simples em tempo real de execução do simulador, assim o usuário poderia acompanhar as medições feitas durante o processo de simulação. Apesar de não estar implementado, a maneira na qual o simulador foi estruturado permite que a confecção de tal interface seja plenamente possível, sem grandes mudanças no código.
+
+    O grupo também julgou que, caso houvesse tempo, seria muito interessante estender os estudos para cenários com filas FCFS/LCFS ao mesmo tempo. O sistema já está funcinal para estas simulações, mas, apesar do grupo ter boas evidências, não está provado que a simulação com disciplinas de atendimento misturadas esteja correto ou executando com um intervalo de confiança baixo.
 
     O grupo julgou de extrema importância o trabalho prático, não só para lidar com um ambiente de simulação em todos os seus detalhes, captura e análise de dados e geração de estatísticas mas, principalmente, para verificar na prática o aprendizado teórico adquirido na disciplina.
 \pagebreak
