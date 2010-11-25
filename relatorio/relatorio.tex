@@ -286,7 +286,7 @@ ele é movido para a fila 2 (sempre respeitando a disciplina de atendimento). Se
 
     No método Batch, diversas rodadas são executadas a partir de uma mesma semente. Desta forma, precisamos estimar a fase transiente apenas uma vez, utilizando apenas um sistema de \emph{"coloração"} para definir quais dados devem ser coletados. Os clientes gerados em uma determinada rodada possuem um identificador da mesma e, quando saem do sistema, apenas são considerados para as estatísticas aqueles pertencentes à rodada atual de simulação. Caso a rodada acabe e ainda haja fregueses na fila, estes permanecem fazendo parte da simulação, mas seus dados não são contados na rodada seguinte. A coloração é implementada utilizando um atributo da classe \emph{Fregues}, que é setado na criação do mesmo.
 
-    No método Replicativo, há uma semente gerada para cada rodada. Sendo assim, há também uma fase transiente para ser estimada. Assim como em uma rodada anterior do método Batch, os fregueses não atendidos que estavam na fila de espera em uma rodada continuam na fila, mas não são computados nas estatísticas da rodada referente. 
+    No método Replicativo, a nova rodada utiliza como semente o valor final da rodada anterior e a cada nova rodada o sistema é zerado, todos os fregueses são removidos das filas e do servidor. Então é executada uma nova fase transiente e em seguida a rodada normal.
 
 
 % Aqui mencionamos que decidimos testar os dois métodos: Batch e Replicativo. E também falar um pouco sobre eles.
