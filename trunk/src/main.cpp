@@ -92,7 +92,7 @@ void roda_benchmark(void);
  * "--seed_gerador_tempo_servico": \n
  * "--benchmark": Neste modo o simulador executará um benchmark para os valores do tamanho da fase transiente. Este modo irá interromper a execução do simulador após retornar os dados. \n
  * "--deterministico": Indica ao simulador que os geradores de chegada e de servico devem atuar em modo deterministico, para fins de verificação. \n
- * "--modo_coloracao": Neste modo os fregueses sao marcados por rodadas e apenas contabilizados se sairem na mesma rodada em que entraram no sistema. \n
+ * "--modo_coloracao": Opção ativada caso se deseje DESLIGAR a coloração dos clientes na rodada. \n
  * Forma 2: \n
  * Ao executar o simulador, a primeira coisa que é feita é verificar se os parâmetros foram passados. Se algum não foi passado, ele pedirá que se passe antes de começar a simulação. \n
  *
@@ -178,7 +178,7 @@ int main(int argc, char *argv[])
             printf("\"--sobre\"(-s): Sobre o projeto.\n");
             printf("\"--benchmark\"(-b): Neste modo o simulador executara um benchmark para diversos valores de tamanho para a fase transiente.\n");
             printf("\"--deterministico\"(-d): Indica ao simulador que os geradores de chegada e de servico devem atuar em modo deterministico, para fins de verificacao\n");
-            printf("\"--modo_coloracao\"(-o): Neste modo os fregueses sao marcados por rodadas e apenas contabilizados se sairem na mesma rodada em que entraram no sistema.\n");
+            printf("\"--modo_coloracao\"(-o): Quando a opcao e passada, a coloracao dos fregueses por rodada e DESLIGADA.\n");
             printf("\"--verbose\"(-v): Execucao do programa em modo verborragico.\n");
             printf("Ao ser executado, o programa verifica os parâmetros usados, e perguntara iterativamente os parametros obrigatorios que faltam.\n");
             printf("Os seeds geradores somente sao passados atraves de parametros. Eles nao serao perguntados, pois sao opcionais.\n");
