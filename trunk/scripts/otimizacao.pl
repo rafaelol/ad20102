@@ -156,7 +156,7 @@ sub executa_simulador
 {
 	my $param = shift;
 	
-	my $cmdline = "../cmulator -m batch -n $param->{'nrod'} -r $param->{'trod'} -t $param->{'transiente'} -1 $param->{'fila1'} -2 $param->{'fila2'} -l $param->{'lambda'} -u $param->{'mi'} -o > output";
+	my $cmdline = "../cmulator -m batch -n $param->{'nrod'} -r $param->{'trod'} -t $param->{'transiente'} -1 $param->{'fila1'} -2 $param->{'fila2'} -l $param->{'lambda'} -u $param->{'mi'} > output";
 	
 	`$cmdline`;
 }
