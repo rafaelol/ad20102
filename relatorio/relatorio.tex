@@ -195,7 +195,7 @@ ele é movido para a fila 2 (sempre respeitando a disciplina de atendimento). Se
 
     Todo o código do simulador está comentado e foi documentado utilizando a ferramenta \emph{DoxyGen}, estando a documentação gerada anexa. Nesta seção, faremos uma breve análise da implementação e estruturas utilizadas.
 
-    Todas as estruturas do simulador estão no namespace \emph{TrabalhoAD} permitindo não só maior organização do código do próprio trabalho mas também caso eventualmente este seja utilizado juntamente a outras aplicações. Nele há as classes \emph{Evento, DistExponencial, Fregues} e \emph{Simulador}, as structs \emph{AmostragemFila} e \emph{ResultadosConsolidados}, além dos operadores sobrecarregados \emph{$>$} e \emph{$>=$} e das enumerações \emph{ETipo} e \emph{TipoFila}.
+    Todas as estruturas do simulador estão no namespace \emph{TrabalhoAD} permitindo não só maior organização do código do próprio trabalho mas também caso eventualmente este seja utilizado juntamente a outras aplicações. Nele há as classes \emph{Evento, DistExponencial, Fregues} e \emph{Simulador}, as structs \emph{AmostragemFila} e \emph{ResultadosConsolidados}, além dos operadores sobrecarregados \emph{$>$} e \emph{$\geq$} e das enumerações \emph{ETipo} e \emph{TipoFila}.
 
     Os operadores sobrecarregados são responsáveis por comparar dois eventos do simulador, sendo o maior aquele com o tempo em que ocorreu de valor mais alto. Os enums \emph{ETipo} e \emph{TipoFila} listam, respectivamente, os tipos de evento possíveis (se um novo freguês chegou ao sistema, ou se seu serviço terminou de ser executado) e o regime de serviço das filas (FCFS ou LCFS).
 
@@ -964,7 +964,7 @@ Uma curiosidade, foi que o otimizador ao trabalhar com $\lambda = 0.3$ sempre pr
 
     Outra dificuldade foi a demonstração da corretude do simulador, mesmo em um sistema pequeno como este, pois normalmente não há uma abordagem clara e única para proceder.
 
-    Sobre o software simulador implementado pelo grupo, consideramos que tem excelente nível, tanto em usabilidade quanto em implementação. Com uma boa velocidade e pequeno consumo de memória (devido a cuidados tomados no gerenciamento de memória, o que em C/C++ deve ser feito pelo próprio programador), o sistema apresenta uma ótima performance sendo possível, inclusive rodar nossos $stress tests$ em laptops com hardware já defasado para os padrões atuais.
+    Sobre o software simulador implementado pelo grupo, consideramos que tem excelente nível, tanto em usabilidade quanto em implementação. Com uma boa velocidade e pequeno consumo de memória (devido a cuidados tomados no gerenciamento de memória, o que em C/C++ deve ser feito pelo próprio programador), o sistema apresenta uma ótima performance.
 
     Uma melhora possível seria a inclusão da capacidade de \emph{multi-threading} para o modo Replicativo e para os programas em Perl que executam a bateria de testes. Pensando nisso, alguns cuidados foram tomados para facilitar a portabilidade do simulador para ambientes multi-thread como por exemplo a utilização da função \emph{drand48}, reentrante, como explicado na introdução deste relatório. Porém, devido as dificuldades já encontradas com o programa em single-thread, o grupo preferiu manter o código do simulador o mais simples possível, julgando que o tempo seria melhor gasto refinando o funcionamento e trabalhando na otimização do mesmo.
 
