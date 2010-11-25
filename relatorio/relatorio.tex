@@ -185,7 +185,7 @@ ele é movido para a fila 2 (sempre respeitando a disciplina de atendimento). Se
 
     Todo o código do simulador está comentado e foi documentado utilizando a ferramenta \emph{DoxyGen}, estando a documentação gerada anexa. Nesta seção, faremos uma breve análise da implementação e estruturas utilizadas.
 
-    Todas as estruturas do simulador estão no namespace \emph{TrabalhoAD} permitindo não só maior organização do código do próprio trabalho mas também caso eventualmente este seja tilizado juntamente a outras aplicações. Nele há as classes \emph{Evento, DistExponencial, Fregues} e \emph{Simulador}, as structs \emph{AmostragemFila} e \emph{ResultadosConsolidados}, além dos operadores sobrecarregados \emph{$>$} e \emph{$>=$} e das enumerações \emph{ETipo} e \emph{TipoFila}.
+    Todas as estruturas do simulador estão no namespace \emph{TrabalhoAD} permitindo não só maior organização do código do próprio trabalho mas também caso eventualmente este seja utilizado juntamente a outras aplicações. Nele há as classes \emph{Evento, DistExponencial, Fregues} e \emph{Simulador}, as structs \emph{AmostragemFila} e \emph{ResultadosConsolidados}, além dos operadores sobrecarregados \emph{$>$} e \emph{$>=$} e das enumerações \emph{ETipo} e \emph{TipoFila}.
 
     Os operadores sobrecarregados são responsáveis por comparar dois eventos do simulador, sendo o maior aquele com o tempo em que ocorreu de valor mais alto. Os enums \emph{ETipo} e \emph{TipoFila} listam, respectivamente, os tipos de evento possíveis (se um novo freguês chegou ao sistema, ou se seu serviço terminou de ser executado) e o regime de serviço das filas (FCFS ou LCFS).
 
@@ -228,7 +228,7 @@ ele é movido para a fila 2 (sempre respeitando a disciplina de atendimento). Se
 		\item Sempre que existir ao menos um freguês no sistema, existe um evento do tipo "Término de serviço" na fila de eventos.
 	\end{itemize}
 
-	Estas duas invariantes são garatidas da seguinte forma:
+	Estas duas invariantes são garantidas da seguinte forma:
 	\begin{itemize}
 		\item Quando um evento do tipo "Nova chegada" é tratado e removido da fila, outro evento é inserido imediatamente, agendando a próxima chegada ao sistema.
 		\item Quando um evento do tipo "Término de serviço" é tratado, caso ainda exista alguém no sistema, fila 1 ou fila 2, respeitando as respectivas prioridades, então um freguês é movido ao servidor e um novo evento do tipo "Término de serviço" é gerado e adicionado à lista de eventos.
@@ -320,11 +320,11 @@ Você já escolheu o valor da taxa lambda: 0.100000
 Você já escolheu o valor da taxa mi: 1.000000
 
 \end{verbatim}
-Para uma instância de execução com estes parametros temos o seguinte:
+Para uma instância de execução com estes parâmetros temos o seguinte:
 
-O primeiro freguês chega no sistema no tempo 34.65s, entrando direto na fila 1, que se encontra vazia. Seguindo para o servidor, ele é executado em exatamete 1 segundo, como já previsto: como estamos executando o simulador com $\mu$ = 1, todos os fregueses devem executar em tempo 1/$\mu$, ou seja, 1 segundo. Logo após disso, o freguês segue para a fila 2 e, ao ser servido, leva novamente 1 segundo no servidor.
+O primeiro freguês chega no sistema no tempo 34.65s, entrando direto na fila 1, que se encontra vazia. Seguindo para o servidor, ele é executado em exatamente 1 segundo, como já previsto: como estamos executando o simulador com $\mu$ = 1, todos os fregueses devem executar em tempo 1/$\mu$, ou seja, 1 segundo. Logo após disso, o freguês segue para a fila 2 e, ao ser servido, leva novamente 1 segundo no servidor.
 
-A segunda chegada no sitema acontece no tempo 44.65s, exatamente 10 segundos depois da primeira chegada. De forma análoga, como estamos no modo determinístico e definimos $\lambda$ em 0.01 esperavamos este resultado. Da mesma forma que o anterior, este freguês leva 1 segundo para ser executado em ambas as vezes, posteriormente saindo do sistema.
+A segunda chegada no sistema acontece no tempo 44.65s, exatamente 10 segundos depois da primeira chegada. De forma análoga, como estamos no modo determinístico e definimos $\lambda$ em 0.01 esperávamos este resultado. Da mesma forma que o anterior, este freguês leva 1 segundo para ser executado em ambas as vezes, posteriormente saindo do sistema.
 
 O próximo freguês a chegar segue o mesmo padrão de comportamento do outros dois, mantendo-se dentro das expectativas de tempo de chegada e execução.
 \\
@@ -374,11 +374,11 @@ Você já escolheu o valor da taxa mi: 1.000000
 
     Aqui, o primeiro freguês chega ao sistema no tempo 2.27s e passa por ele normalmente, terminando sua execução em 3.27s e entrando na fila 2. Logo ele é executado, levando mais 1 segundo e só saindo do servidor, e assim do sistema, no tempo 4.27s.
 
-    O segundo freguês chega ao sistema no tempo 3.93, enquanto o primeiro ainda está sendo servido. Logo, ele tem que esperar na fila 1 0.34 segundos até que o servidor esteja livre, no tempo 4.27s. Em seguida, é executado durante o proximo segundo, entrando na fila 2 no tempo 5.27s. Durante essa execução, um terceiro freguês entra no sistema (no tempo 5.6s), esperando na fila 1 a liberação do servidor.
+    O segundo freguês chega ao sistema no tempo 3.93, enquanto o primeiro ainda está sendo servido. Logo, ele tem que esperar na fila 1 0.34 segundos até que o servidor esteja livre, no tempo 4.27s. Em seguida, é executado durante o próximo segundo, entrando na fila 2 no tempo 5.27s. Durante essa execução, um terceiro freguês entra no sistema (no tempo 5.6s), esperando na fila 1 a liberação do servidor.
 
-    Posteriormente, este terceiro freguês sai da fila 1 e entra no servidor para ser executado (tempo 6.27s). Enquanto isso, chega um quarto freguês e é entra na fila 1, sendo executado quando o terceiro freguês terminar de ser servido e entrar na fila 2, 1 segundo depois de sua entrada. Duarante a execução deste quarto freguês , um quinto chega no sistema. Nesta hora, tirando uma fotografia do sistema, temos o seguinte: o quinto fregues na fila 1, o quarto sendo servido e o terceiro esperando na fila 2 para ser executado. Como o tamanho da rodada foi setado em 3, ela terminará no momento em que esse terceiro freguês terminar de ser servido, aos 9.27 segundos.
+    Posteriormente, este terceiro freguês sai da fila 1 e entra no servidor para ser executado (tempo 6.27s). Enquanto isso, chega um quarto freguês e é entra na fila 1, sendo executado quando o terceiro freguês terminar de ser servido e entrar na fila 2, 1 segundo depois de sua entrada. Durante a execução deste quarto freguês , um quinto chega no sistema. Nesta hora, tirando uma fotografia do sistema, temos o seguinte: o quinto fregues na fila 1, o quarto sendo servido e o terceiro esperando na fila 2 para ser executado. Como o tamanho da rodada foi setado em 3, ela terminará no momento em que esse terceiro freguês terminar de ser servido, aos 9.27 segundos.
 
-    Estamos executando em modo batch e, portanto, no começo da segunda rodada temos o sistema da mesma forma que ele estava ao términio da anterior. Isto é, temos o quinto freguês (que estava na fila 1 no momento em que a rodada anterior terminou) sendo agora executado. O quarto freguês, que estava no servidor, agora encontra-se na fila 2.
+    Estamos executando em modo batch e, portanto, no começo da segunda rodada temos o sistema da mesma forma que ele estava ao termino da anterior. Isto é, temos o quinto freguês (que estava na fila 1 no momento em que a rodada anterior terminou) sendo agora executado. O quarto freguês, que estava no servidor, agora encontra-se na fila 2.
 
     O primeiro evento desta rodada será a saída do quinto freguês, que chegou no sistema na rodada anterior, aos 10.27 segundos. A partir daí, mais chegadas acontecerão e o sistema vai começar a engargalar, o que já era esperado, pois $\rho$ para esses parâmetros de execução é maior que 1.
 \\
@@ -404,7 +404,7 @@ Você já escolheu o tipo da fila 2: LCFS
 Você já escolheu o valor da taxa lambda: 0.100000
 Você já escolheu o valor da taxa mi: 1.000000
 \end{verbatim}
-    O primeiro freguês chega ao sistema aos 5.4 segundos de execução, entra na primeira fila e vai direto para o servidor. Durante o proximo segundo ele fica em execução. Logo após ele vai para a fila 2 e entra direto no servidor, ficando por mais 1 segundo e finalmente saindo do sistema. Isso acontece aos 7.4 segundos.
+    O primeiro freguês chega ao sistema aos 5.4 segundos de execução, entra na primeira fila e vai direto para o servidor. Durante o próximo segundo ele fica em execução. Logo após ele vai para a fila 2 e entra direto no servidor, ficando por mais 1 segundo e finalmente saindo do sistema. Isso acontece aos 7.4 segundos.
 
     O segundo freguês chega ao sistema aos 15.4s e passa pelo mesmo processo. Como a taxa lambda é muito pequena, todo freguês que chegar no sistema terá o exato mesmo comportamento, não encontrando nenhum impedimento, seja este no servidor ou por causa de alguma outra chegada sendo priorizada em seu detrimento por causa da política LCFS.
 \\
@@ -457,7 +457,7 @@ Você já escolheu o valor da taxa mi: 1.000000
 
     Quando o freguês que está no servidor sai, ele é colocado na frente da fila 2, e o freguês da fila 1 colocado no servidor. Durante o próximo segundo este freguês vai ser servido, e mais ninguém entra no sistema. Logo após ser servido, este freguês segue imediatamente para a fila 2 e retorna ao servidor, já que a fila 1 continua vazia. Neste momento, temos os dois fregueses que estavam esperando na fila 2 ainda na fila, e o fregues mais recente sendo servido e logo deixando o sistema. Instantes antes disto acontecer, chega o oitavo freguês desde o começo da simulação no sistema, que fica esperando na fila 1 para ser servido. A situação vai se repetir mantendo os dois fregueses na fila 2 em espera.
 
-    Logo em seguida o número de fregueses atendidos que deixou o servidor se igualou ao tamanho da rodada pré estabelhecido e a simulação acaba. Podemos observar o começo da situação na qual o sistema se encontra engargalado, com uma concentração de fregueses esperando para serem servidos na segunda fila.
+    Logo em seguida o número de fregueses atendidos que deixou o servidor se igualou ao tamanho da rodada pré estabelecido e a simulação acaba. Podemos observar o começo da situação na qual o sistema se encontra engargalado, com uma concentração de fregueses esperando para serem servidos na segunda fila.
 
 
 MODO REPLICATIVO
@@ -490,7 +490,7 @@ MODO REPLICATIVO
 
     Analisando os gráficos gerados em anexo verificamos que os pontos em que os valores médios deixam de apresentar uma variação muito grande são aproximadamente os mesmos, mesmo com sementes diferentes. Assim, podemos concluir que a estabilização da fase transiente independe da semente geradora.
 
-    Para determinar a fase transiente ideal, geramos gráficos com os resultados para cada variável aleatória, analisando em cada caso qual seria seu valor ideal. Foram avaliados casos em que $\mu$ sempre tinha valor 1.0, e $\lambda$ possuia valores 0.1, 0.2, 0.3, 0.4 e 0.45. Para todos esses casos, testamos com ambas as filas sendo FCFS e LCFS. Os casos críticos, que demoraram mais a se estabilizar foram as filas FCFS com $\lambda$ 0.45 e filas LCFS com $\lambda$ 0.45.
+    Para determinar a fase transiente ideal, geramos gráficos com os resultados para cada variável aleatória, analisando em cada caso qual seria seu valor ideal. Foram avaliados casos em que $\mu$ sempre tinha valor 1.0, e $\lambda$ possuía valores 0.1, 0.2, 0.3, 0.4 e 0.45. Para todos esses casos, testamos com ambas as filas sendo FCFS e LCFS. Os casos críticos, que demoraram mais a se estabilizar foram as filas FCFS com $\lambda$ 0.45 e filas LCFS com $\lambda$ 0.45.
 
     Para o caso em que $\lambda$ é igual a 0.45, $\mu$ é igual a 1.0 e temos as filas como FCFS, consideramos a fase transiente de acordo com a seguinte tabela, baseada em cada variável aleatória.
 
@@ -777,7 +777,7 @@ de serviço da fila. As imagens \ref{figTransienteFCFSfila2VarWLambda010} a \ref
 
 Para o calculo dos fatores otimizados, o tamanho da fase transiente foi mantido o mesmo das simulações acima ou seja, 10 mil para $\lambda = \{0.1, 0.2, 0.3, 0.4 \}$ e 50 mil para $\lambda = 0.45$. Como o modo de simulação escolhido para os testes foi o \emph{batch}, a fase transiente acrescenta apenas uma valor constante a soma total.
 
-Para o calculo do melhor fator possível, mas que ainda atendesse a restrição do tamanho dos intervalos de confiança, foi utilizado um programa adicional em Perl (também desenvolvido pelo grupo) que utiliza busas binárias para encontrar o melhor fator entre o número de rodadas e o tamanho de cada rodada. O código fonte do programa está em anexo a este relatório.
+Para o calculo do melhor fator possível, mas que ainda atendesse a restrição do tamanho dos intervalos de confiança, foi utilizado um programa adicional em Perl (também desenvolvido pelo grupo) que utiliza buscas binárias para encontrar o melhor fator entre o número de rodadas e o tamanho de cada rodada. O código fonte do programa está em anexo a este relatório.
 
 A metodologia para encontrar a fase transiente era:
 \begin{enumerate}
@@ -806,7 +806,7 @@ Os resultados obtidos foram:
 \end{tabular}
 \end{center}
 
-Cada resultado foi testado posteriormente com mil sementes diferentes, em uma espécie de teste de "stress" e o resultado era aprovado caso em $99.0\%$ ou mais das vezes nenhum intervalo de confiança fosse maior que $10\%$. O grupo chegou a conclusão que se no máximo 10 de 1000 simulações o tamanho do intervalo de confiança fosse um pouco maior que $10.0\%$, não seria necessário aumentar o fator, pois seria um custo benefício muito pouco, dado a grande quantidade dos testes que passam dentro do limite e com folga, ja que a verificação inicial era de $8.5\%$ (apenas relembrando, um fator candidato só era aprovado caso tivesse passado em 10 testes seguidos com todos os intervalos de confiança com tamanho menor ou igual a $8.5\%$).
+Cada resultado foi testado posteriormente com mil sementes diferentes, em uma espécie de teste de "stress" e o resultado era aprovado caso em $99.0\%$ ou mais das vezes nenhum intervalo de confiança fosse maior que $10\%$. O grupo chegou a conclusão que se no máximo 10 de 1000 simulações o tamanho do intervalo de confiança fosse um pouco maior que $10.0\%$, não seria necessário aumentar o fator, pois seria um custo benefício muito pouco, dado a grande quantidade dos testes que passam dentro do limite e com folga, já que a verificação inicial era de $8.5\%$ (apenas relembrando, um fator candidato só era aprovado caso tivesse passado em 10 testes seguidos com todos os intervalos de confiança com tamanho menor ou igual a $8.5\%$).
 
 Podemos observar que devido a alta variância do tempo de espera na fila 2 quando esta opera em LCFS e com uma alta chegada no sistema($\lambda = 0.45$), o que era esperado, o número necessário de amostras para um bom intervalo de confiança é bastante alto.
 
@@ -819,13 +819,13 @@ O tempo necessário para a execução do programa para o calculo dos fatores oti
 
 Durante a realização do trabalho o grupo se deparou com alguns problemas, a maioria deles relacionados a parte não-determinística da simulação, pois ao utilizar uma semente inicial "ruim" para o(s) gerador(es) de números pseudo-aleatórios, os resultados do simulador algumas vezes geravam certa confusão, requerendo que o grupo implementasse uma grande e extensiva bateria de testes para ter mais confiança nos resultados obtidos.
 
-Outra dificuldade foi a demonstração da corretudo do simulador, mesmo em um sistema pequeno como este, pois normalmente não há uma abordagem clara e única para proceder.
+Outra dificuldade foi a demonstração da corretude do simulador, mesmo em um sistema pequeno como este, pois normalmente não há uma abordagem clara e única para proceder.
 
 Sobre o software simulador implementado pelo grupo, consideramos que ele está muito bom. Com uma boa velocidade e pequeno consumo de memória (devido a cuidados tomados no gerenciamento de memória, que em C/C++ deve ser feito pelo próprio programador), o programa apresenta uma ótima performance.
 
-Uma parte que poderia ser melhorada seria a inclusão da capacidade de multi-threading para o modo replicativo e para os programas em Perl que executam a bateria de testes. Inclusive alguns cuidados ja foram tomados para facilitar a portabilidade do simulador para ambientes multi-thread como por exemplo a utilização da função \emph{drand48}, reentrante, como explicado na introdução deste relatório. Porem devido as dificuldades já encontradas com o programa em single-thread, o grupo preferiu manter o código do simulador o mais simples possível.
+Uma parte que poderia ser melhorada seria a inclusão da capacidade de multi-threading para o modo replicativo e para os programas em Perl que executam a bateria de testes. Inclusive alguns cuidados já foram tomados para facilitar a portabilidade do simulador para ambientes multi-thread como por exemplo a utilização da função \emph{drand48}, reentrante, como explicado na introdução deste relatório. Porem devido as dificuldades já encontradas com o programa em single-thread, o grupo preferiu manter o código do simulador o mais simples possível.
 
-Mesmo com um modo interativo, onde o software pergunta os parâmetros da simulação, uma interface gráfica para a utilização também seria interessante (apesar de não ser necessária). Outras idéias para a interface gráfica seria a geração de gráficos simples em tempo real de execução do simulador, assim o usuário poderia acompanhar as medições feitas durante o processo de simulação.
+Mesmo com um modo interativo, onde o software pergunta os parâmetros da simulação, uma interface gráfica para a utilização também seria interessante (apesar de não ser necessária). Outras ideias para a interface gráfica seria a geração de gráficos simples em tempo real de execução do simulador, assim o usuário poderia acompanhar as medições feitas durante o processo de simulação.
 
 \pagebreak
 
