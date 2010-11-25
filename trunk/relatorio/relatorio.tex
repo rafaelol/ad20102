@@ -187,7 +187,7 @@ ele é movido para a fila 2 (sempre respeitando a disciplina de atendimento). Se
 
 \emph{Nota: O sistema utiliza algumas extensões da biblioteca padrão c que podem não estar presentes nos ambientes MinGW para plataformas Windows. Devido a isto o programa foi testado em sistemas Ubuntu de 32 e 64 bits.}
 
-    Um dos principais fatores para escolha da linguagem foi a possibilidade de lidar com orientação a objetos, tornando o código mais claro e de melhor entendimento. Além disso como o simulador é um software de uso intensivo da CPU, uma linguagem compilada para assembly da máquina e sem camadas adicionais (como máquinas virtuais) era uma boa escolha para o desenvolvimento visando a performance. Um último fator foi o fato de que C++ é a linguagem com que os membros do grupo estão melhor familiarizados, proporcionando uma maior facilidade na hora da implementação.
+    Um dos principais fatores para escolha da linguagem foi a possibilidade de lidar com orientação a objetos, tornando o código mais claro e de melhor entendimento. Além disso, como o simulador é um software de uso intensivo da CPU, uma linguagem compilada para assembly da máquina e sem camadas adicionais (como máquinas virtuais) era uma boa escolha para o desenvolvimento, visando a performance. Um último fator foi o fato de que C++ é a linguagem com que os membros do grupo estão melhor familiarizados, proporcionando uma maior facilidade na hora da implementação.
 
     O programa foi completamente desenvolvido e testado em ambiente Linux.
 
@@ -262,17 +262,17 @@ ele é movido para a fila 2 (sempre respeitando a disciplina de atendimento). Se
 
 	Cada evento tem uma determinada probabilidade, escolhida de forma aleatória. No momento em que um evento é gerado, é indicada uma probabilidade e a taxa $\lambda$. Assim, sabemos o tempo em que tal evento ocorre.
 
-	Um detalhe importante, é que foi utilizado um geradores de números pseudo-aleatórios diferentes do padrão \emph{rand} e \emph{srand} da biblioteca padrão C. Os geradores utilizados são considerados \emph{extensões GNU} e por isso estão presente em todos os sistema Linux modernos.
+	Um detalhe importante é que foram utilizados geradores de números pseudo-aleatórios diferentes do padrão \emph{rand} e \emph{srand} da biblioteca padrão do C. Os geradores utilizados são considerados \emph{extensões GNU} e por isso estão presente em todos os sistema Linux modernos.
 
-	Os geradores utilizados foram os \emph{drand48\_r\(\)} e \emph{srand48\_r\(\)}, o gerador de números e o inicializador do gerador respectivamente.
+	As funções utilizadas foram \emph{drand48\_r\(\)} e \emph{srand48\_r\(\)}, a geradora de números e o inicializador do gerador, respectivamente.
 
 	Esta escolha foi feita principalmente por 3 razões técnicas:
 	\begin{itemize}
-	\item Este gerador de números aleatórios utiliza um estado de 48 bits e não 32 bits como o \emph{rand} padrão. Além disso, a entropia dos bits menos significativos é maior no \emph{drand48} do que no \emph{rand}. Para a maioria dos aplicativos, isto não faz muita diferença, mas como estamos trabalhando com amostragens é importante este aspecto.
+	\item Este gerador de números aleatórios utiliza um estado de 48 bits e não 32 bits como o \emph{rand} padrão. Além disso, a entropia dos bits menos significativos é maior no \emph{drand48} do que no \emph{rand}. Para a maioria dos aplicativos, isto não faz muita diferença mas, como estamos trabalhando com amostragens, é um aspecto importante a ser considerado.
 
-	\item O \emph{drand48} retorna um \emph{double} entre $0.0$ e $0.99...$ (ou seja, entre zero e um, aberto no um). Além de ser uma comodidade, pois precisamos de um número real neste intervalo para passarmos a inversa da CDF da exponencial existe um outro ponto matemático pouco conhecido. Ao pegar o número gerado pelo \emph{rand} e fazer módulo um número N e após isso dividir este resultado por N para obter um número entre zero e um (aberto no um), quebra-se a propriedade da distribuição uniforme do \emph{rand} e assim estragando a qualidade dos números gerados.
+	\item O \emph{drand48} retorna um \emph{double} entre $0.0$ e $0.99...$ (ou seja, entre zero e um, aberto no um). Além de ser uma comodidade, pois precisamos de um número real neste intervalo para passarmos à inversa da CDF da exponencial, existe um outro ponto matemático pouco conhecido: caso seja utilizado um número N gerado pelo \emph{rand} e seja calculado seu módulo dividido por N para obter um número entre zero e um (aberto no um), quebra-se a propriedade da distribuição uniforme do \emph{rand}, comprometendo a qualidade dos números gerados.
 
-	\item O item final é que o \emph{drand48} é uma função reentrante, o que permite que o código seja portável para multi-thread sem que um gerador altere o estado de outro gerador de outra thread. Isto é muito importante caso queiramos implementar capacidade de multi-threading no simulador.
+	\item O item final é que o \emph{drand48} é uma função reentrante, o que permite que o código seja refeito para funcionar com rotinas em paralelo sem que um gerador altere o estado de outro gerador em outra thread. Isto é essencial caso queiramos implementar capacidade de multi-threading no simulador.
 	\end{itemize}
 
 \subsection{Coleta de Estatísticas}
@@ -285,7 +285,7 @@ ele é movido para a fila 2 (sempre respeitando a disciplina de atendimento). Se
 %falar ainda do calculo das estatisticas
 \subsection{Método de análise}
 
-    O simulador foi construído para funcionar de maneira genérica, sendo assim, a única parte fixa é o formato das filas do sistema (fila 1 prioritária sobre fila 2, ambas sendo servidas por um mesmo servidor), enquanto as disciplinas de serviço podem ser escolhidas pelo usuário. Com isso, também foi planejado para aceitar ambos os métodos de análise: Batch e Replicativo.
+    O simulador foi construído para funcionar de maneira genérica. Sendo assim, a única parte fixa é o formato das filas do sistema (fila 1 prioritária sobre fila 2, ambas sendo servidas por um mesmo servidor), enquanto as disciplinas de serviço podem ser escolhidas pelo usuário. Com isso, também foi planejado para aceitar ambos os métodos de análise: Batch e Replicativo.
 
     No método Batch, diversas rodadas são executadas a partir de uma mesma semente. Desta forma, precisamos estimar a fase transiente apenas uma vez, utilizando apenas um sistema de \emph{"coloração"} para definir quais dados devem ser coletados. Os clientes gerados em uma determinada rodada possuem um identificador da mesma e, quando saem do sistema, apenas são considerados para as estatísticas aqueles pertencentes à rodada atual de simulação. Caso a rodada acabe e ainda haja fregueses na fila, estes permanecem fazendo parte da simulação, mas seus dados não são contados na rodada seguinte. A coloração é implementada utilizando um atributo da classe \emph{Fregues}, que é setado na criação do mesmo.
 
@@ -812,14 +812,13 @@ batch.
         \item Mil rodadas com 20 mil fregueses, com $\lambda$ = 0.45 e $\mu$ = 1.0. Fase transiente de 50 mil fregueses. Filas LCFS. Modo batch.
 	\end{itemize}
 
-	A escolha do tamanho da rodada se deveu em relação a uma comparação com o tamanho da fase transiente. Como as fases transientes usadas nas simulações
-eram de 10 mil e 50 mil, o valor ideal seria algo próxima entre esses dois valores, por isso a escolha de 20 mil fregueses. Para escolha da quantidade
-de rodadas, um outro argumento é levado em conta: como usamos o modo batch, caso o tamanho da fase transiente na Seção 3 fosse mal escolhida, a ponto de atrapalhar
-as simulações desta seção, com uma quantidade grande de rodadas, a fase transiente não exerceria tanta influência no mau cálculo do Intervalo de Confiança, pois
-o sistema batch se torna menos dependente da fase transiente conforme as rodadas evoluem.
+	A escolha do tamanho da rodada se deu em relação a uma comparação com o tamanho da fase transiente. Como as fases transientes usadas nas simulações
+eram de 10 mil e 50 mil, o valor ideal seria algo entre esses dois valores. Assim, a escolha foi 20 mil fregueses. Para escolha da quantidade
+de rodadas, um outro argumento é levado em conta: como usamos o modo batch, caso o tamanho da fase transiente na Seção 3 fosse mal escolhido (a ponto de atrapalhar
+as simulações desta seção), com uma quantidade grande de rodadas a fase transiente não exerceria tanta má influência no cálculo do Intervalo de Confiança, pois
+o sistema batch se torna menos dependente da mesma conforme as rodadas evoluem.
 
-    Para calcular o valor analítico, nos baseamos em cálculos feitos em sala de aula para os valores das Variáveis Aleatórias, além do dado no enunciado, e os
-expandimos, de forma que elas dependessem apenas de $\rho$, e pudessem ser calculadas analiticamente. Essas fórmulas expandidas são:
+    Para calcular os valores analíticos, nos baseamos em cálculos feitos em sala de aula para os valores das variáveis aleatórias, além das expressões presentes no enunciado do trabalho. Expandimos estas fórmulas conhecidas, de forma que dependessem apenas de $\rho$, possibilitando o cálculo. Essas fórmulas expandidas são:
     \begin{itemize}
         \item $W_1 = \frac{2 \lambda}{1 - \lambda} $
         \item $W_2 = \frac{2 \lambda ^2 + 2 \lambda}{1 - 3 \lambda + 2 \lambda ^2} $
@@ -831,7 +830,7 @@ expandimos, de forma que elas dependessem apenas de $\rho$, e pudessem ser calcu
         \item $Var(W_1) = \frac{8 \lambda}{2 - 2 \lambda} $ (com fila FCFS)
     \end{itemize}
 
-    Os resultados das simulações e valores analíticos estão condensados nas tabelas a seguir. Para cada Variável Aleatória, utilizamos a seguinte ordem nos valores:
+    Os resultados das simulações e valores analíticos estão condensados nas tabelas a seguir. Para cada variável aleatória, utilizamos a seguinte ordem nos valores:
 <\emph{Valor Analítico calculado}>, <\emph{Valor médio estimado}>, <\emph{Tamanho do Intervalo de Confiança em \% relacionado a valor médio estimado}>.
 
     Analisando ambas tabelas, podemos verificar que o valor analítico se encontra dentro do Intervalo de Confiança.
@@ -952,7 +951,7 @@ Cada resultado foi  posteriormente testado com mil sementes diferentes, em uma e
 
 Pudemos observar que devido à alta variância do tempo de espera na fila 2 quando esta opera em LCFS e com uma alta chegada no sistema($\lambda = 0.45$), o número necessário de amostras para um bom intervalo de confiança é bastante alto, o que já era esperado.
 
-Uma curiosidade, foi que o otimizador ao trabalhar com $\lambda = 0.3$ sempre preferiu aumentar o número de rodadas do que aumentar o tamanho das mesmas. Ao prosseguir para $\lambda = 0.4$, o melhor fator foi encontrado reduzindo novamente o número de rodadas mas aumentando o tamanho de cada uma.
+Um fato interessante observado foi que o otimizador, ao trabalhar com $\lambda = 0.3$, sempre preferiu aumentar o número de rodadas a aumentar o tamanho das mesmas. Ao prosseguir para $\lambda = 0.4$, o melhor fator foi encontrado reduzindo novamente o número de rodadas, mas aumentando o tamanho de cada uma.
 
 
 \pagebreak
@@ -968,9 +967,9 @@ Uma curiosidade, foi que o otimizador ao trabalhar com $\lambda = 0.3$ sempre pr
 
     Uma melhora possível seria a inclusão da capacidade de \emph{multi-threading} para o modo Replicativo e para os programas em Perl que executam a bateria de testes. Pensando nisso, alguns cuidados foram tomados para facilitar a portabilidade do simulador para ambientes multi-thread como por exemplo a utilização da função \emph{drand48}, reentrante, como explicado na introdução deste relatório. Porém, devido as dificuldades já encontradas com o programa em single-thread, o grupo preferiu manter o código do simulador o mais simples possível, julgando que o tempo seria melhor gasto refinando o funcionamento e trabalhando na otimização do mesmo.
 
-    Mesmo com um modo interativo, onde o software pergunta os parâmetros da simulação, uma interface gráfica para a utilização, apesar de não necessária, seria interessante. Outra idéia para a interface gráfica seriam a geração de gráficos simples em tempo real de execução do simulador, assim o usuário poderia acompanhar as medições feitas durante o processo de simulação. Apesar de não estar implementado, a maneira na qual o simulador foi estruturado permite que a confecção de tal interface seja plenamente possível, sem grandes mudanças no código.
+    Mesmo com um modo interativo, onde o software pergunta os parâmetros da simulação, uma interface gráfica para a utilização, apesar de não necessária, seria interessante. Outra idéia para a interface gráfica seria a geração de gráficos simples em tempo real de execução do simulador, para que o usuário pudesse acompanhar as medições feitas durante o processo de simulação. Apesar de não estar implementado, a maneira na qual o simulador foi estruturado permite que a confecção de tal interface seja plenamente possível, sem grandes mudanças no código.
 
-    O grupo também julgou que, caso houvesse tempo, seria muito interessante estender os estudos para cenários com filas FCFS/LCFS ao mesmo tempo. O sistema já está funcinal para estas simulações, mas, apesar do grupo ter boas evidências, não está provado que a simulação com disciplinas de atendimento misturadas esteja correto ou executando com um intervalo de confiança baixo.
+    O grupo também julgou que, caso houvesse tempo, seria muito interessante estender os estudos para cenários com combinações de filas FCFS/LCFS. O sistema já está funcinal para estas simulações, mas, apesar do grupo ter boas evidências, não houve testes extensos como para as filas em pares (FCFS/FCFS e LCFS/LCFS), que provariam definitivamente que a simulação com disciplinas de atendimento misturadas está correta e executando com um intervalo de confiança baixo.
 
     O grupo julgou de extrema importância o trabalho prático, não só para lidar com um ambiente de simulação em todos os seus detalhes, captura e análise de dados e geração de estatísticas mas, principalmente, para verificar na prática o aprendizado teórico adquirido na disciplina.
 \pagebreak
