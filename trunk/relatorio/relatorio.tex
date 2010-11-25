@@ -577,17 +577,14 @@ MODO REPLICATIVO
 %
 %    Ambas as tabelas mostram que os intervalos de confiança pouco variam quando o tamanho da fase transiente é superior a 10 mil, confirmando mais uma vez que o intervalo acontece em um valor inferior a este.
 
-    Com os dados encontrados, decidimos determinar o tamanho da fase transiente como 50 mil, pois apesar de poder escolher 40 mil para $\lambda$ = 0.45,
-independentemente se for FCFS, uma fase transiente de 50 mil permite diminuir o intervalo de confiança de algumas configurações cujo fator $tamanho da rodada * numero de rodadas$ esteja um pouco acima de 10\% .
+    Com os dados encontrados, decidimos determinar o tamanho da fase transiente como 50 mil. Apesar de podermos escolher 40 mil para um $\lambda$ = 0.45, independente da fila ser do tipo FCFS, uma fase transiente de 50 mil fregueses permite diminuir o intervalo de confiança de algumas configurações cujo fator $tamanho da rodada * numero de rodadas$ esteja um pouco acima de 10\% .
 
     Verificando as figuras relativas à estimativa da fase transiente com $\lambda$ = 0.45(figuras de \ref{figTransienteFCFSfila1N} a \ref{figTransienteLCFSfila2VarW}),
 verificamos que a variável aleatória crítica é a Variância de $W_2$, e que a variância da fila 2 simulada em LCFS, apesar de estabilizada, possui um comportamento mais abrupto.
 Isso é explicado devido à natureza de seu modo de serviço: temos fregueses entrando e rapidamente saindo, pois aquele que acaba de chegar tem prioridade de atendimento caso a fila 1 esteja vazia e,
 ao mesmo tempo, podem demorar muito a serem atendidos, pois quaisquer chegadas acumuladas posteriormente à dele têm prioridade, caso ainda haja fregueses a serem servidos na fila 1.
 
-    Analisando os gráficos de outros em outros cenários, verificamos que para valores de $\lambda$ iguais a 0.1, 0.2, 0.3 ou 0.4, uma fase transiente de tamanho
-10 mil é suficiente para estabilizar o sistema. Isso pode ser verificado analisando os gráficos da Variância de $W_2$ para cada valor de $\lambda$(pois é a Variável Aleatória crítica) e disciplina
-de serviço da fila. As imagens \ref{figTransienteFCFSfila2VarWLambda010} a \ref{figTransienteLCFSfila2VarWLambda040} indicam tais gráficos.
+    Analisando os gráficos de outros cenários verificamos que, para valores de $\lambda$ iguais a 0.1, 0.2, 0.3 ou 0.4, uma fase transiente de tamanho 10 mil é suficiente para estabilizar o sistema. Isso pode ser verificado analisando os gráficos da Variância de $W_2$ para cada valor de $\lambda$ (pois é a variável aleatória crítica) e disciplina de serviço da fila. As imagens \ref{figTransienteFCFSfila2VarWLambda010} a \ref{figTransienteLCFSfila2VarWLambda040} são referentes a tais gráficos.
 
 \pagebreak
 
@@ -775,17 +772,17 @@ de serviço da fila. As imagens \ref{figTransienteFCFSfila2VarWLambda010} a \ref
 
 \section{Otimização}
 
-Para o calculo dos fatores otimizados, o tamanho da fase transiente foi mantido o mesmo das simulações acima ou seja, 10 mil para $\lambda = \{0.1, 0.2, 0.3, 0.4 \}$ e 50 mil para $\lambda = 0.45$. Como o modo de simulação escolhido para os testes foi o \emph{batch}, a fase transiente acrescenta apenas uma valor constante a soma total.
+    Para o cálculo dos fatores otimizados, o tamanho da fase transiente foi mantido o mesmo das simulações acima, ou seja, 10 mil para $\lambda = \{0.1, 0.2, 0.3, 0.4 \}$ e 50 mil para $\lambda = 0.45$. Como o modo de simulação escolhido para os testes foi o \emph{Batch}, a fase transiente acrescenta apenas uma valor constante à soma total.
 
-Para o calculo do melhor fator possível, mas que ainda atendesse a restrição do tamanho dos intervalos de confiança, foi utilizado um programa adicional em Perl (também desenvolvido pelo grupo) que utiliza buscas binárias para encontrar o melhor fator entre o número de rodadas e o tamanho de cada rodada. O código fonte do programa está em anexo a este relatório.
+    Para o cálculo do melhor fator possível, mas que ainda atendesse a restrição do tamanho dos intervalos de confiança, foi utilizado um programa adicional em Perl (também desenvolvido pelo grupo) que utiliza busas binárias para encontrar a melhor combinação entre o número de rodadas e o tamanho de cada rodada. O código fonte do programa também está em anexo a este relatório.
 
 A metodologia para encontrar a fase transiente era:
 \begin{enumerate}
-	\item Encontrar um possível candidato.
+	\item Encontrar um possível candidato;
 	\item Realizar uma bateria de testes para garantir que os resultados do valor candidato sejam independentes da semente utilizada para inicializar os geradores do programa.
 \end{enumerate}
 
-O grupo preferiu optar por uma margem segura, aceitando apenas candidatos nos quais todos os intervalo de confiança eram de tamanho menor ou igual a $8.5\%$ em relação a média da medida analisada. Talvez seja possível conseguir fatores menores ao utilizar margens menores como $9.0\%$ ou $9.5\%$, mas o grupo decidiu depois de muitos testes que estas margens não eram confiáveis o suficiente para garantir os resultados independentes das sementes utilizadas.
+    O grupo preferiu optar por uma margem segura, aceitando apenas candidatos nos quais todos os intervalos de confiança eram de tamanho menor ou igual a $8.5\%$ em relação à média da medida analisada. Talvez seja possível conseguir fatores menores ao utilizar margens menores como $9.0\%$ ou $9.5\%$, mas foi decidido, após diversos testes, que estas margens não eram confiáveis o suficiente para garantir os resultados independentes das sementes utilizadas.
 
 Os resultados obtidos foram:
 
@@ -806,27 +803,29 @@ Os resultados obtidos foram:
 \end{tabular}
 \end{center}
 
-Cada resultado foi testado posteriormente com mil sementes diferentes, em uma espécie de teste de "stress" e o resultado era aprovado caso em $99.0\%$ ou mais das vezes nenhum intervalo de confiança fosse maior que $10\%$. O grupo chegou a conclusão que se no máximo 10 de 1000 simulações o tamanho do intervalo de confiança fosse um pouco maior que $10.0\%$, não seria necessário aumentar o fator, pois seria um custo benefício muito pouco, dado a grande quantidade dos testes que passam dentro do limite e com folga, já que a verificação inicial era de $8.5\%$ (apenas relembrando, um fator candidato só era aprovado caso tivesse passado em 10 testes seguidos com todos os intervalos de confiança com tamanho menor ou igual a $8.5\%$).
+Cada resultado foi  posteriormente testado com mil sementes diferentes, em uma espécie de teste de $"stress"$, sendo o resultado aprovado caso em $99.0\%$ ou mais das vezes nenhum intervalo de confiança fosse maior que $10\%$. O grupo chegou à conclusão que, se em no máximo 10 de 1000 simulações o tamanho do intervalo de confiança fosse um pouco maior que $10.0\%$, não seria necessário aumentar o fator. Foi considerado que esta abordagem teria um custo benefício muito baixo, dado a grande quantidade dos testes que passam dentro do limite com folga, pois a verificação inicial era de $8.5\%$ (relembrando: um fator candidato só era aprovado caso tivesse passado em 10 testes seguidos com todos os intervalos de confiança com tamanho menor ou igual a $8.5\%$).
 
-Podemos observar que devido a alta variância do tempo de espera na fila 2 quando esta opera em LCFS e com uma alta chegada no sistema($\lambda = 0.45$), o que era esperado, o número necessário de amostras para um bom intervalo de confiança é bastante alto.
+Pudemos observar que devido à alta variância do tempo de espera na fila 2 quando esta opera em LCFS e com uma alta chegada no sistema($\lambda = 0.45$), o número necessário de amostras para um bom intervalo de confiança é bastante alto, o que já era esperado.
 
-O tempo necessário para a execução do programa para o calculo dos fatores otimizados para todos os casos foi de 2 horas e 30 minutos.
+O tempo necessário para a execução do programa para o cálculo dos fatores otimizados para todos os casos foi de 2 horas e 30 minutos.
 
 \pagebreak
 
 \section{Conclusão}
 %%Olhar coisas com a tag CONC%%
 
-Durante a realização do trabalho o grupo se deparou com alguns problemas, a maioria deles relacionados a parte não-determinística da simulação, pois ao utilizar uma semente inicial "ruim" para o(s) gerador(es) de números pseudo-aleatórios, os resultados do simulador algumas vezes geravam certa confusão, requerendo que o grupo implementasse uma grande e extensiva bateria de testes para ter mais confiança nos resultados obtidos.
+    Durante a realização do trabalho o grupo se deparou com alguns problemas, a maioria deles relacionados a parte não-determinística da simulação pois, ao utilizar uma semente inicial "ruim" para o(s) gerador(es) de números pseudo-aleatórios, os resultados do simulador algumas vezes geravam certa confusão, requerendo que o grupo implementasse uma grande e extensiva bateria de testes para ter mais confiança nos resultados obtidos.
 
 Outra dificuldade foi a demonstração da corretude do simulador, mesmo em um sistema pequeno como este, pois normalmente não há uma abordagem clara e única para proceder.
 
-Sobre o software simulador implementado pelo grupo, consideramos que ele está muito bom. Com uma boa velocidade e pequeno consumo de memória (devido a cuidados tomados no gerenciamento de memória, que em C/C++ deve ser feito pelo próprio programador), o programa apresenta uma ótima performance.
+    Sobre o software simulador implementado pelo grupo, consideramos que tem excelente nível, tanto em usabilidade quanto em implementação. Com uma boa velocidade e pequeno consumo de memória (devido a cuidados tomados no gerenciamento de memória, o que em C/C++ deve ser feito pelo próprio programador), o sistema apresenta uma ótima performance sendo possível, inclusive rodar nossos $stress tests$ em laptops com hardware já defasado para os padrões atuais.
 
-Uma parte que poderia ser melhorada seria a inclusão da capacidade de multi-threading para o modo replicativo e para os programas em Perl que executam a bateria de testes. Inclusive alguns cuidados já foram tomados para facilitar a portabilidade do simulador para ambientes multi-thread como por exemplo a utilização da função \emph{drand48}, reentrante, como explicado na introdução deste relatório. Porem devido as dificuldades já encontradas com o programa em single-thread, o grupo preferiu manter o código do simulador o mais simples possível.
 
-Mesmo com um modo interativo, onde o software pergunta os parâmetros da simulação, uma interface gráfica para a utilização também seria interessante (apesar de não ser necessária). Outras ideias para a interface gráfica seria a geração de gráficos simples em tempo real de execução do simulador, assim o usuário poderia acompanhar as medições feitas durante o processo de simulação.
+    Uma melhora possível seria a inclusão da capacidade de $multi-threading$ para o modo Replicativo e para os programas em Perl que executam a bateria de testes. Pensando nisso, alguns cuidados foram tomados para facilitar a portabilidade do simulador para ambientes multi-thread como por exemplo a utilização da função \emph{drand48}, reentrante, como explicado na introdução deste relatório. Porém, devido as dificuldades já encontradas com o programa em single-thread, o grupo preferiu manter o código do simulador o mais simples possível, julgando que o tempo seria melhor gasto refinando o funcionamento e trabalhando na otimização do mesmo.
 
+    Mesmo com um modo interativo, onde o software pergunta os parâmetros da simulação, uma interface gráfica para a utilização, apesar de não necessária, seria interessante. Outra idéia para a interface gráfica seriam a geração de gráficos simples em tempo real de execução do simulador, assim o usuário poderia acompanhar as medições feitas durante o processo de simulação. Apesar de não estar implementado, a maneira na qual o simulador foi estruturado permite que a confecção de tal interface seja plenamente possível, sem grandes mudanças no código.
+
+    O grupo julgou de extrema importância o trabalho prático, não só para lidar com um ambiente de simulação em todos os seus detalhes, captura e análise de dados e geração de estatísticas mas, principalmente, para verificar na prática o aprendizado teórico adquirido na disciplina.
 \pagebreak
 
 \end{document}
