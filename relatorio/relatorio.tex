@@ -155,6 +155,13 @@ Os membros do grupo aqui atestam que tiveram participação ativa e direta em to
 
 \item \textbf{Ajuda:} imprime todos os comandos possíveis e suas descrições. Na linha de comando: \emph{--ajuda} ou \emph{-a}. Não recebe parâmetros;
 
+\item \textbf{Benchmark:} o simulador executa um benchmark para diversos valores de tamanho para a fase transiente. Na linha de comando: \emph{--benchmark} ou \emph{-b}. Não recebe parâmetros;
+
+\item \textbf{Determinístico:} indica ao simulador que os geradores de chegada e de servico devem atuar em modo deterministico, para fins de verificação. Na linha de comando: \emph{--deterministico} ou \emph{-d}. Não recebe parâmetros;
+
+\item \textbf{Modo de coloração:} Neste modo é ignorada a coloração da rodada à qual os fregueses pertencem (por padrão, o simulador roda com coloração ligada). Na linha de comando: \emph{--modo\_coloracao} ou \emph{-o}. Não recebe parâmetros;
+
+
 \item \textbf{Modo verborrágico:} roda o simulador imprimindo diferentes níveis de detalhe sobre as operações sendo executadas internamente. Na linha de comando: \emph{--verbose} ou \emph{-v} Opções: 0 (apresenta apenas os intervalos de confiança), 1 (o mesmo que o anterior, mais os dados finais de cada rodada) ou 2 (modo 1 mais dados de cada evento que ocorre na rodada);
 \end {itemize}
 
@@ -277,9 +284,9 @@ ele é movido para a fila 2 (sempre respeitando a disciplina de atendimento). Se
 
     O simulador foi construído para funcionar de maneira genérica, sendo assim, a única parte fixa é o formato das filas do sistema (fila 1 prioritária sobre fila 2, ambas sendo servidas por um mesmo servidor), enquanto as disciplinas de serviço podem ser escolhidas pelo usuário. Com isso, também foi planejado para aceitar ambos os métodos de análise: Batch e Replicativo.
 
-    No método Batch, diversas rodadas são executadas a partir de uma mesma semente. Desta forma, precisamos estimar a fase transiente apenas uma vez, utilizando apenas um sistema de \emph{"coloração"} para definir quais dados devem ser coletados. Os clientes gerados em uma determinada rodada possuem um identificador da mesma e, quando saem do sistema, apenas são considerados para as estatísticas aqueles pertencentes à rodada atual de simulação. Caso a rodada acabe e ainda haja fregueses na fila, estes permanecem fazendo parte da simulação, mas seus dados não são contados na rodada seguinte.
+    No método Batch, diversas rodadas são executadas a partir de uma mesma semente. Desta forma, precisamos estimar a fase transiente apenas uma vez, utilizando apenas um sistema de \emph{"coloração"} para definir quais dados devem ser coletados. Os clientes gerados em uma determinada rodada possuem um identificador da mesma e, quando saem do sistema, apenas são considerados para as estatísticas aqueles pertencentes à rodada atual de simulação. Caso a rodada acabe e ainda haja fregueses na fila, estes permanecem fazendo parte da simulação, mas seus dados não são contados na rodada seguinte. A coloração é implementada utilizando um atributo da classe \emph{Fregues}, que é setado na criação do mesmo.
 
-    No método Replicativo, há uma semente gerada para cada rodada. Sendo assim, há também uma fase transiente para ser estimada. Assim como em uma rodada anterior do método Batch, os fregueses não atendidos que estavam na fila de espera em uma rodada continuam na fila, mas não são computados nas estatísticas da rodada referente.
+    No método Replicativo, há uma semente gerada para cada rodada. Sendo assim, há também uma fase transiente para ser estimada. Assim como em uma rodada anterior do método Batch, os fregueses não atendidos que estavam na fila de espera em uma rodada continuam na fila, mas não são computados nas estatísticas da rodada referente. 
 
 
 % Aqui mencionamos que decidimos testar os dois métodos: Batch e Replicativo. E também falar um pouco sobre eles.
@@ -287,7 +294,7 @@ ele é movido para a fila 2 (sempre respeitando a disciplina de atendimento). Se
 %\subsection{Parâmetros Utilizados}
 % Essa sub-seção eu peguei do relatório do Jonas. No projeto deles, eles determinaram um valor para alguns parâmetros que nós tomamos como fixos. Creio que isso pode morrer.
 \subsection{Tempo Gasto Para Simulação}
-% Tempo que gastamos nos testes
+
 
 \pagebreak
 
