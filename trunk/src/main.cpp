@@ -28,7 +28,7 @@ using namespace TrabalhoAD;
 bool verbose = false;
 bool modo_benchmark = false;
 bool modo_deterministico = false;
-bool modo_coloracao = false;
+bool modo_coloracao = true;
 int verb;
 int modo = -1;
 int n_rodadas = -1;
@@ -255,7 +255,7 @@ int main(int argc, char *argv[])
             seed_gerador_tempo_servico = atoi(optarg);
             break;
         case 'o':
-            modo_coloracao = true;
+            modo_coloracao = false;
             break;
         }
     }
