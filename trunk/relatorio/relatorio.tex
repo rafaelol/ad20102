@@ -455,9 +455,9 @@ MODO REPLICATIVO
 
     Essa diferença entre o modo batch e replicativo sempre acontece. Entretanto, com uma taxa de chegada de 0.1 pessoas por unidade de tempo não é possível observá-la. Sendo assim, os cenários onde $\lambda$ não é suficiente para que os fregueses encontrem o servidor ocupado ao chegarem a uma das filas nos dão as mesmas informações do modo Batch. Isto já era previsto e acontece porque, nesses casos, o fim das rodadas é marcado pelo sistema vazio, logo, começar a próxima rodada a partir deste estado ou replicar a condição inicial não faz diferença, causando os modelos a apresentarem resultados semelhantes.
 
-    Para os cenários onde os fregueses encontram impedimento e de fato começam a popular as filas esperando pelo serviço, a análise pode ser feita da mesma forma que foi feita para o modo Batch, com pouca variação de comportamento dos fregueses. 
+    Para os cenários onde os fregueses encontram impedimento e de fato começam a popular as filas esperando pelo serviço, a análise pode ser feita da mesma forma que foi feita para o modo Batch, com pouca variação de comportamento dos fregueses.
 
-    No modo Batch, entretanto, ao mudar para a próxima rodada temos os fregueses que continuavam nas filas ainda no sistema concorrendo pelos seus recursos os que ainda estão por chegar. Assim, quando a política das filas é FCFS, estes fregueses da rodada atual encontram a fila cheia e são obrigados a esperar a execução dos fregueses residuais da rodada anterior, demorando mais tempo a deixar o sistema. 
+    No modo Batch, entretanto, ao mudar para a próxima rodada temos os fregueses que continuavam nas filas ainda no sistema concorrendo pelos seus recursos os que ainda estão por chegar. Assim, quando a política das filas é FCFS, estes fregueses da rodada atual encontram a fila cheia e são obrigados a esperar a execução dos fregueses residuais da rodada anterior, demorando mais tempo a deixar o sistema.
 
     Isto não acontece, porém, quando a política é LCFS. Neste caso, os fregueses chegam e são logo atendidos pelo servidor, independente de quantas pessoas estão na frente da fila 1. Os fregueses residuais da rodada anterior atrapalham os novos fregueses da seguinte forma: quando os fregueses atuais são servidos e colocados na frente da fila 2, temos ainda os fregueses da rodada anterior na fila 1 para serem servidos e, como esta fila é prioritária,  eles têm acesso ao servidor antes. Além disso, ao terminarem seu primeiro serviço, são colocados no começo da segunda fila para serem servidos novamente, antes dos fregueses da rodada atual que estejam na fila 2.
 
@@ -485,256 +485,273 @@ MODO REPLICATIVO
 \begin{center}
 \begin{tabular} { | l | l | }
     \hline
-    E [ $N_1$ ]  & 10 mil \\ \hline
-    E [ $N_2$ ] & 10 mil \\ \hline
-    E [ $Nq_1$ ] & 10 mil \\ \hline
-    E [ $Nq_2$ ]	& 10 mil \\ \hline
-    E [ $T_1$ ] & 10 mil \\ \hline
-    E [ $T_2$ ] & 10 mil \\ \hline
-    E [ $W_1$ ] & 10 mil \\ \hline
-    E [ $W_2$ ] & 10 mil \\ \hline
-    Var ( $W_1$ ) & 10 mil \\ \hline
-    Var ( $W_2$ ) & 10 mil \\ \hline
+    Variável Aleatória  & Fase transiente estável \\ \hline
+    E [ $N_1$ ]         & 10 mil \\ \hline
+    E [ $N_2$ ]         & 10 mil \\ \hline
+    E [ $Nq_1$ ]        & 10 mil \\ \hline
+    E [ $Nq_2$ ]	    & 20 mil \\ \hline
+    E [ $T_1$ ]         & 10 mil \\ \hline
+    E [ $T_2$ ]         & 20 mil \\ \hline
+    E [ $W_1$ ]         & 10 mil \\ \hline
+    E [ $W_2$ ]         & 20 mil \\ \hline
+    Var ( $W_1$ )       & 10 mil \\ \hline
+    Var ( $W_2$ )       & 20 mil \\ \hline
 \end{tabular}
 \end{center}
 
-    A tabela indica que 10 mil é um valor bom para a escolha da fase transiente, pois a partir daí já temos a média da variável aleatória estável, sem grandes saltos.
+    A tabela indica que 20 mil é um valor bom para a escolha da fase transiente, pois a partir daí já temos a média da variável aleatória estável, sem grandes saltos.
 
     Analogamente, para o caso em que $\lambda$ é igual a 0.45, $\mu$ é igual a 1.0 e temos as filas como LCFS, temos os seguintes dados tabelados:
 
 \begin{center}
 \begin{tabular} { | l | l | }
     \hline
-    E [ $N_1$ ]  & 10 mil \\ \hline
-    E [ $N_2$ ] & 10 mil \\ \hline
-    E [ $Nq_1$ ] & 10 mil \\ \hline
-    E [ $Nq_2$ ]	& 10 mil \\ \hline
-    E [ $T_1$ ] & 10 mil \\ \hline
-    E [ $T_2$ ] & 10 mil \\ \hline
-    E [ $W_1$ ] & 10 mil \\ \hline
-    E [ $W_2$ ] & 10 mil \\ \hline
-    Var ( $W_1$ ) & 10 mil \\ \hline
-    Var ( $W_2$ ) & 20 mil \\ \hline
+    Variável Aleatória  & Fase transiente estável \\ \hline
+    E [ $N_1$ ]         & 10 mil \\ \hline
+    E [ $N_2$ ]         & 40 mil \\ \hline
+    E [ $Nq_1$ ]        & 10 mil \\ \hline
+    E [ $Nq_2$ ]	    & 40 mil \\ \hline
+    E [ $T_1$ ]         & 10 mil \\ \hline
+    E [ $T_2$ ]         & 40 mil \\ \hline
+    E [ $W_1$ ]         & 10 mil \\ \hline
+    E [ $W_2$ ]         & 40 mil \\ \hline
+    Var ( $W_1$ )       & 10 mil \\ \hline
+    Var ( $W_2$ )       & 40 mil \\ \hline
 \end{tabular}
 \end{center}
 
-    Mais uma vez, temos indícios que 10 mil é um valor bom para a escolha da fase transiente.
+    Neste caso, o melhor valor para uma fase transiente estável é de 40 mil.
 %%CONC: falar que FCFS e LCFS sao iguais na conclusao%%
 
-    Analisando o gráfico da variância da fila 2 simulada em LCFS vemos que, apesar de estabilizada, possui um comportamento mais abrupto. Isso é explicado devido à natureza de seu modo de serviço: temos fregueses entrando e rapidamente saindo, pois aquele que acaba de chegar tem prioridade de atendimento caso a fila 1 esteja vazia e, ao mesmo tempo, podem demorar muito a serem atendidos, pois quaisquer chegadas acumuladas posteriormente à dele têm prioridade, caso ainda haja fregueses a serem servidos na fila 1.
+% TA TUDO ERRADO ISSO AQUI! PROVAVELMENTE SERA APAGADO EM UMA VERSAO FUTURA
+%
+%    Para confirmar que 10 mil é um bom valor para a fase transiente, executamos simulações com 1000 rodadas, um tamanho de rodada de 100 mil elementos, filas do tipo LCFS, modo de simulação Batch, $\lambda$ = 0.45 e tamanho de fase transiente variando entre 10 mil e 40 mil. Os tamanhos dos intervalos de confiança para cada variável aleatória estão condensado na tabela abaixo:
+%
+%\begin{center}
+%\begin{tabular} { | l | l | l | l | l | }
+%    \hline
+%    Fase Transiente & 10 mil     & 20 mil     & 30 mil     & 40 mil \\ \hline
+%    E [ $N_1$ ]     & 0.143608\% & 0.137585\% & 0.137273\% & 0.140593\% \\ \hline
+%    E [ $N_2$ ]     & 0.823262\% & 0.787415\% & 0.810789\% & 0.789747\% \\ \hline
+%    E [ $Nq_1$ ]    & 0.199177\% & 0.191484\% & 0.192003\% & 0.194381\% \\ \hline
+%    E [ $Nq_2$ ]    & 0.856671\% & 0.819240\% & 0.843412\% & 0.821582\% \\ \hline
+%    E [ $T_1$ ]     & 0.100458\% & 0.095310\% & 0.095581\% & 0.096510\% \\ \hline
+%    E [ $T_2$ ]     & 0.774806\% & 0.739993\% & 0.759869\% & 0.742618\% \\ \hline
+%    E [ $W_1$ ]     & 0.147686\% & 0.139654\% & 0.140487\% & 0.141282\% \\ \hline
+%    E [ $W_2$ ]     & 0.807038\% & 0.770683\% & 0.791389\% & 0.773448\% \\ \hline
+%    Var ( $W_1$ )   & 0.491216\% & 0.491795\% & 0.470687\% & 0.483800\% \\ \hline
+%    Var ( $W_2$ )   & 3.061337\% & 3.067933\% & 3.130488\% & 2.928875\% \\ \hline
+%\end{tabular}
+%\end{center}
+%
+%    Uma outra rodada de simulações foi feita com as mesmas propriedades, exceto as filas, que eram do tipo FCFS. Mais uma vez, o tamanho dos intervalos de confiança para cada variável aleatória foi tabelado:
+%
+%\begin{center}
+%\begin{tabular} { | l | l | l | l | l | }
+%    \hline
+%    Fase Transiente & 10 mil     & 20 mil     & 30 mil     & 40 mil \\ \hline
+%    E [ $N_1$ ]     & 0.136988\% & 0.143257\% & 0.142970\% & 0.132507\% \\ \hline
+%    E [ $N_2$ ]     & 0.837223\% & 0.799592\% & 0.802728\% & 0.840716\% \\ \hline
+%    E [ $Nq_1$ ]    & 0.188744\% & 0.200473\% & 0.197277\% & 0.183689\% \\ \hline
+%    E [ $Nq_2$ ]    & 0.871204\% & 0.831898\% & 0.835200\% & 0.874601\% \\ \hline
+%    E [ $T_1$ ]     & 0.096327\% & 0.098766\% & 0.098005\% & 0.092503\% \\ \hline
+%    E [ $T_2$ ]     & 0.786062\% & 0.750495\% & 0.753297\% & 0.788535\% \\ \hline
+%    E [ $W_1$ ]     & 0.147686\% & 0.366598\% & 0.143694\% & 0.135192\% \\ \hline
+%    E [ $W_2$ ]     & 0.818783\% & 0.781668\% & 0.784661\% & 0.821137\% \\ \hline
+%    Var ( $W_1$ )   & 0.357175\% & 0.366598\% & 0.347842\% & 0.344376\% \\ \hline
+%    Var ( $W_2$ )   & 2.613589\% & 2.596032\% & 2.401716\% & 2.501379\% \\ \hline
+%\end{tabular}
+%\end{center}
+%
+%    Ambas as tabelas mostram que os intervalos de confiança pouco variam quando o tamanho da fase transiente é superior a 10 mil, confirmando mais uma vez que o intervalo acontece em um valor inferior a este.
 
-    Para confirmar que 10 mil é um bom valor para a fase transiente, executamos simulações com 1000 rodadas, um tamanho de rodada de 100 mil elementos, filas do tipo LCFS, modo de simulação Batch, $\lambda$ = 0.45 e tamanho de fase transiente variando entre 10 mil e 40 mil. Os tamanhos dos intervalos de confiança para cada variável aleatória estão condensado na tabela abaixo:
+    Com os dados encontrados, decidimos determinar o tamanho da fase transiente como 50 mil, pois apesar de poder escolher 40 mil para $\lambda$ = 0.45,
+independentemente se for FCFS, uma fase transiente de 50 mil permite diminuir o intervalo de confiança de algumas configurações cujo fator $tamanho da rodada * numero de rodadas$ esteja um pouco acima de 10\% .
 
-\begin{center}
-\begin{tabular} { | l | l | l | l | l | }
-    \hline
-    Fase Transiente & 10 mil     & 20 mil     & 30 mil     & 40 mil \\ \hline
-    E [ $N_1$ ]     & 0.143608\% & 0.137585\% & 0.137273\% & 0.140593\% \\ \hline
-    E [ $N_2$ ]     & 0.823262\% & 0.787415\% & 0.810789\% & 0.789747\% \\ \hline
-    E [ $Nq_1$ ]    & 0.199177\% & 0.191484\% & 0.192003\% & 0.194381\% \\ \hline
-    E [ $Nq_2$ ]    & 0.856671\% & 0.819240\% & 0.843412\% & 0.821582\% \\ \hline
-    E [ $T_1$ ]     & 0.100458\% & 0.095310\% & 0.095581\% & 0.096510\% \\ \hline
-    E [ $T_2$ ]     & 0.774806\% & 0.739993\% & 0.759869\% & 0.742618\% \\ \hline
-    E [ $W_1$ ]     & 0.147686\% & 0.139654\% & 0.140487\% & 0.141282\% \\ \hline
-    E [ $W_2$ ]     & 0.807038\% & 0.770683\% & 0.791389\% & 0.773448\% \\ \hline
-    Var ( $W_1$ )   & 0.491216\% & 0.491795\% & 0.470687\% & 0.483800\% \\ \hline
-    Var ( $W_2$ )   & 3.061337\% & 3.067933\% & 3.130488\% & 2.928875\% \\ \hline
-\end{tabular}
-\end{center}
+    Verificando as figuras relativas à estimativa da fase transiente com $\lambda$ = 0.45(figuras de \ref{figTransienteFCFSfila1N} a \ref{figTransienteLCFSfila2VarW}),
+verificamos que a variável aleatória crítica é a Variância de $W_2$, e que a variância da fila 2 simulada em LCFS, apesar de estabilizada, possui um comportamento mais abrupto.
+Isso é explicado devido à natureza de seu modo de serviço: temos fregueses entrando e rapidamente saindo, pois aquele que acaba de chegar tem prioridade de atendimento caso a fila 1 esteja vazia e,
+ao mesmo tempo, podem demorar muito a serem atendidos, pois quaisquer chegadas acumuladas posteriormente à dele têm prioridade, caso ainda haja fregueses a serem servidos na fila 1.
 
-    Uma outra rodada de simulações foi feita com as mesmas propriedades, exceto as filas, que eram do tipo FCFS. Mais uma vez, o tamanho dos intervalos de confiança para cada variável aleatória foi tabelado:
-
-\begin{center}
-\begin{tabular} { | l | l | l | l | l | }
-    \hline
-    Fase Transiente & 10 mil     & 20 mil     & 30 mil     & 40 mil \\ \hline
-    E [ $N_1$ ]     & 0.136988\% & 0.143257\% & 0.142970\% & 0.132507\% \\ \hline
-    E [ $N_2$ ]     & 0.837223\% & 0.799592\% & 0.802728\% & 0.840716\% \\ \hline
-    E [ $Nq_1$ ]    & 0.188744\% & 0.200473\% & 0.197277\% & 0.183689\% \\ \hline
-    E [ $Nq_2$ ]    & 0.871204\% & 0.831898\% & 0.835200\% & 0.874601\% \\ \hline
-    E [ $T_1$ ]     & 0.096327\% & 0.098766\% & 0.098005\% & 0.092503\% \\ \hline
-    E [ $T_2$ ]     & 0.786062\% & 0.750495\% & 0.753297\% & 0.788535\% \\ \hline
-    E [ $W_1$ ]     & 0.147686\% & 0.366598\% & 0.143694\% & 0.135192\% \\ \hline
-    E [ $W_2$ ]     & 0.818783\% & 0.781668\% & 0.784661\% & 0.821137\% \\ \hline
-    Var ( $W_1$ )   & 0.357175\% & 0.366598\% & 0.347842\% & 0.344376\% \\ \hline
-    Var ( $W_2$ )   & 2.613589\% & 2.596032\% & 2.401716\% & 2.501379\% \\ \hline
-\end{tabular}
-\end{center}
-
-    Ambas as tabelas mostram que os intervalos de confiança pouco variam quando o tamanho da fase transiente é superior a 10 mil, confirmando mais uma vez que o intervalo acontece em um valor inferior a este.
-
-    Analisando os gráficos mais uma vez verificamos que o momento de estabilização das médias das variáveis aleatórias, além da variância do tempo total de execução, se encontra anterior a 5 mil. Fazendo uma rodada de simulações com as mesmas características que anteriormente (e filas do tipo FCFS), agora com valores da fase transiente entre 1 mil e 5 mil, chegamos na seguinte tabela:
-
-\begin{center}
-\begin{tabular} { | l | l | l | l | l | l | }
-    \hline
-    Fase Transiente & 1 mil      & 2 mil      & 3 mil      & 4 mil      & 5 mil     \\ \hline
-    E [ $N_1$ ]     & 0.138952\% & 0.141264\% & 0.144105\% & 0.140410\% & 0.141329\% \\ \hline
-    E [ $N_2$ ]     & 0.820173\% & 0.846008\% & 0.819985\% & 0.827929\% & 0.814426\% \\ \hline
-    E [ $Nq_1$ ]    & 0.193756\% & 0.195948\% & 0.199681\% & 0.195673\% & 0.198579\% \\ \hline
-    E [ $Nq_2$ ]    & 0.853286\% & 0.880216\% & 0.853189\% & 0.861295\% & 0.847253\% \\ \hline
-    E [ $T_1$ ]     & 0.094595\% & 0.097390\% & 0.098882\% & 0.096134\% & 0.095413\% \\ \hline
-    E [ $T_2$ ]     & 0.768172\% & 0.792977\% & 0.771591\% & 0.775727\% & 0.763203\% \\ \hline
-    E [ $W_1$ ]     & 0.138946\% & 0.143545\% & 0.145213\% & 0.141459\% & 0.140967\% \\ \hline
-    E [ $W_2$ ]     & 0.800047\% & 0.825887\% & 0.803725\% & 0.807906\% & 0.794875\% \\ \hline
-    Var ( $W_1$ )   & 0.362087\% & 0.359142\% & 0.349739\% & 0.348255\% & 0.350015\% \\ \hline
-    Var ( $W_2$ )   & 2.377553\% & 2.564774\% & 2.704894\% & 2.463302\% & 2.435772\% \\ \hline
-\end{tabular}
-\end{center}
-
-    Tal tabela indica que mil elementos é um bom valor para o tamanho da fase transiente. As figuras \ref{figTransienteLCFSfila1N} a \ref{figTransienteLCFSfila2VarW} indicam alguns gráficos gerados no benchmark alterado para testar entre 1 mil e 10 mil, com passos de 100 fregueses, em filas do tipo LCFS. Tais gráficos são das variáveis aleatórias que mais demoraram a se estabilizar (pelos motivos citados anteriormente, relacionados ao regime de serviço da fila).
+    Analisando os gráficos de outros em outros cenários, verificamos que para valores de $\lambda$ iguais a 0.1, 0.2, 0.3 ou 0.4, uma fase transiente de tamanho
+10 mil é suficiente para estabilizar o sistema. Isso pode ser verificado analisando os gráficos da Variância de $W_2$ para cada valor de $\lambda$(pois é a Variável Aleatória crítica) e disciplina
+de serviço da fila. As imagens \ref{figTransienteFCFSfila2VarWLambda010} a \ref{figTransienteLCFSfila2VarWLambda040} indicam tais gráficos.
 
 \pagebreak
 
-% figuras do FCFS
+% figuras do FCFS pra 50k de transiente
 \begin{figure}
-	\caption{Legenda da Figura}
+	\caption{Média da V.A. $N_1$, Serviço FCFS com $\lambda$ = 0.45}
 	\label{figTransienteFCFSfila1N}
-	\includegraphics[scale = 0.2]{./graficos_transiente_1/FCFS/01.png}
+	\includegraphics[scale = 0.20]{./graficos_transiente_1/FCFS/01.png}
 \end{figure}
 
 \begin{figure}
-	\caption{Legenda da Figura}
+	\caption{Média da V.A. $N_2$, Serviço FCFS com $\lambda$ = 0.45}
 	\label{figTransienteFCFSfila2N}
-	\includegraphics[scale = 0.2]{./graficos_transiente_1/FCFS/02.png}
+	\includegraphics[scale = 0.20]{./graficos_transiente_1/FCFS/02.png}
 \end{figure}
 
 \begin{figure}
-	\caption{Legenda da Figura}
+	\caption{Média da V.A. $Nq_1$, Serviço FCFS com $\lambda$ = 0.45}
 	\label{figTransienteFCFSfila1Nq}
-	\includegraphics[scale = 0.2]{./graficos_transiente_1/FCFS/03.png}
+	\includegraphics[scale = 0.20]{./graficos_transiente_1/FCFS/03.png}
 \end{figure}
 
 \begin{figure}
-	\caption{Legenda da Figura}
+	\caption{Média da V.A. $Nq_2$, Serviço FCFS com $\lambda$ = 0.45}
 	\label{figTransienteFCFSfila2Nq}
-	\includegraphics[scale = 0.2]{./graficos_transiente_1/FCFS/04.png}
+	\includegraphics[scale = 0.20]{./graficos_transiente_1/FCFS/04.png}
 \end{figure}
 
 \begin{figure}
-	\caption{Legenda da Figura}
+	\caption{Média da V.A. $T_1$, Serviço FCFS com $\lambda$ = 0.45}
 	\label{figTransienteFCFSfila1T}
-	\includegraphics[scale = 0.2]{./graficos_transiente_1/FCFS/05.png}
+	\includegraphics[scale = 0.20]{./graficos_transiente_1/FCFS/05.png}
 \end{figure}
 
 \begin{figure}
-	\caption{Legenda da Figura}
+	\caption{Média da V.A. $T_2$, Serviço FCFS com $\lambda$ = 0.45}
 	\label{figTransienteFCFSfila2T}
-	\includegraphics[scale = 0.2]{./graficos_transiente_1/FCFS/06.png}
+	\includegraphics[scale = 0.20]{./graficos_transiente_1/FCFS/06.png}
 \end{figure}
 
 \begin{figure}
-	\caption{Legenda da Figura}
+	\caption{Média da V.A. $W_1$, Serviço FCFS com $\lambda$ = 0.45}
 	\label{figTransienteFCFSfila1W}
-	\includegraphics[scale = 0.2]{./graficos_transiente_1/FCFS/07.png}
+	\includegraphics[scale = 0.20]{./graficos_transiente_1/FCFS/07.png}
 \end{figure}
 
 \begin{figure}
-	\caption{Legenda da Figura}
+	\caption{Média da V.A. $W_2$, Serviço FCFS com $\lambda$ = 0.45}
 	\label{figTransienteFCFSfila2W}
-	\includegraphics[scale = 0.2]{./graficos_transiente_1/FCFS/08.png}
+	\includegraphics[scale = 0.20]{./graficos_transiente_1/FCFS/08.png}
 \end{figure}
 
 \begin{figure}
-	\caption{Legenda da Figura}
+	\caption{Variância da V.A. $W_1$, Serviço FCFS com $\lambda$ = 0.45}
 	\label{figTransienteFCFSfila1VarW}
-	\includegraphics[scale = 0.2]{./graficos_transiente_1/FCFS/09.png}
+	\includegraphics[scale = 0.20]{./graficos_transiente_1/FCFS/09.png}
 \end{figure}
 
 \begin{figure}
-	\caption{Legenda da Figura}
+	\caption{Variância da V.A. $W_2$, Serviço FCFS com $\lambda$ = 0.45}
 	\label{figTransienteFCFSfila2VarW}
-	\includegraphics[scale = 0.2]{./graficos_transiente_1/FCFS/10.png}
+	\includegraphics[scale = 0.20]{./graficos_transiente_1/FCFS/10.png}
 \end{figure}
 
 \clearpage
 
-%figuras do LCFS
+%figuras do LCFS pra 50k de transiente
 \begin{figure}
-	\caption{Legenda da Figura}
+	\caption{Média da V.A. $N_1$, Serviço LCFS com $\lambda$ = 0.45}
 	\label{figTransienteLCFSfila1N}
-	\includegraphics[scale = 0.2]{./graficos_transiente_1/LCFS/01.png}
+	\includegraphics[scale = 0.20]{./graficos_transiente_1/LCFS/01.png}
 \end{figure}
 
 \begin{figure}
-	\caption{Legenda da Figura}
+	\caption{Média da V.A. $N_2$, Serviço LCFS com $\lambda$ = 0.45}
 	\label{figTransienteLCFSfila2N}
-	\includegraphics[scale = 0.2]{./graficos_transiente_1/LCFS/02.png}
+	\includegraphics[scale = 0.20]{./graficos_transiente_1/LCFS/02.png}
 \end{figure}
 
 \begin{figure}
-	\caption{Legenda da Figura}
+	\caption{Média da V.A. $Nq_1$, Serviço LCFS com $\lambda$ = 0.45}
 	\label{figTransienteLCFSfila1Nq}
-	\includegraphics[scale = 0.2]{./graficos_transiente_1/LCFS/03.png}
+	\includegraphics[scale = 0.20]{./graficos_transiente_1/LCFS/03.png}
 \end{figure}
 
 \begin{figure}
-	\caption{Legenda da Figura}
+	\caption{Média da V.A. $Nq_2$, Serviço LCFS com $\lambda$ = 0.45}
 	\label{figTransienteLCFSfila2Nq}
-	\includegraphics[scale = 0.2]{./graficos_transiente_1/LCFS/04.png}
+	\includegraphics[scale = 0.20]{./graficos_transiente_1/LCFS/04.png}
 \end{figure}
 
 \begin{figure}
-	\caption{Legenda da Figura}
+	\caption{Média da V.A. $T_1$, Serviço LCFS com $\lambda$ = 0.45}
 	\label{figTransienteLCFSfila1T}
-	\includegraphics[scale = 0.2]{./graficos_transiente_1/LCFS/05.png}
+	\includegraphics[scale = 0.20]{./graficos_transiente_1/LCFS/05.png}
 \end{figure}
 
 \begin{figure}
-	\caption{Legenda da Figura}
+	\caption{Média da V.A. $T_2$, Serviço LCFS com $\lambda$ = 0.45}
 	\label{figTransienteLCFSfila2T}
-	\includegraphics[scale = 0.2]{./graficos_transiente_1/LCFS/06.png}
+	\includegraphics[scale = 0.20]{./graficos_transiente_1/LCFS/06.png}
 \end{figure}
 
 \begin{figure}
-	\caption{Legenda da Figura}
+	\caption{Média da V.A. $W_1$, Serviço LCFS com $\lambda$ = 0.45}
 	\label{figTransienteLCFSfila1W}
-	\includegraphics[scale = 0.2]{./graficos_transiente_1/LCFS/07.png}
+	\includegraphics[scale = 0.20]{./graficos_transiente_1/LCFS/07.png}
 \end{figure}
 
 \begin{figure}
-	\caption{Legenda da Figura}
+	\caption{Média da V.A. $W_2$, Serviço LCFS com $\lambda$ = 0.45}
 	\label{figTransienteLCFSfila2W}
-	\includegraphics[scale = 0.2]{./graficos_transiente_1/LCFS/08.png}
+	\includegraphics[scale = 0.20]{./graficos_transiente_1/LCFS/08.png}
 \end{figure}
 
 \begin{figure}
-	\caption{Legenda da Figura}
+	\caption{Variância da V.A. $W_1$, Serviço LCFS com $\lambda$ = 0.45}
 	\label{figTransienteLCFSfila1VarW}
-	\includegraphics[scale = 0.2]{./graficos_transiente_1/LCFS/09.png}
+	\includegraphics[scale = 0.20]{./graficos_transiente_1/LCFS/09.png}
 \end{figure}
 
 \begin{figure}
-	\caption{Legenda da Figura}
+	\caption{Variância da V.A. $W_2$, Serviço LCFS com $\lambda$ = 0.45}
 	\label{figTransienteLCFSfila2VarW}
-	\includegraphics[scale = 0.2]{./graficos_transiente_1/LCFS/10.png}
+	\includegraphics[scale = 0.20]{./graficos_transiente_1/LCFS/10.png}
 \end{figure}
 
 \clearpage
 
-%figuras do benchmark com 3k
+%figuras pra 10k de transiente
 \begin{figure}
-	\caption{Legenda da Figura}
-	\label{figTransiente3kfila2T}
-	\includegraphics[scale = 0.2]{./graficos_transiente_2/01.png}
+	\caption{Variância da V.A. $W_2$, Serviço FCFS com $\lambda$ = 0.10}
+	\label{figTransienteFCFSfila2VarWLambda010}
+	\includegraphics[scale = 0.20]{./graficos_transiente_2/01.png}
 \end{figure}
 
 \begin{figure}
-	\caption{Legenda da Figura}
-	\label{figTransiente3kfila2W}
-	\includegraphics[scale = 0.2]{./graficos_transiente_2/02.png}
+	\caption{Variância da V.A. $W_2$, Serviço FCFS com $\lambda$ = 0.20}
+	\label{figTransienteFCFSfila2VarWLambda020}
+	\includegraphics[scale = 0.20]{./graficos_transiente_2/02.png}
 \end{figure}
 
 \begin{figure}
-	\caption{Legenda da Figura}
-	\label{figTransiente3kfila2VarW}
-	\includegraphics[scale = 0.2]{./graficos_transiente_2/03.png}
+	\caption{Variância da V.A. $W_2$, Serviço FCFS com $\lambda$ = 0.30}
+	\label{figTransienteFCFSfila2VarWLambda030}
+	\includegraphics[scale = 0.20]{./graficos_transiente_2/03.png}
 \end{figure}
 
 \begin{figure}
-	\caption{Legenda da Figura}
-	\label{figTransiente3kfila1VarW}
-	\includegraphics[scale = 0.2]{./graficos_transiente_2/04.png}
+	\caption{Variância da V.A. $W_2$, Serviço FCFS com $\lambda$ = 0.40}
+	\label{figTransienteFCFSfila2VarWLambda040}
+	\includegraphics[scale = 0.20]{./graficos_transiente_2/04.png}
+\end{figure}
+
+\begin{figure}
+	\caption{Variância da V.A. $W_2$, Serviço LCFS com $\lambda$ = 0.10}
+	\label{figTransienteLCFSfila2VarWLambda010}
+	\includegraphics[scale = 0.20]{./graficos_transiente_2/05.png}
+\end{figure}
+
+\begin{figure}
+	\caption{Variância da V.A. $W_2$, Serviço LCFS com $\lambda$ = 0.20}
+	\label{figTransienteLCFSfila2VarWLambda020}
+	\includegraphics[scale = 0.20]{./graficos_transiente_2/06.png}
+\end{figure}
+
+\begin{figure}
+	\caption{Variância da V.A. $W_2$, Serviço LCFS com $\lambda$ = 0.30}
+	\label{figTransienteLCFSfila2VarWLambda030}
+	\includegraphics[scale = 0.20]{./graficos_transiente_2/07.png}
+\end{figure}
+
+\begin{figure}
+	\caption{Variância da V.A. $W_2$, Serviço LCFS com $\lambda$ = 0.40}
+	\label{figTransienteLCFSfila2VarWLambda040}
+	\includegraphics[scale = 0.20]{./graficos_transiente_2/08.png}
 \end{figure}
 
 \clearpage
